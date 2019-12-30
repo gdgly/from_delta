@@ -85,30 +85,6 @@ void main()
 
 }
 
-if ((FALSE != RTE_B_COM_VIN_UVW)||(FALSE != RTE_B_COM_VIN_OCW))
-			{
-				/*
-				 * 0x61 INPUT WARNING 
-				 * Bit7:	
-				 * Bit6:	
-				 * Bit5:
-				 * Bit4:
-				 * Bit3:Input under Voltage warning	
-				 * Bit2:	
-				 * Bit1:
-				 * Bit0:Input Over Current Warning		
-				 */				
-				if(FALSE != RTE_B_COM_VIN_UVW)
-				{
-					PSMI_tStatus.u16StatusInput.Bits.VIN_UVW = TRUE;
-				}
-				if(FALSE != RTE_B_COM_VIN_OCW)
-				{
-					PSMI_tStatus.u16StatusInput.Bits.IIN_OCW = TRUE;
-				}
-				PSMI_tStatus.u16Status.Bits.PWOK = FALSE;
-			}
-
 
 
 
