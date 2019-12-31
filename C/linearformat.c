@@ -113,7 +113,6 @@ static float PSMI_to_float_temp(uint16 u16data)
   float a;
 
   a = ((u16data & 0x003F) >> 6) + (u16data & 0x7FC0)>>6;
-  printf("%f\n",(u16data & 0x003F) >> 6);
   return a;
 }
 
@@ -124,10 +123,11 @@ int main(void)
   uint16 a, b, c;
   float ff,f2;
   uint16 vout,iout,pout,vin,iin,pin,fanspeed;
-  ff = 280;
+  ff = 24;
 
   c = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(ff*128);
-  f2 = PSMI_to_float_temp(c);
+  f2 = PSMI_to_float_temp(0x2580);
+  printf("%x,%f",c,f2);
   
   // vout = mg_u16TxLinearDatFormatDiv128_PSMI(12*128, VOUT_FRC_NUM, VOUT_FRC_RESULUTION);
   // iout = mg_u16TxLinearDatFormatDiv128_PSMI(1*128, IOUT_FRC_NUM, IOUT_FRC_RESULUTION);
@@ -138,8 +138,8 @@ int main(void)
   // fanspeed = mg_u16TxLinearDatFormatDiv128_PSMI(6500*128, FAN_SPEED_FRC_NUM, FAN_SPEED_FRC_RESULUTION);
   // printf("vout=%04x,\niout=%04x,\npout=%04x,\nvin=%04x,\niin=%04x,\npin=%04x,\nfanspeed=%04x\n", vout,iout,pout,vin,iin,pin,fanspeed);
 
-  vin = mg_u16TxLinearDatFormatDiv128_PSMI(279*128,VIN_FRC_NUM, VIN_FRC_RESULUTION);
-  printf("%x",vin);
+  // vin = mg_u16TxLinearDatFormatDiv128_PSMI(279*128,VIN_FRC_NUM, VIN_FRC_RESULUTION);
+  // printf("%x",vin);
 
 
   return 0;
