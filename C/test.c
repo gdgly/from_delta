@@ -88,11 +88,14 @@ void main()
 
 
 
+#define RTE_B_DIO_HIGH_LINE_ENA					 RTE_uDioOutStatus.Bits.fa
+#define RTE_B_PRI_VIN_LINE_LOW       RTE_Pri.u16PriStatus00.Bits.f3  /* 1 = low line */
 
+#define RTE_Read_B_R_VIN_LINE_LOW       (RTE_B_PRI_VIN_LINE_LOW)
+#define RTE_Read_B_R_VIN_LINE           (RTE_B_PRI_VIN_LINE_LOW)
+#define RTE_Read_B_R_PRI_VIN_LINE       (RTE_B_PRI_VIN_LINE_LOW)
 
-
-
-
+#define RTE_Write_B_P_VIN_LINE_LOW       (RTE_B_TO_SEC_STA_VIN_LINE_LOW)
 
 
 
