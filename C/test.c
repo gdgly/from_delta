@@ -96,8 +96,7 @@ void main()
 #define RTE_Read_B_R_PRI_VIN_LINE       (RTE_B_PRI_VIN_LINE_LOW)
 
 #define RTE_Write_B_P_VIN_LINE_LOW       (RTE_B_TO_SEC_STA_VIN_LINE_LOW)
-
-
+ 
 
 
 
