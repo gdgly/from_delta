@@ -1,0 +1,176 @@
+//debug register on GUI
+RTE_u16ComDebug[0].Val = 
+RTE_u16ComDebug[1].Val = 
+RTE_u16ComDebug[2].Val = 
+RTE_u16ComDebug[3].Val = 
+
+
+
+1. This project base on the new architecture defined by Harry. And combine the old one with the 
+new architecture.                                                Fred.Ji 2016Feb24
+
+2. use old FZQJ I2C communication protocol.
+
+PORT_Debug_Pin1_TOGGLE;
+
+GPIO_WriteBit(GPIOC,GPIO_Pin_13,!GPIO_ReadOutputDataBit(GPIOC,GPIO_Pin_13));
+PORT_Debug_Pin1_TOGGLE;
+
+//        if(RTE_au16q12AdcResult[MG_U8_ADC_INDEX_3V4_INT_SENSE] > VSB_OVP_HIGH) //4.0V
+//        {
+//          if (RTE_VsbMonitor.u16OvpDly < VSB_OVP_DLY)
+//          {
+//            RTE_VsbMonitor.u16OvpDly++;
+//          }
+//          else
+//          {
+//            RTE_COM_STA_VSB_OVP = TRUE;
+//            RTE_COM_STA_VSB_OVW = TRUE;
+//          }
+//        }
+//        else if(RTE_au16q12AdcResult[MG_U8_ADC_INDEX_3V4_INT_SENSE] < VSB_OVP_LOW) //3.75V
+//        {
+//          if (RTE_VsbMonitor.u16OvpDly > 0)
+//          {
+//            RTE_VsbMonitor.u16OvpDly--;
+//          }
+//          else
+//          {
+//            RTE_COM_STA_VSB_OVP = FALSE;
+//          }
+          /* OVW */
+		  
+		  
+		  
+		  
+		  
+		  
+              RTE_s16PsuCtrlVsbIshareSlopeK0 = RTE_s16PsuCtrlVsbIshareP1.Val>>9;
+              RTE_s16PsuCtrlVsbIshareSlopeK1 = (RTE_s16PsuCtrlVsbIshareP2.Val-RTE_s16PsuCtrlVsbIshareP1.Val)>>10;
+              RTE_s16PsuCtrlVsbIshareSlopeK2 = (RTE_s16PsuCtrlVsbIshareP3.Val-RTE_s16PsuCtrlVsbIshareP2.Val)>>11;
+              //RTE_s16PsuCtrlVsbIshareSlopeK3 = (RTE_s16PsuCtrlVsbIshareP4.Val-RTE_s16PsuCtrlVsbIshareP3.Val)/ \
+                                               (VSB_ISHARE_CALI_P4-VSB_ISHARE_CALI_P3);
+											   
+											  
+Used timer list:
+TIMx	Purpose	                T/Hz	        Use Interrupt
+SysTick	System time slice	    100us	        YES
+TIM15	MUX scan time slice	    19us	        YES
+TIM1	3V3 Trim PWM	        25KHz	        NO
+TIM16	3V3 LS PWM	            25KHz	        NO
+TIM17	FAN Control PWM	        25KHz	        NO
+
+
+Used Interrupt list:
+INTx	     FW priority	HW priority
+Systick	     --	            6
+I2C1	     0	            30
+TIM15	     1              27
+USRAT1	     1              34
+USRAT2	     1              35
+PS: The smaller the number, the higher the priority.
+
+
+oring test time 6s-->20s
+
+
+#define HIBYTE(DATA)             ((uint8)((DATA >> DIV_SHIFT_8) & LOW_BYTE))
+#define LOBYTE(DATA)             ((uint8)(DATA & LOW_BYTE))
+#define GET_WORD(HB,LB)          (((uint16)HB << 8) + LB)
+
+
+
+
+
+
+
+void FLASH_vRead4BytesData(uint32 u32Addr, uint8 *ReadBuf)
+{
+  uint8 DataNum = 0;
+  while(DataNum < 4)
+  {
+    *(ReadBuf + DataNum) = *(__IO uint8*)u32Addr++;
+    DataNum++;
+  }
+  
+}
+
+
+P2.3  Rev:V2.1c --> V2.2a  2017/7/26 modify: 
+1. 3.3Vsb timing:   
+if ((FALSE == RTE_INTCOM1_PRI1_NO_RX_PKG) &&
+	    ((TRUE  == RTE_PRI_A_STA_RELAY_ON) ||
+      (PMBUS_tData.u16Vin_A_Direct.Val >= u16VinUvThrHighA)))
+2. add sleep mode to E5h/E7h.
+3. change output LED control method. when Vout AD value very small, turn off output LED.
+4. change inlet temperature offset in fan control. change offset from 50C to 30C.
+
+Rev:V2.2a -->V2.2b
+change OC point(+150) and OV point(+100) point
+
+Rev:V2.2b -->V2.2c
+if ( RTE_COM_STA_V1_UV_FOR_OUTPUT_LED )
+{
+  LED_mg_u8OutputLedState = MG_E_LED_OFF;	
+}
+else 
+{
+  LED_mg_u8OutputLedState = MG_E_LED_ON;
+}
+
+Rev:V2.2c --> V2.2d
+Change 
+if ((FALSE == RTE_INTCOM1_PRI1_NO_RX_PKG) &&
+    ((TRUE  == RTE_PRI_A_STA_RELAY_ON) ||
+    (PMBUS_tData.u16Vin_A_Direct.Val >= u16VinUvThrHighA))) /* if AC>175V/DC>175V, Vsb can power up */
+to
+if ((FALSE == RTE_INTCOM1_PRI1_NO_RX_PKG) &&
+    (TRUE  == RTE_PRI_A_STA_RELAY_ON) &&
+    (PMBUS_tData.u16Vin_A_Direct.Val >= u16VinUvThrHighA)) /* if AC>175V/DC>175V, Vsb can power up */
+
+because Input UV, Vsb can't shutdown.
+
+Rev: V2.2d --> V2.2e
+HW changed. change 3.3V LS PWM phase
+change from TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2; to TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+
+Rev: V2.2d --> V2.3a
+change Input Type detect range.
+#define INPUT_TYPE_DC_RANGE1_LOW       PMB_DF_Y_VIN(60.0)
+#define INPUT_TYPE_DC_RANGE1_HIGH      PMB_DF_Y_VIN(286.0)
+
+#define INPUT_TYPE_DC_RANGE2_LOW       PMB_DF_Y_VIN(291.0)
+
+#define INPUT_TYPE_AC_RANGE1_LOW       PMB_DF_Y_VIN(60.0)
+#define INPUT_TYPE_AC_RANGE1_HIGH      PMB_DF_Y_VIN(248.0)
+
+#define INPUT_TYPE_AC_RANGE2_LOW       PMB_DF_Y_VIN(252.0)
+
+
+Rev: V2.3a --> V2.3b
+change to OC point and OV pont back.
+/*Rev:V2.2a -->V2.2b
+change OC point(+150) and OV point(+100) point*/
+
+Rev: V2.3b --> V2.3c
+change OC point(+150) and OV point(+100) point again.
+
+Rev: V2.3c --> 2.3d
+#define EEP_VSB_TRIM_DEFAULT                    778   -->  550
+
+Vsb OCP point fail:
+#define		VSB_SCP_HIGH                    (uint16)(3290+150) /* 12.0A --> 2.64V(3289.7) */
+#define		VSB_SCP_LOW                     (uint16)(3153+150) /* 11.5A --> 2.53V(3152.68) */
+#define		VSB_OCP_HIGH                    (uint16)(3098+150) /* 11.3A --> 2.486V(3097.8) */
+#define		VSB_OCP_LOW                     (uint16)(2933+150) /* 10.7A --> 2.354V(2933.3) */
+#define		VSB_OCW_HIGH                    (uint16)(2879+150) /* 10.5A --> 2.31V(2878.5) */
+#define		VSB_OCW_LOW                     (uint16)(2824+150) /* 10.3A --> 2.266V(2823.7) */
+-->
+#define		VSB_SCP_HIGH                    (uint16)(3290) /* 12.0A --> 2.64V(3289.7) */
+#define		VSB_SCP_LOW                     (uint16)(3153) /* 11.5A --> 2.53V(3152.68) */
+#define		VSB_OCP_HIGH                    (uint16)(3098) /* 11.3A --> 2.486V(3097.8) */
+#define		VSB_OCP_LOW                     (uint16)(2933) /* 10.7A --> 2.354V(2933.3) */
+#define		VSB_OCW_HIGH                    (uint16)(2879+100) /* 10.5A --> 2.31V(2878.5) */
+#define		VSB_OCW_LOW                     (uint16)(2824+100) /* 10.3A --> 2.266V(2823.7) */
+
+
