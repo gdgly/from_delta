@@ -123,10 +123,10 @@ int main(void)
   uint16 a, b, c;
   float ff,f2;
   uint16 vout,iout,pout,vin,iin,pin,fanspeed;
-  ff = 24;
+  ff = 20;
 
-  c = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(ff*128);
-  f2 = PSMI_to_float_temp(0x2580);
+  c = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(20<<7);
+  f2 = PSMI_to_float_temp(0x06c0);
   printf("%x,%f",c,f2);
   
   // vout = mg_u16TxLinearDatFormatDiv128_PSMI(12*128, VOUT_FRC_NUM, VOUT_FRC_RESULUTION);
