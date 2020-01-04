@@ -1,7 +1,0 @@
---cpu Cortex-M0 -g --apcs=interwork --pd "__MICROLIB SETA 1"
--I.\RTE\_Skywalker_4000W_Com
--IC:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
--IC:\Keil_v5\ARM\CMSIS\Include
--IC:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0\Device\Include
---pd "__UVISION_VERSION SETA 525" --pd "STM32F071xB SETA 1"
---list .\startup_stm32f0xx.lst --xref -o ..\20_make\output\startup_stm32f0xx.o --depend ..\20_make\output\startup_stm32f0xx.d "..\50_Lib\Assembly\startup_stm32f0xx.s"

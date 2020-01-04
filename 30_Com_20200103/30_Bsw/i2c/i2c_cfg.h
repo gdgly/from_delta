@@ -34,7 +34,7 @@
 /*******************************************************************************
  * Module interface
  ******************************************************************************/
-#define I2C_CFG_I2C1_BASE_SLA_ADR          0x80u		
+#define I2C_CFG_I2C1_BASE_SLA_ADR          0xB0u		
 #define I2C_CFG_I2C2_BASE_SLA_ADR          0x00u		
 
 

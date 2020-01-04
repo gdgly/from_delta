@@ -182,7 +182,7 @@ SINLINE uint8 HWIO_Rte_Read_B_R_PWOK_ENA  (void)
 	return RTE_Read_B_R_PWOK_ENA ;
 }
 
-SINLINE uint8 HWIN_Rte_Read_B_R_HIGH_LINE_ENA (void)
+SINLINE uint8 HWIN_Rte_Read_B_R_VIN_LINE_ENA (void)
 {
 	return RTE_Read_B_R_HIGH_LINE_ENA;
 }

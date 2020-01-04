@@ -91,7 +91,8 @@ SINLINE uint8 CALI_Rte_Read_B_R_VIN_OK(void)
 	return Rte_Read_B_R_VIN_OK;
 }
 
-inline void CALI_Rte_Read_R_u1610mAIoutAvg(WORD_VAL *var)
+SINLINE void CALI_Rte_Read_R_u1610mAIoutAvg(WORD_VAL *var)
+//inline void CALI_Rte_Read_R_u1610mAIoutAvg(WORD_VAL *var)
 {
 #if MG_RTE_MODULE
   Rte_Read_R_u1610mAIoutAvg(&var);

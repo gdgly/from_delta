@@ -546,9 +546,8 @@ void PMBUS_vCopySensorData(void)
 
 			/* Update Temperatue_1: NTC_Inlet  */
 			RTE_PMB_Write_u32DataCopy(RTE_PMB_Read_u16Temp1_Linear());
-			//u16Dummy = PMBUS_SCFG_s16ReadInletTemp() & 0x07FFu;
-			u16Dummy = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP((PMBUS_SCFG_s16ReadInletTemp() & 0x07FFu));
-//			u16Dummy = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(24 << 7);//for test
+			u16Dummy = PMBUS_SCFG_s16ReadInletTemp() & 0x07FFu;
+			u16Dummy = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(u16Dummy<<7);
 			RTE_PMB_Write_bit_Inlet_Upd(TRUE);
 			RTE_PMB_Write_u16Temp1_Linear(u16Dummy);
 			RTE_PMB_Write_bit_Inlet_Upd(FALSE);
@@ -556,6 +555,7 @@ void PMBUS_vCopySensorData(void)
 			/* Update Temperatue_2: NTC_PFC */
 			RTE_PMB_Write_u32DataCopy(RTE_PMB_Read_u16Temp2_Linear());
 			u16Dummy = PMBUS_SCFG_s16ReadPriPfc() & 0x07FFu;
+			u16Dummy = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(u16Dummy<<7);
 			RTE_PMB_Write_bit_Pfc_Upd(TRUE);
 			RTE_PMB_Write_u16Temp2_Linear(u16Dummy);
 			RTE_PMB_Write_bit_Pfc_Upd(FALSE);
@@ -563,6 +563,7 @@ void PMBUS_vCopySensorData(void)
 			/* Update Temperatue_3: NTC_SR  */
 			RTE_PMB_Write_u32DataCopy(RTE_PMB_Read_u16Temp3_Linear());
 			u16Dummy = (PMBUS_SCFG_s16ReadSecSr()) & 0x07FFu;
+			u16Dummy = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(u16Dummy<<7);
 			RTE_PMB_Write_bit_SR_Upd(TRUE);
 			RTE_PMB_Write_u16Temp3_Linear(u16Dummy);
 			RTE_PMB_Write_bit_SR_Upd(FALSE);
@@ -779,11 +780,11 @@ void PMBUS_vCopySensorData(void)
 void PMBUS_vCopyStatusData(void)
 {
 	/* First power up, need to delay 3s then to update status */
-//	if (0U < mg_u16StatusUpdDly)
-//	{
-//		mg_u16StatusUpdDly--;
-//	}
-//	else
+	if (0U < mg_u16StatusUpdDly)
+	{
+		mg_u16StatusUpdDly--;
+	}
+	else
 	{
 
 		/* 0x5E Shutdown event */
@@ -803,7 +804,7 @@ void PMBUS_vCopyStatusData(void)
 		/* if Work at Aux mode, then set it base status table */
 //		if (RTE_PMB_Read_bit_Aux_Mode())
 //		{
-//			PMBUS_tStatus.u8StatusInputP0.ALL |= 0x18u;
+//			;
 //		}
 //		/* AC input applied, V1 turn off by Operation and control signals and Vsb present (STB Mode)*/
 //		else if (RTE_PMB_Read_bit_STB_MODE())
@@ -982,14 +983,11 @@ void PMBUS_vCopyStatusData(void)
 			 */
 			/* 0x62<bit7-8> power supply operating range;
 				 00 = 90~135VAC(low line), 01 = 176~264VAC(high line) */
-			uint8 u8AcLineState;
-			PMBUS_Rte_Read_R_u8AcLineStatus(&u8AcLineState);
-
-			if ((RTE_LOW_LINE_50HZ == u8AcLineState) || (RTE_LOW_LINE_60HZ == u8AcLineState))
+			if ( TRUE == RTE_B_PRI_VIN_LINE_LOW)
 			{
 				PSMI_tStatus.u16Status.Bits.POWER_SUPPLY_RANGE = 0x00;
 			}
-			else if ((RTE_HIGH_LINE_50HZ == u8AcLineState) || (RTE_HIGH_LINE_60HZ == u8AcLineState))
+			else if (FALSE == RTE_B_PRI_VIN_LINE_LOW)
 			{
 				PSMI_tStatus.u16Status.Bits.POWER_SUPPLY_RANGE = 0x01;
 			}
@@ -1024,7 +1022,6 @@ void PMBUS_vCopyStatusData(void)
 	    (PSMI_tStatus.u16StatusIout.ALL & (~mg_sSmbMask.u16Psmi_60)) ||
 	    (PSMI_tStatus.u16StatusInput.ALL & (~mg_sSmbMask.u16Psmi_61)) ||
 	    (PSMI_tStatus.u16Status.ALL	& (~mg_sSmbMask.u16Psmi_62))
-//			||(PMBUS_tStatus.u8StatusInputP0.ALL & (~mg_sP0SmbMask.u8Pmb_7C)) /*  bug !!!*/
 	   )
 	{
 		/* SMB asserted */
@@ -1143,9 +1140,9 @@ void PMBUS_vCmdCheck(void)
 		PMBUS_uSysStatu1.Bits.SMB_MASK_REQUEST = 0;
 		u8PmbusCommand                         = RTE_au8I2cRxBuf[0];
 		PMBUS_Rte_Write_P_u8PMBusCmd(u8PmbusCommand);
-		RTE_u8I2cExpRxCnt                      = PMB_mg_au8I2cRxNumber[u8PmbusCommand];
+		RTE_u8I2cExpRxCnt                      = 3;//PMB_mg_au8I2cRxNumber[u8PmbusCommand];
 		RTE_u8I2cExpRxCnt                      += (RTE_bPEC_Enable == TRUE) ? 1u : 0;
-		RTE_u8I2cExpTxCnt                      = PMB_mg_au8I2cTxNumber[u8PmbusCommand];
+		RTE_u8I2cExpTxCnt                      = 2;//PMB_mg_au8I2cTxNumber[u8PmbusCommand];
 		RTE_I2C_CMD_DETECTED                   = TRUE;
 	}
 
@@ -1153,156 +1150,27 @@ void PMBUS_vCmdCheck(void)
 
 	switch (u8PmbusCommand)
 	{
-		case PMB_00_PAGE:
-		case PMB_03_CLEAR_FAULTS: /* only effected here */
+				case PSMI_02_READ_TEMPERATURE_1:
+		case PSMI_03_READ_TEMPERATURE_2:
+		case PSMI_20_READ_FAN_SPEED_1:
+		case PSMI_21_READ_FAN_SPEED_2:
+		case PSMI_24_FAN_COMMAND_1:	
+		case PSMI_25_FAN_COMMAND_2:			
+		case PSMI_28_READ_VOUT:
+		case PSMI_32_READ_AC_VIN:		
+		case PSMI_33_READ_IOUT:	
+		case PSMI_35_READ_AC_PIN:
+		case PSMI_36_READ_POUT:		
+		case PSMI_3D_READ_AC_IIN:		
+		case PSMI_5E_SHUTDOWN_EVENTS:
+		case PSMI_5F_THERMAL_WARNING_EVENTS:
+		case PSMI_60_IOUT_WARNING_EVENT:
+		case PSMI_61_INPUT_WARNING_EVENT:
+		case PSMI_62_STATUS:
 		{
 			break;
 		}
-
-		case PMB_05_PAGE_PLUS_WRITE:
-		{
-			switch (RTE_u8I2cRxCnt)
-			{
-				case 1: /* cmd = PMB_05_PAGE_PLUS_WRITE */
-				{
-					PMBUS_SCFG_vSetBlockWrState();
-					break;
-				}
-
-				case 2: /* Byte cnt */
-				{
-					break;
-				}
-
-				case 3: /* Page# */
-				{
-					break;
-				}
-
-				case 4: /* cmd code being queried */
-				{
-					if (RTE_au8I2cRxBuf[1] >= 2u)
-					{
-						if ((MG_PAGE_MAX >= RTE_au8I2cRxBuf[2]) || (MG_PAGE_FF == RTE_au8I2cRxBuf[2]))     /*change from RTE_au8I2cRxBuf[1] to RTE_au8I2cRxBuf[2]  joe20171221*/
-						{
-							RTE_PMB_Write_bit_Page_Plus_Write(TRUE);
-							mg_u8Page = RTE_au8I2cRxBuf[2];
-							u8PmbusCommand  = RTE_au8I2cRxBuf[3];
-							PMBUS_Rte_Write_P_u8PMBusCmd(u8PmbusCommand);
-
-							if (u8PmbusCommand == PMB_05_PAGE_PLUS_WRITE)
-							{
-								RTE_u8I2cRxCnt = 0x01u;
-								PMBUS_SCFG_vSetBlockWrState();
-							}
-						}
-						else
-						{
-							PMBUS_tStatus.u8StatusCmlP0.Bits.INVALID_DATA = TRUE;
-						}
-					}
-
-					break;
-				}
-
-				default: /* err handle */
-				{
-					break;
-				}
-			}
-
-			break;
-		}
-
-		case PMB_06_PAGE_PLUS_READ:
-		{
-			switch (RTE_u8I2cRxCnt)
-			{
-				case 1: /* cmd = PMB_05_PAGE_PLUS_WRITE */
-				{
-					/* Why add this, it is unused ?????????????????? */
-					PMBUS_SCFG_vSetBlockWrState();
-					break;
-				}
-
-				case 2: /* Byte cnt */
-				{
-					break;
-				}
-
-				case 3: /* Page# */
-				{
-					if ((MG_PAGE_MAX >= RTE_au8I2cRxBuf[2]) || (MG_PAGE_FF == RTE_au8I2cRxBuf[2]))  /*change from RTE_au8I2cRxBuf[1] to RTE_au8I2cRxBuf[2]  joe20171221*/
-					{
-						if (RTE_au8I2cRxBuf[1] >= 0x01u)
-						{
-							mg_u8Page = RTE_au8I2cRxBuf[2];
-						}
-					}
-					else
-					{
-						PMBUS_tStatus.u8StatusCmlP0.Bits.INVALID_DATA = TRUE;
-					}
-
-					break;
-				}
-
-				case 4: /* cmd code to read */
-				{
-					if (RTE_au8I2cRxBuf[1] >= 0x01u)
-					{
-						RTE_PMB_Write_bit_Page_Plus_Read(TRUE);
-						u8PmbusCommand = RTE_au8I2cRxBuf[3];
-						PMBUS_Rte_Write_P_u8PMBusCmd(u8PmbusCommand);
-						RTE_u8I2cExpTxCnt = PMB_mg_au8I2cTxNumber[u8PmbusCommand];
-					}
-
-					break;
-				}
-
-				default: /* err handle */
-				{
-					break;
-				}
-			}
-
-			break;
-		}
-
-		case PMB_1A_QUERY:
-		{
-			switch (RTE_u8I2cRxCnt)
-			{
-				case 1: /* cmd */
-				{
-					PMBUS_SCFG_vSetBlockWrState();
-					break;
-				}
-
-				case 2: /* Byte cnt */
-				{
-					break;
-				}
-
-				case 3: /* data */
-				{
-					if (RTE_au8I2cRxBuf[1] <= 0x01u)
-					{
-						RTE_PMB_Write_bit_Query_Request(TRUE);
-					}
-
-					break;
-				}
-
-				default: /* err handle */
-				{
-					break;
-				}
-			}
-
-			break;
-		}
-
+	  /* Delta Internal */
 		case PMB_1B_SMBALERT_MASK:
 		{
 			switch (RTE_u8I2cRxCnt)
@@ -1335,53 +1203,7 @@ void PMBUS_vCmdCheck(void)
 
 			break;
 		}
-
-		case PMB_7E_STATUS_CML:
-		{
-			break;
-		}
-
-		case PMB_30_COEFFICIENTS:
-		{
-			switch (RTE_u8I2cRxCnt)
-			{
-				case 1: /* cmd */
-				{
-					/* this is not block write */
-					PMBUS_uSysStatu0.Bits.CEFCT_READ_EIN_EOUT = FALSE;
-					/* WHen write to MCU, it is not block write */
-					PMBUS_SCFG_vSetBlockWrState();
-					break;
-				}
-
-				case 2: /* Byte cnt */
-				{
-					break;
-				}
-
-				case 3: /* data */
-				{
-					if ((PMB_86_READ_EIN == RTE_au8I2cRxBuf[2]) ||
-					    (PMB_87_READ_EOUT == RTE_au8I2cRxBuf[2]))
-					{
-						if (0x01 == RTE_au8I2cRxBuf[3])
-						{
-							PMBUS_uSysStatu0.Bits.CEFCT_READ_EIN_EOUT = TRUE;
-						}
-					}
-
-					break;
-				}
-
-				default: /* err handle */
-				{
-					break;
-				}
-			}
-
-			break;
-		}
-
+	
 		case PMB_C9_CALIBRATION:
 		{
 			if (FALSE == PMBUS_uSysStatu0.Bits.UNLOCK_DEBUG)
@@ -1500,21 +1322,6 @@ void PMBUS_vCmdCheck(void)
 				}
 			}
 
-			break;
-		}
-
-		case PMB_01_OPERATION:
-		case PMB_3B_FAN_COMMAND_1:
-		case PMB_3C_FAN_COMMAND_2:
-		case PMB_3E_FAN_COMMAND_3:
-		case PMB_3F_FAN_COMMAND_4:
-		case PMB_51_OT_WARN_LIMIT:
-		case PMB_DD_MFR_REAL_TIME_BLACK_BOX:
-		case PMB_DE_MFR_SYSTEM_BLCAKBOX:
-		case PMB_DF_MFR_BLCAKBOX_CONFIG:
-		case PMB_E0_MFR_CLEAR_BLACKBOX:
-		case PMB_FA_MFR_FUNCTION_CTRL:
-		{
 			break;
 		}
 
@@ -2388,7 +2195,6 @@ void vPMBus_HandleData(void)
 		 *   Standard PMBus commands
 		 *************************************************************/
 		case PSMI_24_FAN_COMMAND_1:
-		case PSMI_25_FAN_COMMAND_2:
 		{
 			/* The power supply fan speed shall remain under PMBus control */
 			u16TempData.Bytes.LB = RTE_au8I2cRxBuf[1];
@@ -2399,10 +2205,27 @@ void vPMBus_HandleData(void)
 			if (u16SysCmdDuty <= 100u)
 			{
 				PMBUS_tData.u16FanCmd_1_Linear.u16Val = u16TempData.u16Val;
-				PMBUS_tData.u16FanCmd_2_Linear.u16Val = u16TempData.u16Val;
 				PMBUS_SCFG_vSysSetFanCtrlDuty(0, u16SysCmdDuty);
+				if ((u16SysCmdDuty == 0) && (FALSE != PMBUS_uSysStatu0.Bits.UNLOCK_DEBUG))
+				{
+					PMBUS_SCFG_vSetFanBlockTest(TRUE);
+				}
+			}
+			
+			break;
+		}
+		case PSMI_25_FAN_COMMAND_2:
+		{
+			/* The power supply fan speed shall remain under PMBus control */
+			u16TempData.Bytes.LB = RTE_au8I2cRxBuf[1];
+			u16TempData.Bytes.HB = RTE_au8I2cRxBuf[2];
+			//u16SysCmdDuty = (uint16)mg_s32LinearDatFormatToNormal(u16TempData.u16Val);
+			u16SysCmdDuty = u16TempData.u16Val;
+			
+			if (u16SysCmdDuty <= 100u)
+			{
+				PMBUS_tData.u16FanCmd_2_Linear.u16Val = u16TempData.u16Val;
 				PMBUS_SCFG_vSysSetFanCtrlDuty(1u, u16SysCmdDuty);
-
 				if ((u16SysCmdDuty == 0) && (FALSE != PMBUS_uSysStatu0.Bits.UNLOCK_DEBUG))
 				{
 					PMBUS_SCFG_vSetFanBlockTest(TRUE);
@@ -3245,7 +3068,7 @@ static void mg_vClearFaultBit(void)
 			data.Bytes.LB = RTE_au8I2cRxBuf[1 + u8RxBufOfst];
 			data.Bytes.HB = RTE_au8I2cRxBuf[2 + u8RxBufOfst];
 
-			if (FALSE == (data.ALL & 0x003F))
+			if (FALSE != (data.ALL & 0x003F))
 			{
 				data1.ALL = PSMI_tStatus.u16StatusShutdown.ALL ^ data.ALL;
 				PSMI_tStatus.u16StatusShutdown.ALL &= data1.ALL;
@@ -3306,7 +3129,7 @@ static void mg_vClearFaultBit(void)
 			data.Bytes.LB = RTE_au8I2cRxBuf[1 + u8RxBufOfst];
 			data.Bytes.HB = RTE_au8I2cRxBuf[2 + u8RxBufOfst];
 
-			if (FALSE == (data.ALL & 0x003C))
+			if (FALSE != (data.ALL & 0x003C))
 			{
 				data1.ALL = PSMI_tStatus.u16StatusThermal.ALL ^ data.ALL;
 				PSMI_tStatus.u16StatusThermal.ALL &= data1.ALL;
@@ -3340,7 +3163,7 @@ static void mg_vClearFaultBit(void)
 			data.Bytes.LB = RTE_au8I2cRxBuf[1 + u8RxBufOfst];
 			data.Bytes.HB = RTE_au8I2cRxBuf[2 + u8RxBufOfst];
 
-			if (FALSE == (data.ALL & 0x0003))
+			if (FALSE != (data.ALL & 0x0003))
 			{
 				data1.ALL = PSMI_tStatus.u16StatusIout.ALL ^ data.ALL;
 				PSMI_tStatus.u16StatusIout.ALL &= data1.ALL;
@@ -3364,7 +3187,7 @@ static void mg_vClearFaultBit(void)
 			data.Bytes.LB = RTE_au8I2cRxBuf[1 + u8RxBufOfst];
 			data.Bytes.HB = RTE_au8I2cRxBuf[2 + u8RxBufOfst];
 
-			if (FALSE == (data.ALL & 0x0009))
+			if (FALSE != (data.ALL & 0x0009))
 			{
 				data1.ALL = PSMI_tStatus.u16StatusInput.ALL ^ data.ALL;
 				PSMI_tStatus.u16StatusInput.ALL &= data1.ALL;

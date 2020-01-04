@@ -434,10 +434,6 @@ SINLINE void PMBUS_Rte_Read_R_u8PMBusCmd(uint8 *var)
 {
   Rte_Read_R_u8PMBusCmd(&var);
 }
-SINLINE void PMBUS_Rte_Read_R_u8AcLineStatus(uint8 *var)
-{
-  Rte_Read_R_u8AcLineStatus(&var);
-}
 SINLINE void PMBUS_Rte_Read_R_u16FunctionCtrl(uint16 *var)
 {
   Rte_Read_R_u16FunctionCtrl(&var);

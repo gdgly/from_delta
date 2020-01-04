@@ -71,11 +71,6 @@ SINLINE uint8 HWIO_SCFG_u8RdPortA1(void)
 	return PORT_u8ReadGpioPin(PORT_CFG_E_B4_I2C_PA1);
 }
 
-SINLINE uint8 HWIO_SCFG_u8RdPortA2(void)
-{
-	return PORT_u8ReadGpioPin(PORT_CFG_E_B3_I2C_PA2);
-}
-
 SINLINE void HWIO_SCFG_vSetPortVinOk(uint8 u8Status)
 {
 	PORT_vSetGpioPin(PORT_CFG_E_B14_ACOK_OUT,u8Status);
@@ -101,6 +96,10 @@ SINLINE void HWIO_SCFG_vSetVsbOvp(uint8 u8Status)
 	PORT_vSetGpioPin(PORT_CFG_E_A7_VSB_OVP_TEST,(u8Status==FALSE?TRUE:FALSE));
 }
 
+SINLINE void HWIO_SCFG_vSetVinLine(uint8 u8Status)
+{
+	PORT_vSetGpioPin(PORT_CFG_E_B3_VIN_LINE,(u8Status==FALSE?TRUE:FALSE));
+}
 #ifdef __cplusplus
   }
 #endif

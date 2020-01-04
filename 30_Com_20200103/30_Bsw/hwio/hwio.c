@@ -137,16 +137,12 @@ void HWIO_vSetGpioPort(void)
 	}
 	
 	/*** Nokia sHUB 2KW ***/
-	/* Set AC_HIGH_LINE_PSUCON, high line is 1;low line is 0*/
-	/*  */
-	if((HWIO_Rte_Read_B_R_VIN_LINE_LOW()))
+	/* Set AC_HIGH_LINE_PSUCON */
+	/* RTE_B_PRI_VIN_LINE_LOW, 1 = low line */
+	if(HWIO_Rte_Read_B_R_VIN_LINE_LOW() != HWIN_Rte_Read_B_R_VIN_LINE_ENA())
 	{
-		
+		HWIO_SCFG_vSetVinLine(HWIO_Rte_Read_B_R_V1_ON());
 		HWIO_RTE_Write_B_P_VINOK_ENA(HWIO_Rte_Read_B_R_VIN_LINE_LOW());
-	}
-	else
-	{
-		
 	}
 	
 }
@@ -332,31 +328,6 @@ void HWIO_vReadGpioPort(void)
       u8I2cA1CountClear++;
     }
 		u8I2cA1CountSet = 0;
-  }
-	
-  if(HWIO_SCFG_u8RdPortA2() != FALSE)
-  {
-    if(HWIO_CONFG_A2_SET_CNT < u8I2cA2CountSet)
-    { 
-      HWIO_RTE_Write_B_P_I2C_ADDRESS2(TRUE);
-    }
-    else if(HWIO_CONFG_A2_SET_CNT >= u8I2cA2CountSet)
-    {
-      u8I2cA2CountSet++;
-    }
-		u8I2cA2CountClear = 0;
-  }
-	else
-  {
-    if(HWIO_CONFG_A2_RESET_CNT < u8I2cA2CountClear)
-    { 
-      HWIO_RTE_Write_B_P_I2C_ADDRESS2(FALSE);
-    }
-    else if(HWIO_CONFG_A2_RESET_CNT >= u8I2cA2CountClear)
-    {
-      u8I2cA2CountClear++;
-    }
-		u8I2cA2CountSet = 0;
   }
 }
 

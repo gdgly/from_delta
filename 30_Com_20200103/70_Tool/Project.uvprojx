@@ -10,8 +10,7 @@
       <TargetName>Skywalker_4000W_Com</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>5060183::V5.06 update 2 (build 183)::.\ARM_Compiler_5.06u2</pArmCC>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::.\ARM_Compiler_5.06u2</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -59,7 +58,7 @@
           <ListingPath>.\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
-          <CreateBatchFile>1</CreateBatchFile>
+          <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
@@ -312,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>0</Optim>
+            <Optim>1</Optim>
             <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>

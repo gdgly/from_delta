@@ -136,7 +136,8 @@ void I2CPRT_vUpdateI2cAddress( uint8 u8DlyEn )
 	uI2cAddr.ALL = mg_u8I2cAddrWr.ALL;
   uI2cAddr.Bits.f1 = I2CPRT_RTE_Read_B_R_I2C_ADDRESS0(); 
   uI2cAddr.Bits.f2 = I2CPRT_RTE_Read_B_R_I2C_ADDRESS1(); 
-  uI2cAddr.Bits.f3 = I2CPRT_RTE_Read_B_R_I2C_ADDRESS2();
+	/* Nokia sHUB only A0&A1 */
+  uI2cAddr.Bits.f3 = 1;//I2CPRT_RTE_Read_B_R_I2C_ADDRESS2();
 	
   mg_u8I2cAddrWr.ALL = uI2cAddr.ALL;
 	

@@ -445,7 +445,6 @@ sint16 TEMPCTRL_s16ReadTempValue(uint8 u8Index)
 {
   return mg_sTemp[u8Index].s16Temperature;
 }
-
 /*******************************************************************************
  * \brief         Read Adc average value
  *
