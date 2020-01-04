@@ -6,7 +6,7 @@
     <PecCheck>False</PecCheck>
     <Port>COM3</Port>
     <BaudRate rate="38400" />
-    <McuAddr defaultAddr="0xD0" startAddr="0xD0" endAddr="0xDE" />
+    <McuAddr defaultAddr="0x80" startAddr="0x70" endAddr="0x9E" />
     <EEpAddr defaultAddr="0xA0" startAddr="0xA0" endAddr="0xAE" />
     <PCA Enable="false" Type="9541" defaultAddr="0xEE" startAddr="0xEE" endAddr="0xEE" />
     <Debug Enable="True" UnlockAddr="0xF6" UnlockData="0x554C" DebugAddr="0xF5" IndexAddr="0xF5" Imageblur="80" />

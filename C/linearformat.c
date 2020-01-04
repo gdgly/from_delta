@@ -87,6 +87,28 @@ static uint16 mg_u16TxLinearDatFormatDiv128_PSMI(uint32 u32DataIn, uint8 u16FrcN
   return u16Result;
 }
 
+// static uint16 mg_u16TxLinearDatFormatDiv128_PSMI(sint32 s32DataIn, uint8 u16FrcNum, uint16 u16FrcRes)
+// {
+//   uint16 u16Result = 0;
+//   uint16 u16Int = 0;
+//   uint16 u16Fra = 0;
+
+// 	if (s32DataIn >= 0)
+// 	{
+// 		CLRBIT(u16Result, 15);
+// 	}
+// 	else
+// 	{
+// 		SETBIT(u16Result, 15);
+// 	}
+
+//   u16Int = (u32DataIn >> 7);
+//   u16Fra = ((u32DataIn - u16Int * 128) * u16FrcRes >> 7);
+//   u16Result += (u16Int << u16FrcNum) + u16Fra;
+
+//   return u16Result;
+// }
+
 static uint16 mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(sint16 s16DataIn)
 {
 	uint16 u16Result = 0;
@@ -108,12 +130,31 @@ static uint16 mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(sint16 s16DataIn)
 	return u16Result;
 }
 
-static float PSMI_to_float_temp(uint16 u16data)
+/* GUI运行，可以执行float */
+static float PsmiData_to_float(uint16 u16data, uint8 u16FrcNum, uint16 u16FrcRes)
 {
-  float a;
+  float FInt, FFra, FRes;
+  uint16 u16Int, u16Fra;
 
-  a = ((u16data & 0x003F) >> 6) + (u16data & 0x7FC0)>>6;
-  return a;
+  u16Int = ((u16data & 0x7FC0) >> u16FrcNum);
+  u16Fra = (u16data & 0x003F);
+  FFra = u16Fra / u16FrcRes;
+
+  if(u16data & 0x8000)
+  {
+    //neg
+    u16Int = ((~u16Int) + 1) & 0x01FF;
+    FInt = ((float)u16Int) * (-1);
+  }
+  else
+  {
+    //pos
+    FInt = u16Int;
+  }
+  
+  FRes = FInt + FFra;
+  
+  return FRes;
 }
 
 #define AC_IIN_FORMAT(x)        mg_u16TxLinearDatFormatDiv128_PSMI(x,IIN_FRC_NUM,IIN_FRC_RESULUTION)
@@ -123,10 +164,10 @@ int main(void)
   uint16 a, b, c;
   float ff,f2;
   uint16 vout,iout,pout,vin,iin,pin,fanspeed;
-  ff = 20;
+  ff = -5*128;
 
-  c = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP(20<<7);
-  f2 = PSMI_to_float_temp(0x06c0);
+  c = mg_u16TxLinearDatFormatDiv128_PSMI_TEMP((sint16)ff);
+  f2 = PsmiData_to_float(c,TEMPERATURE_FRC_NUM,TEMPERATURE_FRC_RESULUTION);
   printf("%x,%f",c,f2);
   
   // vout = mg_u16TxLinearDatFormatDiv128_PSMI(12*128, VOUT_FRC_NUM, VOUT_FRC_RESULUTION);

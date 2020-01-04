@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Config>
+  <Setting>
+    <ProjectName>Cisco Patton HV</ProjectName>
+    <PecEnable>True</PecEnable>
+    <PecCheck>True</PecCheck>
+    <Port>COM3</Port>
+    <BaudRate rate="38400" />
+    <McuAddr defaultAddr="0x80" startAddr="0x80" endAddr="0x86" />
+    <EEpAddr defaultAddr="0xA0" startAddr="0xA0" endAddr="0xA6" />
+    <PCA Enable="True" Type="9541" defaultAddr="0xE0" startAddr="0xE0" endAddr="0xE6" />
+    <Debug Enable="False" UnlockAddr="0xF6" UnlockData="0x554C" DebugAddr="0xF5" IndexAddr="0xF5" Imageblur="80" />
+    <Code Ccode="FC986991E4C54C70E9796660D53EA9B4" Mcode="CE6197F438CC21B4EAA29C4DF3DB2B05" />
+    <Color BTforeground="#7FAFFDFA" BTbackground="#FF0094Dc" Tabbackground="#00FFFFF0" TabItembackground="#FFFFFFF0" TabItemforceground="#FFFFFFF0" TabItemSelectbackground="#BF2494DC"/>
+    <box vid="" pid="" />
+    <board vid="" pid="" />
+  </Setting>
+  <Pmbus>
+    <!-- Page 0 configure   -->
+    <Page num="0x00">
+      <Reg addr="0x01" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Operation" />
+      <Reg addr="0x03" type="wn" readCnt="0" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Clear_Fault" />
+      <Reg addr="0x3A" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Config_1_2 " />
+      <Reg addr="0x3B" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Command_1 " />
+      <Reg addr="0x3C" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Command_2 " />
+      <Reg addr="0x3D" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Config_3_4 " />
+      <Reg addr="0x3E" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Command_3 " />
+      <Reg addr="0x3F" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Command_4 " />
+      <Reg addr="0x74" type="wr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Test_Output_Oring" />
+      <Reg addr="0x80" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_MFR_Specific" />
+      <Reg addr="0x81" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_Fan_1_2" />
+      <Reg addr="0x82" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_Fan_3_4" />
+      <Reg addr="0x88" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Vin_A" />
+      <Reg addr="0x89" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Iin_A" />
+      <Reg addr="0x8B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Vout" />
+      <Reg addr="0x8C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Iout" />
+      <Reg addr="0x8D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_1" />
+      <Reg addr="0x8E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_2" />
+      <Reg addr="0x8F" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_3" />
+      <Reg addr="0x90" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_1" />
+      <Reg addr="0x91" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_2" />
+      <Reg addr="0x92" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_3" />
+      <Reg addr="0x93" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_4" />
+      <Reg addr="0x96" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Pout" />
+      <Reg addr="0x97" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Pin" />
+      <Reg addr="0x98" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PMBus_Revision" />
+      <Reg addr="0x99" type="nr" readCnt="6" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_ID" />
+      <Reg addr="0x9A" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_MODEL" />
+      <Reg addr="0x9B" type="nr" readCnt="6" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_REVISION" />
+      <Reg addr="0x9C" type="nr" readCnt="15" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_LOCATION" />
+      <Reg addr="0x9D" type="nr" readCnt="9" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_DATE" />
+      <Reg addr="0x9E" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_SERIAL" />
+      <Reg addr="0xDE" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Sleep_Mode" />
+      <Reg addr="0xDF" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Sleep_Delay" />
+      <Reg addr="0xE0" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Turn_On_Off_LEDs" />
+      <Reg addr="0xE1" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Enable_Disable_EEPROM_Write" />
+      <Reg addr="0xE2" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Firmware_Revision" />
+      <Reg addr="0xE3" type="nr" readCnt="3" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Hours_Used" />
+      <Reg addr="0xE4" type="nr" readCnt="23" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Status_Data" />
+      <Reg addr="0xE5" type="wr" readCnt="4" writeCnt="4" EnableByteCnt="False" volatile="False" pec="True" name="Read_Write_Latched_Fault_Data" />
+      <Reg addr="0xE6" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Enable_Disable_Fault_Data_Write" />
+      <Reg addr="0xE7" type="nr" readCnt="4" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Real_Time_Fault_Data" />
+      <Reg addr="0xEA" type="wn" readCnt="0" writeCnt="4" EnableByteCnt="False" volatile="False" pec="True" name="Reset_All_Controllers" />
+      <Reg addr="0xEB" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Bootloader_Version" />
+      <Reg addr="0xF0" type="wn" readCnt="0" writeCnt="14" EnableByteCnt="True" volatile="False" pec="True" name="Unlock_FW_Upgrade_Mode" />
+      <Reg addr="0xF1" type="wr" readCnt="1" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Set_Boot_Flag" />
+      <Reg addr="0xFB" type="wr" readCnt="38" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Fault_History" />
+    </Page>
+    <Page num="0x100">
+    </Page>
+  </Pmbus>
+  <Controls>
+    <Tab num="0">
+      <SubTab num="0" name="Gauge" cellType="normal" division="c1r2c1" parameter="300p:550p:500p:3*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0" reg="0x03" groupname="Temperature" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="Thermometer" name="Inlet" pos="0" page="0" reg="0x8E" decimalPoint="1" M="639" B="6394" R="-2" format="direct" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="Outlet" pos="0" page="0" reg="0x8D" decimalPoint="1" M="639" B="6394" R="-2" format="direct" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="HotSpot" pos="0" page="0" reg="0x8F" decimalPoint="1" M="639" B="6394" R="-2" format="direct" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+        </GroupRead>
+        <GroupRead pos="2" page="0" reg="0x03" groupname="Input Voltage/Current" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0xE4" startIndex="6" len="2" M="3410" B="0" R="-3" format="direct" min="0" max="500" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Vin_A" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0xE4" startIndex="10" len="2" M="4092" B="0" R="-2" format="direct" min="0" max="50" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Iin_A" dataLen="2" unit="A" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0xE4" startIndex="4" len="2" M="3410" B="0" R="-3" format="direct" min="0" max="500" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Vin_B" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0xE4" startIndex="8" len="2" M="4092" B="0" R="-2" format="direct" min="0" max="50" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Iin_B" dataLen="2" unit="A" point="1" />
+        </GroupRead>
+        <GroupRead pos="2" page="0" reg="0x03" groupname="Output Voltage/Current" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0x8B" startIndex="0" len="2" M="12788" B="0" R="-3" format="direct" min="0" max="70" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Vout" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0x8C" startIndex="0" len="2" M="14614" B="0" R="-3" format="direct" min="0" max="150" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Iout" dataLen="2" unit="A" point="1" />
+        </GroupRead>
+        <GroupRead pos="2" page="0" reg="0x03" groupname="Input/Output Power" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0x97" startIndex="0" len="2" M="28417" B="0" R="-5" format="direct" min="0" max="8000" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Pin" dataLen="2" unit="W" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0x96" startIndex="0" len="2" M="28417" B="0" R="-5" format="direct" min="0" max="8000" decimalPoint="1" FontSize="15" smallfontsize="7" height="25" name="Pout" dataLen="2" unit="W" point="1" />
+        </GroupRead>
+        <GroupRead pos="1" page="0" reg="0x03" groupname="Fan Speed" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="fangauge" name="Fan1" pos="1" page="0" reg="0x90" startIndex="0" DivideVisable="1" len="2" M="4650" B="0" R="-5" format="direct" min="0" max="35000" unit="RPM" Title1="" Title2="" fontColor="#B0FFFFFF" valueColor="#BE00FFFF"/>
+          <Item type="fangauge" name="Fan2" pos="1" page="0" reg="0x91" startIndex="0" DivideVisable="1" len="2" M="4650" B="0" R="-5" format="direct" min="0" max="35000" unit="RPM" Title1="" Title2="" fontColor="#B0FFFFFF" valueColor="#BE00FFFF"/>
+          <Item type="labinpbtn" pos="1" page="0" reg="0x3B" format="direct" name="Fan_Command_1" DivideVisable="1" M="1023" B="0" R="-2" dataLen="2" unit="%" point="1" height="30" width="400" forceground="80FFFFFF" fontColor="#802FFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="1" page="0" reg="0x3C" format="direct" name="Fan_Command_2" DivideVisable="1" M="1023" B="0" R="-2" dataLen="2" unit="%" point="1" height="30" width="400" forceground="80FFFFFF" fontColor="#802FFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+        </GroupRead>
+        <FWrev name="App FW Rev" pos="3" page="0" reg="0xE2" format="hex" width="260">
+          <Item name="PRI1" Majindex="10" MajMask="0xFF" Minindex="11" MinMask="0xFF" width="120" />
+          <Item name="PRI2" Majindex="4" MajMask="0xFF" Minindex="5" MinMask="0xFF" width="120" />
+          <Item name="SEC1" Majindex="8" MajMask="0xFF" Minindex="9" MinMask="0xFF" width="120" />
+          <Item name="SEC2" Majindex="2" MajMask="0xFF" Minindex="3" MinMask="0xFF" width="120" />
+          <Item name="COM" Majindex="6" MajMask="0xFF" Minindex="7" MinMask="0xFF" width="120" />
+        </FWrev>
+        <FWrev name="Bootloader FW Rev" pos="3" page="0" reg="0xEB" format="hex" width="260">
+          <Item name="PRI1" Majindex="10" MajMask="0xFF" Minindex="11" MinMask="0xFF" width="120" />
+          <Item name="PRI2" Majindex="4" MajMask="0xFF" Minindex="5" MinMask="0xFF" width="120" />
+          <Item name="SEC1" Majindex="8" MajMask="0xFF" Minindex="9" MinMask="0xFF" width="120" />
+          <Item name="SEC2" Majindex="2" MajMask="0xFF" Minindex="3" MinMask="0xFF" width="120" />
+          <Item name="COM" Majindex="6" MajMask="0xFF" Minindex="7" MinMask="0xFF" width="120" />
+        </FWrev>
+      </SubTab>
+    </Tab>
+    <Tab num="1">
+      <SubTab num="0" name="PMBus" cellType="stretch" division="c2" parameter="1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0" reg="0x03" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="0" page="0" reg="0x01" format="hex" name="Operation" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3A" format="hex" name="Fan_Config_1_2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3B" format="direct" name="Fan_Command_1" M="1023" B="0" R="-2" unit="%" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3C" format="direct" name="Fan_Command_2" M="1023" B="0" R="-2" unit="%" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3D" format="hex" name="Fan_Config_3_4" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3E" format="direct" name="Fan_Command_3" M="1023" B="0" R="-2" unit="%" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3F" format="direct" name="Fan_Command_4" M="1023" B="0" R="-2" unit="%" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x74" format="hex" name="Test_Output_Oring" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x80" format="hex" name="Status_MFR" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x81" format="hex" name="Status_Fan_1_2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x82" format="hex" name="Status_Fan_3_4" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x88" format="direct" name="Vin_A" M="3410" B="0" R="-3" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x89" format="direct" name="Iin_A" M="4092" B="0" R="-2" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8B" format="direct" name="Vout" M="12788" B="0" R="-3" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8C" format="direct" name="Iout" M="14614" B="0" R="-3" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8D" format="direct" name="Temperature_1" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8E" format="direct" name="Temperature_2" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8F" format="direct" name="Temperature_3" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x90" format="direct" name="Fan_Speed_1" M="4650" B="0" R="-5" unit="R" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x91" format="direct" name="Fan_Speed_2" M="4650" B="0" R="-5" unit="R" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x92" format="direct" name="Fan_Speed_3" M="4650" B="0" R="-5" unit="R" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x93" format="direct" name="Fan_Speed_4" M="4650" B="0" R="-5" unit="R" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+        <GroupRead pos="1" page="0" reg="0x03" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="1" page="0" reg="0x96" format="direct" name="Pout" M="28417" B="0" R="-5" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x97" format="direct" name="Pin" M="28417" B="0" R="-5" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x98" format="hex" name="PMBus_Revision" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x99" format="ascii" name="MFR_ID" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x9A" format="ascii" name="MFR_MODEL" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x9B" format="ascii" name="MFR_REVISION" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x9C" format="ascii" name="MFR_LOCATION" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x9D" format="ascii" name="MFR_DATE" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x9E" format="ascii" name="MFR_SERIAL" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xDE" format="hex" name="Sleep_Mode" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xDF" format="hex" name="Sleep_Delay" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE0" format="hex" name="Turn_On_Off_LEDs" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE1" format="hex" name="En_Dis_EEPROM_Write" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE2" format="hex" name="Firmware_Revision" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE3" format="dec" name="Hours_Used" unit="h" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE4" format="hex" name="Status_Data" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE5" format="hex" name="Latched_Fault_Data" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE6" format="hex" name="En_Dis_Fault_Data_Write" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE7" format="hex" name="Real_Time_Fault_Data" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xEB" format="hex" name="Bootloader_Version" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xFB" format="hex" name="Fault_History" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <!--Multisensors pos="2" page="0" reg="0xE4" format="vout" name="Sensor Reading(E4)" fontColor="A0E6E6E6" unit="W" point="1">
+			  <Item startIndex="0" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Pin" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="2" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Pout" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="4" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="VinB" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="6" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="VinA" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="8" len="2" format="direct" M="4092" B="0" R="-2" unit="A" point="1" name="IinB" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="10" len="2" format="direct" M="4092" B="0" R="-2" unit="A" point="1" name="IinA" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="12" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Inlet" max="160" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="14" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Outlet" max="160" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="16" len="2" format="direct" M="12788" B="0" R="-3" unit="V" point="1" name="Vout" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="18" len="2" format="direct" M="14614" B="0" R="-3" unit="A" point="1" name="Iout" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			  <Item startIndex="20" len="3" format="dec" M="0" B="0" R="0" unit="h" point="1" name="Hours" max="100" min="0" height="20" forceground="80FFFFFF" fontColor="#80FFFFFF" valueColor="#8000FFFF" Color0="#10D6D6D6" Color1="#10C9ECC1" Color2="#10CAEDF1" Color3="#10C9BCA1" Color4="#10C9ACE1" />
+			</Multisensors-->
+        </GroupRead>
+      </SubTab>
+      <SubTab num="1" name="Control" cellType="stretch" division="c3" parameter="1*:1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0" reg="0x03" groupname="Control" cellType="stretch" headfontColor="#A0D6D6D6">
+          <Item type="labbtn2" pos="0" page="0" reg="0x01" positive="0x00" negative="0x80" reverse="false" writeCnt="1" EnableByteCnt="false" pec="true" name="Operation" DivideVisable="1" fontsize="14" smallfontsize="14" infowidth="150" height="25" />
+          <Item type="labbtn2" pos="0" page="0" reg="0xE1" positive="0x00" negative="0x01" reverse="false" writeCnt="1" EnableByteCnt="false" pec="true" name="En_Dis_EEPROM_Write" DivideVisable="1" fontsize="14" smallfontsize="14" infowidth="150" height="25" />
+
+          <Item type="labinpbtn" pos="0" page="0" reg="0x3B" format="direct" name="Fan_Command_1" M="1023" B="0" R="-2" dataLen="2" unit="" point="1" DivideVisable="1" height="30" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0x3C" format="direct" name="Fan_Command_2" M="1023" B="0" R="-2" dataLen="2" unit="" point="1" DivideVisable="1" height="30" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0x3E" format="direct" name="Fan_Command_3" M="1023" B="0" R="-2" dataLen="2" unit="" point="1" DivideVisable="1" height="30" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0x3F" format="direct" name="Fan_Command_4" M="1023" B="0" R="-2" dataLen="2" unit="" point="1" DivideVisable="1" height="30" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0x74" format="hex" name="Test_Output_Oring" dataLen="0" DivideVisable="1" unit="" point="1" height="30" width="400" forceground="#80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0xDF" format="hex" name="Sleep_Delay" dataLen="1" DivideVisable="1" unit="" point="1" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+        </GroupRead>
+        <labinpbtn pos="0" page="0" Order="0" reg="0xEA" format="hex" aheadData="0x03555242" appendData="" name="Reset_All_Controllers" inputwidth="0" infowidth="0" M="1023" B="0" R="-2" dataLen="0" unit="" point="1" DivideVisable="1" height="30" width="400" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="1" reg="0xEA" data="0x03534552" />
+        </labinpbtn>
+        <faultstatus pos="1" page="0" reg="0xDE" header="Sleep_Mode" headerColor="#E0D6D6D6" boldmask="0xFFFF" editmask="0xFFFF" Editable="true">
+          <Item width="630" height="35" bit0="Side A sleep cmd" bit1="Side B sleep cmd" bit2="Side A is asleep" bit3="Side B is asleep" bit4="Reserved" bit5="Reserved" bit6="Reserved" bit7="Reserved" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="1" page="0" reg="0xE0" header="Turn_On_Off_LEDs" headerColor="#E0D6D6D6" boldmask="0xFFFFFFFF" editmask="0xFFFFFFF" Editable="true">
+          <Item width="630" height="35" bit0="Input LED ON" bit1="Input LED override" bit2="Output LED ON" bit3="Output LED override" bit4="Fault LED ON" bit5="Fault LED override" bit6="Blue LED ON" bit7="Blue LED override" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <Multisensors pos="2" page="0" reg="0xFB" format="vout" name="Fault History" fontColor="A0E6E6E6" progressVisable="false" unit="W" point="1">
+          <Item startIndex="0" len="4" format="hex" unit="" point="1" name="Fault status 1" max="65535" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="8" len="3" format="dec" unit="h" point="1" name="Hours Used 1" max="20000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="14" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Output Power 1" max="8000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="18" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="Input Voltage A 1" max="500" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="22" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="Input Voltage B 1" max="500" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="26" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Input Power 1" max="8000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="30" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Inlet Temperature 1" max="150" min="-40" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="34" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Hot Spot Temperature 1" max="150" min="-40" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="4" len="4" format="hex" unit="" point="1" name="Fault status 2" max="65535" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="11" len="3" format="dec" unit="h" point="1" name="Hours_Used 2" max="20000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="16" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Output Power 2" max="8000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="20" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="Input Voltage A 2" max="500" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="24" len="2" format="direct" M="3410" B="0" R="-3" unit="V" point="1" name="Input Voltage B 2" max="500" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="28" len="2" format="direct" M="28417" B="0" R="-5" unit="W" point="1" name="Output Power 2" max="8000" min="0" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="32" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Inlet Temperature 2" max="150" min="-40" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+          <Item startIndex="36" len="2" format="direct" M="639" B="6394" R="-2" unit="C" point="1" name="Hot Spot Temperature 2" max="150" min="-40" height="20" progressVisable="false" Color0="#A0D6D6D6" Color1="#A0C9ECC1" Color2="#C0CAEDF1" Color3="#A0C9BCA1" Color4="#A0C9ACE1" />
+        </Multisensors>
+      </SubTab>
+
+      <SubTab num="3" name="Status" cellType="stretch" division="c1r2" parameter="1*:4*:1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0" reg="0x03" groupname="Status Control" cellType="stretch" headfontColor="#A0D6D6D6">
+          <Item type="labbtn2" pos="0" page="0" reg="0xE6" positive="0x00" negative="0x01" reverse="false" writeCnt="1" EnableByteCnt="false" pec="true" name="En_Dis_Fault_Data_Write" DivideVisable="1" fontsize="14" smallfontsize="14" infowidth="30" height="25" />
+          <Item type="labinpbtn" pos="0" page="0" reg="0x03" format="hex" name="Clear_Fault" dataLen="0" DivideVisable="1" unit="" point="0" height="30" inputwidth="0" infowidth="0" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+        </GroupRead>
+        <faultstatus pos="1" page="0" reg="0xE5" header="Latched Fault Data(0xE5)" Editable="true" headerColor="#E0D6D6D6" boldmask="0x837b0a10" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="5V out of range" bit1="Output Stage OT" bit2="Output Enable Pin HI" bit3="Fan Fault" bit4="Vin Out of Range A" bit5="No Input Detected A" bit6="Vin Low Level SW SD Warning A" bit7="Output Or-ing Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="OC Shutdown" bit1="OT Shutdown" bit2="OT Warning" bit3="OV Shutdown" bit4="Input Stage OT" bit5="Fault Induced SD Occurred A" bit6="Thermal Sensor Fault" bit7="Power Limited" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="Vin Low Level Minor Warning A" bit1="Vout Out of Range" bit2="PEC Error" bit3="Boost Vbulk Fault" bit4="No Input Detected B" bit5="Vin Low Level Major Warning A" bit6="Vin Low Level Critical Warning A" bit7="Vin Out of Range B" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="Vin Low Level Minor Warning B" bit1="Vin Low Level Major Warning B" bit2="Vin Low Level Critical Warning B" bit3="Vin Low Level SW SD Warning B" bit4="Fault Induced SD Occurred B" bit5="Unused" bit6="Unused" bit7="Unused" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="2" page="0" reg="0xE7" header="Real Time Fault Data(0xE7)" Editable="false" headerColor="#E0D6D6D6" boldmask="0x837b0a10" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="5V out of range" bit1="Output Stage OT" bit2="Output Enable Pin HI" bit3="Fan Fault" bit4="Vin Out of Range A" bit5="No Input Detected A" bit6="Vin Low Level SW SD Warning A" bit7="Output Or-ing Fault" background="#70C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="OC Shutdown" bit1="OT Shutdown" bit2="OT Warning" bit3="OV Shutdown" bit4="Input Stage OT" bit5="Fault Induced SD Occurred A" bit6="Thermal Sensor Fault" bit7="Power Limited" background="#70C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="Vin Low Level Minor Warning A" bit1="Vout Out of Range" bit2="PEC Error" bit3="Boost Vbulk Fault" bit4="No Input Detected B" bit5="Vin Low Level Major Warning A" bit6="Vin Low Level Critical Warning A" bit7="Vin Out of Range B" background="#70C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="Vin Low Level Minor Warning B" bit1="Vin Low Level Major Warning B" bit2="Vin Low Level Critical Warning B" bit3="Vin Low Level SW SD Warning B" bit4="Fault Induced SD Occurred B" bit5="Unused" bit6="Unused" bit7="Unused" background="#70C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+      </SubTab>
+    </Tab>
+
+  </Controls>
+</Config>
