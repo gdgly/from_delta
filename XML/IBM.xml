@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Config>
+  <Setting>
+    <ProjectName>IBM SWIFT</ProjectName>
+    <PecEnable>True</PecEnable>
+    <PecCheck>False</PecCheck>
+    <Port>COM3</Port>
+    <BaudRate rate="38400" />
+    <McuAddr defaultAddr="0xD0" startAddr="0xD0" endAddr="0xDE" />
+    <EEpAddr defaultAddr="0xA0" startAddr="0xA0" endAddr="0xAE" />
+    <PCA Enable="false" Type="9541" defaultAddr="0xEE" startAddr="0xEE" endAddr="0xEE" />
+    <Debug Enable="True" UnlockAddr="0xF6" UnlockData="0x554C" DebugAddr="0xF5" IndexAddr="0xF5" Imageblur="80" />
+    <Code Ccode="FC986991E4C54C70E9796660D53EA9B4" Mcode="CE6197F438CC21B4EAA29C4DF3DB2B05" />
+    <Color BTforeground="#7FAFFDFA" BTbackground="#FF0094Dc" Tabbackground="#00FFFFF0" TabItembackground="#FFFFFFF0" TabItemforceground="#FFFFFFF0" TabItemSelectbackground="#BF2494DC"/>
+    <box vid="" pid="" />
+    <board vid="" pid="" />
+  </Setting>
+  <Pmbus>
+    <!-- Page 0 configure   -->
+    <Page num="0x00">
+      <Reg addr="0x00" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Page" />
+      <Reg addr="0x01" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Operation" />
+      <Reg addr="0x02" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="ON_OFF_CONFIG" />
+      <Reg addr="0x03" type="wn" readCnt="0" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Clear_Fault" />
+      <Reg addr="0x20" type="wr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Vout mode" />
+      <Reg addr="0x3A" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Config_1_2 " />
+      <Reg addr="0x3B" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Fan_Command_1 " />
+      <Reg addr="0x78" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_BYTE" />
+      <Reg addr="0x79" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_WORD" />
+      <Reg addr="0x7A" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_VOUT" />
+      <Reg addr="0x7B" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_IOUT" />
+      <Reg addr="0x7C" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_INPUT" />
+      <Reg addr="0x7D" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_TEMPERATURE" />
+      <Reg addr="0x7E" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_CML" />
+      <Reg addr="0x7F" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_OTHER" />
+      <Reg addr="0x80" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_MFR_Specific" />
+      <Reg addr="0x81" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_Fan_1_2" />
+      <Reg addr="0x88" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Vin" />
+      <Reg addr="0x89" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Iin" />
+      <Reg addr="0x8B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Vout" />
+      <Reg addr="0x8C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Iout" />
+      <Reg addr="0x8D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_1" />
+      <Reg addr="0x8E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_2" />
+      <Reg addr="0x8F" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_3" />
+      <Reg addr="0x90" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_1" />
+      <Reg addr="0x91" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Fan_Speed_2" />
+      <Reg addr="0x96" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Pout" />
+      <Reg addr="0x97" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Pin" />
+      <!--Reg addr="0x99" type="nr" readCnt="4" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="VPD_MFR_ID" />
+	  <Reg addr="0x9A" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="VPD_FRU_NBR" />
+	  <Reg addr="0x9B" type="nr" readCnt="12" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="VPD_PART_NBR" />
+	  <Reg addr="0x9C" type="nr" readCnt="6" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="VPD_HEADER_CODE" />
+	  <Reg addr="0x9E" type="nr" readCnt="6" writeCnt="0" EnableByteCnt="True" volatile="False" pec="True" name="MFR_SERIAL_NBR" /-->
+      <Reg addr="0xA7" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_POUT_MAX" />
+      <Reg addr="0xB9" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_HW_REVISION" />
+      <Reg addr="0xBA" type="nr" readCnt="3" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_POS_ID" />
+      <Reg addr="0xBB" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_POWER_OS_HL" />
+      <Reg addr="0xBC" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_POWER_OS_LL" />
+      <Reg addr="0xBE" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VPD_PSU_INFO" />
+      <Reg addr="0xC3" type="wr" readCnt="6" writeCnt="3" EnableByteCnt="False" volatile="False" pec="True" name="Vout Trim" />
+      <Reg addr="0xC4" type="wr" readCnt="6" writeCnt="3" EnableByteCnt="False" volatile="False" pec="True" name="OVP_TEST" />
+      <Reg addr="0xC6" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_VOUT_PEAK" />
+      <Reg addr="0xC7" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_IOUT_PEAK" />
+      <Reg addr="0xC8" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_TEMP_PEAK" />
+      <Reg addr="0xCA" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_VOUT_VALLEY" />
+      <Reg addr="0xCB" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_IOUT_VALLEY" />
+      <Reg addr="0xCC" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_TEMP_VALLEY" />
+      <Reg addr="0xDA" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Sys_config" />
+      <Reg addr="0xDE" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_12VCS_VOUT" />
+      <Reg addr="0xDF" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_12VCS_IOUT" />
+      <Reg addr="0xE1" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="READ_PIN_nAVG" />
+      <Reg addr="0xE3" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="N_ADD_M" />
+      <Reg addr="0xE4" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="FAULT_RESPONSE" />
+      <Reg addr="0xEA" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="VSB_OVP_TEST" />
+      <Reg addr="0xEF" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="MODE_SETTING" />
+      <Reg addr="0xF5" type="wr" readCnt="2" writeCnt="2" EnableByteCnt="False" volatile="False" pec="True" name="Debug_REG" />
+      <Reg addr="0xFA" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_FW_REVISION" />
+      <Reg addr="0xFB" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_FW_REVISION" />
+      <Reg addr="0xFC" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_FW_REVISION" />
+    </Page>
+    <!-- Page 1 configure   -->
+    <Page num="0x01">
+      <Reg addr="0x00" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Page" />
+      <Reg addr="0x01" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="Operation" />
+      <Reg addr="0x02" type="wr" readCnt="1" writeCnt="1" EnableByteCnt="False" volatile="False" pec="True" name="ON_OFF_CONFIG" />
+      <Reg addr="0x7A" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_VOUT" />
+      <Reg addr="0x7B" type="nr" readCnt="1" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Status_IOUT" />
+      <Reg addr="0x8B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Vout" />
+      <Reg addr="0x8C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Iout" />
+      <Reg addr="0x8D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_1" />
+      <Reg addr="0x8E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Temperature_2" />
+      <Reg addr="0x96" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="Read_Pout" />
+      <Reg addr="0xC6" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_VOUT_PEAK" />
+      <Reg addr="0xC7" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_IOUT_PEAK" />
+      <Reg addr="0xC8" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_TEMP_PEAK" />
+      <Reg addr="0xCA" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_VOUT_VALLEY" />
+      <Reg addr="0xCB" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_IOUT_VALLEY" />
+      <Reg addr="0xCC" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="READ_TEMP_VALLEY" />
+    </Page>
+    <Page num="0x100">
+      <Reg addr="0x00" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_VIN_ADC" />
+      <Reg addr="0x01" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_IIN_ADC" />
+      <Reg addr="0x02" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_PIN_ADC" />
+      <Reg addr="0x03" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_VBULK_ADC" />
+      <Reg addr="0x04" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_INPUT_FREQ" />
+      <Reg addr="0x06" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_STATUS_00" />
+      <Reg addr="0x07" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_STATUS_01" />
+      <Reg addr="0x08" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_DEBUG_01" />
+      <Reg addr="0x09" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_A_DEBUG_02" />
+      <Reg addr="0x0A" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="12V_TRIM_GAIN" />
+      <Reg addr="0x0B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="54V_TRIM_GAIN" />
+      <Reg addr="0x0C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="VSB_TRIM_GAIN" />
+      <Reg addr="0x0D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_I_3_ADC" />
+      <Reg addr="0x10" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_I_ADC" />
+      <Reg addr="0x11" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_V_INT_ADC" />
+      <Reg addr="0x12" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_V_EXT_ADC" />
+      <Reg addr="0x13" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_ISHARE_ADC" />
+      <Reg addr="0x14" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_ILOCAL_ADC" />
+      <Reg addr="0x15" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_I_ADC" />
+      <Reg addr="0x16" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_V_INT_ADC" />
+      <Reg addr="0x17" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_V_EXT_ADC" />
+      <Reg addr="0x18" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_ISHARE_ADC" />
+      <Reg addr="0x19" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_ILOCAL_ADC" />
+      <Reg addr="0x1A" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_VSB_V_INT_ADC" />
+      <Reg addr="0x1B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_VSB_I_ADC" />
+      <Reg addr="0x1C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_VSB_V_EXT_ADC" />
+      <Reg addr="0x1D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_NTC_OLT_ADC" />
+      <Reg addr="0x1E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_NTC_INLET_ADC" />
+      <Reg addr="0x1F" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_NTC_PFC_ADC" />
+      <Reg addr="0x20" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_NTC_BR_ADC" />
+      <Reg addr="0x21" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_SR1_ADC" />
+      <Reg addr="0x22" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_SR2_ADC" />
+      <Reg addr="0x23" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_ORing_ADC" />
+      <Reg addr="0x24" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_NTC_SR_ADC" />
+      <Reg addr="0x25" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_NTC_ORing_ADC" />
+      <Reg addr="0x26" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_NTC_OLT_TEMP" />
+      <Reg addr="0x27" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_NTC_INLET_TEMP" />
+      <Reg addr="0x28" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_NTC_PFC_TEMP" />
+      <Reg addr="0x29" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="PRI_NTC_BR_TEMP" />
+      <Reg addr="0x2A" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_SR1_TEMP" />
+      <Reg addr="0x2B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_SR2_TEMP" />
+      <Reg addr="0x2C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_12V_NTC_ORing_TEMP" />
+      <Reg addr="0x2D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_NTC_SR_TEMP" />
+      <Reg addr="0x2E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_NTC_ORing_TEMP" />
+      <Reg addr="0x2F" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_12V_FAULT_Flag00" />
+      <Reg addr="0x30" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_54V_FAULT_Flag00" />
+      <Reg addr="0x31" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_VSB_FAULT_Flag00" />
+      <Reg addr="0x32" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SYS_STATE_Flag00" />
+      <Reg addr="0x33" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="12V_VSB_VOUT_Flag" />
+      <Reg addr="0x34" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="54V_VOUT_Flag" />
+      <Reg addr="0x35" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="TEMP_OTW_STATUS" />
+      <Reg addr="0x36" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="TEMP_OTP_STATUS" />
+      <Reg addr="0x37" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="DIO_OUTPUT_STATUS1" />
+      <Reg addr="0x38" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="DIO_OUTPUT_STATUS2" />
+      <Reg addr="0x39" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_LATCH_FAULT" />
+      <Reg addr="0x3A" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="TEMP_STATE" />
+      <Reg addr="0x3B" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_DEBUG_01" />
+      <Reg addr="0x3C" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="SEC_DEBUG_02" />
+      <Reg addr="0x3D" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_DEBUG_01" />
+      <Reg addr="0x3E" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_DEBUG_02" />
+      <Reg addr="0x3F" type="nr" readCnt="2" writeCnt="0" EnableByteCnt="False" volatile="False" pec="True" name="COM_DEBUG_03" />
+    </Page>
+  </Pmbus>
+  <Controls>
+    <Tab num="0">
+      <SubTab num="0" name="Gauge" cellType="stretch" division="c1r2c1" parameter="520p:400p:1*:10*:1*" splitColor="#22FFFFFF">
+
+        <GroupRead pos="0" page="0" reg="0x20" groupname="Temperature" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="Thermometer" name="12V_SR" pos="0" page="0" reg="0x8D" decimalPoint="1" M="639" B="6394" R="-2" format="linear" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="12V_ORING" pos="0" page="0" reg="0x8E" decimalPoint="1" M="639" B="6394" R="-2" format="linear" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="54V_SR" pos="0" page="1" reg="0x8D" decimalPoint="1" M="639" B="6394" R="-2" format="linear" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="54V_ORING" pos="0" page="1" reg="0x8E" decimalPoint="1" M="639" B="6394" R="-2" format="linear" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+          <Item type="Thermometer" name="Inlet" pos="0" page="0" reg="0x8F" decimalPoint="1" M="639" B="6394" R="-2" format="linear" min="-40" max="150" background="#FFFF3F00" titleColor="#FF003FFF" temperatureColor="#FFFF3F00" />
+        </GroupRead>
+        <GroupRead pos="0" page="0" reg="0x01" groupname="Fan Speed" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="fangauge" name="Fan1" pos="1" page="0" reg="0x90" startIndex="0" DivideVisable="1" len="2" M="4650" B="0" R="-5" format="linear" min="0" max="32000" unit="RPM" Title1="" Title2="" fontColor="#B0FFFFFF" valueColor="#BE00FFFF"/>
+          <Item type="fangauge" name="Fan2" pos="1" page="0" reg="0x91" startIndex="0" DivideVisable="1" len="2" M="4650" B="0" R="-5" format="linear" min="0" max="32000" unit="RPM" Title1="" Title2="" fontColor="#B0FFFFFF" valueColor="#BE00FFFF"/>
+        </GroupRead>
+
+        <GroupRead pos="2" page="0" reg="0x01" groupname="Input Voltage/Current/Power" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0x88" startIndex="0" len="2" M="28417" B="0" R="-5" format="linear" min="0" max="500" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Vin" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0x89" startIndex="0" len="2" M="4092" B="0" R="-2" format="linear" min="0" max="30" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Iin" dataLen="2" unit="A" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0xE1" startIndex="0" len="2" M="28417" B="0" R="-5" format="linear" min="0" max="5000" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Pin" dataLen="2" unit="W" point="1" />
+        </GroupRead>
+        <GroupRead pos="2" page="0" reg="0x01" groupname="12V Output Voltage/Current/Power" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0x8B" startIndex="0" len="2" M="28417" B="0" R="-5" format="Vout" min="0" max="20" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Vout" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0x8C" startIndex="0" len="2" M="14614" B="0" R="-3" format="linear" min="0" max="300" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Iout" dataLen="2" unit="A" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0x96" startIndex="0" len="2" M="28417" B="0" R="-5" format="linear" min="0" max="5000" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Pout" dataLen="2" unit="W" point="1" />
+        </GroupRead>
+        <GroupRead pos="2" page="1" reg="0x01" groupname="54V Output Voltage/Current/Power" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="1" reg="0x8B" startIndex="0" len="2" M="12788" B="0" R="-5" format="Vout" min="0" max="100" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Vout" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="1" reg="0x8C" startIndex="0" len="2" M="28417" B="0" R="-3" format="linear" min="0" max="80" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Iout" dataLen="2" unit="A" point="1" />
+          <Item type="vipgauge" pos="0" page="1" reg="0x96" startIndex="0" len="2" M="28417" B="0" R="-5" format="linear" min="0" max="3000" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Pout" dataLen="2" unit="W" point="1" />
+        </GroupRead>
+        <GroupRead pos="2" page="0" reg="0x01" groupname="12VCS Output Voltage/Current" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="vipgauge" pos="0" page="0" reg="0xDE" startIndex="0" len="2" M="12788" B="0" R="-5" format="Vout" min="0" max="100" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Vout" dataLen="2" unit="V" point="1" />
+          <Item type="vipgauge" pos="0" page="0" reg="0xDF" startIndex="0" len="2" M="28417" B="0" R="-3" format="linear" min="0" max="80" decimalPoint="2" FontSize="15" smallfontsize="7" height="25" name="Iout" dataLen="2" unit="A" point="1" />
+        </GroupRead>
+
+        <GroupRead pos="1" page="0" reg="0x03" groupname="Clear fault" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="labinpbtn" pos="1" page="0" reg="0x03" format="hex" name="Clear_Fault" dataLen="0" DivideVisable="1" unit="" point="0" height="30" inputwidth="0" infowidth="100" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+        </GroupRead>
+
+        <GroupRead pos="1" page="0" reg="0x01" groupname="Idle mode control" cellType="stretch" headfontColor="#A0D6D6D6">
+          <Item type="labbtn2" pos="1" page="0" reg="0xEF" positive="0x00" negative="0x01" reverse="false" writeCnt="1" EnableByteCnt="false" pec="true" name="Idle mode Enter/Exit" DivideVisable="1" fontsize="14" smallfontsize="14" infowidth="150" height="25" />
+        </GroupRead>
+        <GroupRead pos="1" page="0" reg="0x01" groupname="Fan speed(0~28000)" cellType="normal" headfontColor="#A0D6D6D6">
+          <Item type="labinpbtn" pos="1" page="0" reg="0x3B" format="linear" name="Fan_Command_1" max="28000" min="0" M="1023" B="0" R="-2" dataLen="2" unit="" point="1" DivideVisable="1" height="30" width="300" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+        </GroupRead>
+        <!--GroupRead pos="1" page="0" reg="0x01" groupname="OVP TEST" cellType="normal" headfontColor="#A0D6D6D6">
+			<Item type="labinpbtn" pos="1" page="0" reg="0xC4" format="linear" name="12V main output" M="1023" B="0" R="-2" dataLen="2" aheaddata="0x10" unit="" point="1" DivideVisable="1" height="30" width="300" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+			<Item type="labinpbtn" pos="1" page="0" reg="0xC4" format="linear" name="54V main output" M="1023" B="0" R="-2" dataLen="2" aheaddata="0x20" unit="" point="1" DivideVisable="1" height="30" width="300" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1" />
+		</GroupRead-->
+        <labinpbtn pos="1" page="0" Order="1" reg="0xC4" format="linear" appendData="" name="12V Vmain OVP test" max="1023" min="0" M="1023" B="0" R="-2" infowidth="0" dataLen="2" aheaddata="0x10" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <labinpbtn pos="1" page="0" Order="1" reg="0xC4" format="linear" appendData="" name="54V Vmain OVP test" max="1023" min="0" M="1023" B="0" R="-2" infowidth="0" dataLen="2" aheaddata="0x20" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <labinpbtn pos="1" page="0" Order="1" reg="0xEA" format="hex" appendData="" name="VCS OVP TEST" max="1" min="0" M="1023" B="0" R="-2" dataLen="0" infowidth="0" inputwidth="0" aheaddata="0x01" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <labinpbtn pos="1" page="0" Order="1" reg="0xC3" format="linear" appendData="" name="12V Vmain Trim" max="1023" min="0" M="1023" B="0" R="-2" infowidth="0" dataLen="2" aheaddata="0x10" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <labinpbtn pos="1" page="0" Order="1" reg="0xC3" format="linear" appendData="" name="54V Vmain Trim" max="1023" min="0" M="1023" B="0" R="-2" infowidth="0" dataLen="2" aheaddata="0x20" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <labinpbtn pos="1" page="0" Order="1" reg="0xC3" format="linear" appendData="" name="VCS Trim" max="1023" min="0" M="1023" B="0" R="-2" infowidth="0" dataLen="2" aheaddata="0x30" unit="" point="1" DivideVisable="1" height="30" forceground="80FFFFFF" fontColor="#80FFFFFF" Color0="#30D6D6D6" Color1="#30C9ECC1" Color2="#30CAEDF1" Color3="#30C9BCA1" Color4="#30C9ACE1" Color5="#3089ADA1">
+          <Item Order="0" reg="0xF6" data="0x554C" />
+          <Item Order="2" reg="0xF6" data="0xAAAA" />
+        </labinpbtn>
+        <!--GroupRead pos="1" page="0" reg="0x01" groupname="VCS OVP TEST" cellType="stretch" headfontColor="#A0D6D6D6">
+			<Item type="labbtn2" pos="1" page="0" reg="0xEA" positive="0x00" negative="0x01" reverse="false" writeCnt="1" EnableByteCnt="false" pec="true" name="VCS OVP TEST" DivideVisable="1" fontsize="14" smallfontsize="14" infowidth="150" height="25" />
+	    </GroupRead-->
+        <advRead pos="1" page="0" reg="0x01" len="128" format="hex" name="Read" rawData="" height="25" width="500" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        <advWrite pos="1" page="0" reg="0x01" len="128" format="hex" name="Write" rawData="" blockEnable="False" height="25" width="500" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        <!-- advWrite pos="1" page="0" reg="0x01" len="3" format="hex" name="BL Write" rawData="" blockEnable="True" height="25" width="500" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" /-->
+        <FWrev name="App FW Rev" pos="1" page="0" reg="0xFA" format="hex" width="260">
+          <Item name="PRI" Majindex="0" MajMask="0xFF" Minindex="1" MinMask="0xFF" width="120" />
+        </FWrev>
+        <FWrev name="App FW Rev" pos="1" page="0" reg="0xFB" format="hex" width="260">
+          <Item name="SEC" Majindex="0" MajMask="0xFF" Minindex="1" MinMask="0xFF" width="120" />
+        </FWrev>
+        <FWrev name="App FW Rev" pos="1" page="0" reg="0xFC" format="hex" width="260">
+          <Item name="COM" Majindex="0" MajMask="0xFF" Minindex="1" MinMask="0xFF" width="120" />
+        </FWrev>
+      </SubTab>
+    </Tab>
+    <Tab num="1">
+      <SubTab num="0" name="PMBus Page00" cellType="stretch" division="c2" parameter="1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0" reg="0x01" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="0" page="0" reg="0x01" format="hex" name="Operation" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x02" format="hex" name="On_off_config" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3A" format="hex" name="Fan_Config_1_2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x3B" format="dec" name="Fan_Command_1" unit="r/min" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x79" format="hex" name="Status_Word" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7A" format="hex" name="Status_Vout" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7B" format="hex" name="Status_Iout" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7C" format="hex" name="Status_Input" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7D" format="hex" name="Status_Temp" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7E" format="hex" name="Status_CML" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x7F" format="hex" name="Status_Other" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x80" format="hex" name="Status_MFR" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x81" format="hex" name="Status_Fan_1_2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x88" format="linear" name="Vin" M="3410" B="0" R="-3" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x89" format="linear" name="Iin" M="4092" B="0" R="-2" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8B" format="Vout" name="Vout" M="12788" B="0" R="-3" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8C" format="linear" name="Iout" M="14614" B="0" R="-3" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8D" format="linear" name="Temperature_1" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8E" format="linear" name="Temperature_2" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x8F" format="linear" name="Temperature_3" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x90" format="linear" name="Fan_Speed_1" M="4650" B="0" R="-5" unit="r/min" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0" reg="0x91" format="linear" name="Fan_Speed_2" M="4650" B="0" R="-5" unit="r/min" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+        <GroupRead pos="1" page="0" reg="0x01" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="1" page="0" reg="0x96" format="linear" name="Pout" M="28417" B="0" R="-5" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0x97" format="linear" name="Pin" M="28417" B="0" R="-5" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <!--Item type="MonitorItem" pos="1" page="0" reg="0x99" format="hex" name="VPD_MFR_ID" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+			<Item type="MonitorItem" pos="1" page="0" reg="0x9A" format="hex" name="VPD_FRU_NBR" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+			<Item type="MonitorItem" pos="1" page="0" reg="0x9B" format="hex" name="VPD_PART_NBR" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+			<Item type="MonitorItem" pos="1" page="0" reg="0x9C" format="hex" name="VPD_HEADER_CODE" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+			<Item type="MonitorItem" pos="1" page="0" reg="0x9E" format="hex" name="MFR_SERIAL_NBR" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" /-->
+          <Item type="MonitorItem" pos="1" page="0" reg="0xA7" format="direct" name="VPD_POUT_MAX" M="1" B="0" R="0" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xBA" format="hex" name="VPD_POS_ID" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xBB" format="direct" name="VPD_POWER_OS_HL" M="1" B="0" R="0" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xBC" format="direct" name="VPD_POWER_OS_HL" M="1" B="0" R="0" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xBE" format="hex" name="VPD_PSU_INFO" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xC6" format="Vout" name="Read_Vout_Peak" M="12788" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xC7" format="linear" name="Read_Iout_Peak" M="14614" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xC8" format="linear" name="Read_TEMP1_Peak" M="639" B="6394" R="-2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xCA" format="Vout" name="Read_Vout_Valley" M="12788" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xCB" format="linear" name="Read_Iout_Valley" M="14614" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xCC" format="linear" name="Read_TEMP1_Valley" M="639" B="6394" R="-2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xDA" format="hex" name="Sys_config" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xDE" format="Vout" name="READ_12VCS_VOUT" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xDF" format="linear" name="READ_12VCS_IOUT" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE1" format="linear" name="READ_PIN_nAVG" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE3" format="hex" name="N_ADD_M" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xE4" format="hex" name="Fault_response" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xEF" format="hex" name="Mode_setting" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xFA" format="hex" name="Pri_FW_Revision" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xFB" format="hex" name="Sec_FW_Revision" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0" reg="0xFC" format="hex" name="Com_FW_Revision" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+      </SubTab>
+      <SubTab num="0" name="PMBus Page01" cellType="stretch" division="c2" parameter="1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="1" reg="0x01" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="0" page="1" reg="0x01" format="hex" name="Operation" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x02" format="hex" name="On_off_config" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x7A" format="hex" name="Status_Vout" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x7B" format="hex" name="Status_Iout" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x8B" format="Vout" name="Vout" M="12788" B="0" R="-3" unit="V" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x8C" format="linear" name="Iout" M="14614" B="0" R="-3" unit="A" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x8D" format="linear" name="Temperature_1" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="1" reg="0x8E" format="linear" name="Temperature_2" M="639" B="6394" R="-2" unit="C" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0x96" format="linear" name="Pout" M="28417" B="0" R="-5" unit="W" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xC6" format="Vout" name="Read_Vout_Peak" M="12788" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xC7" format="linear" name="Read_Iout_Peak" M="14614" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xC8" format="linear" name="Read_TEMP1_Peak" M="639" B="6394" R="-2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xCA" format="Vout" name="Read_Vout_Valley" M="12788" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xCB" format="linear" name="Read_Iout_Valley" M="14614" B="0" R="-3" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="1" reg="0xCC" format="linear" name="Read_TEMP1_Valley" M="639" B="6394" R="-2" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+      </SubTab>
+
+
+      <SubTab num="0" name="Debug View" cellType="stretch" division="c2" parameter="1*:1*" splitColor="#22FFFFFF">
+        <GroupRead pos="0" page="0x100" reg="0x01" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x00" format="direct" name="PRI_A_VIN_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x01" format="direct" name="PRI_A_IIN_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x02" format="direct" name="PRI_A_PIN_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x03" format="direct" name="PRI_A_VBULK_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x04" format="direct" name="PRI_A_INPUT_FREQ" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x06" format="direct" name="PRI_A_STATUS_00" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x07" format="direct" name="PRI_A_STATUS_01" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x08" format="direct" name="PRI_A_DEBUG_01" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x09" format="direct" name="PRI_A_DEBUG_02" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x0A" format="direct" name="12V_TRIM_GAIN" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x0B" format="direct" name="54V_TRIM_GAIN" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x0C" format="direct" name="VSB_TRIM_GAIN" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x0D" format="direct" name="SEC_54V_I_3_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x10" format="direct" name="COM_12V_I_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x11" format="direct" name="COM_12V_V_INT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x12" format="direct" name="COM_12V_V_EXT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x13" format="direct" name="COM_12V_ISHARE_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x14" format="direct" name="COM_12V_ILOCAL_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x15" format="direct" name="SEC_54V_I_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x16" format="direct" name="SEC_54V_V_INT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x17" format="direct" name="SEC_54V_V_EXT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x18" format="direct" name="SEC_54V_ISHARE_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x19" format="direct" name="SEC_54V_ILOCAL_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1A" format="direct" name="COM_VSB_V_INT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1B" format="direct" name="COM_VSB_I_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1C" format="direct" name="COM_VSB_V_EXT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1D" format="direct" name="COM_NTC_OLT_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1E" format="direct" name="SEC_NTC_INLET_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="0" page="0x100" reg="0x1F" format="direct" name="PRI_NTC_PFC_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+        <GroupRead pos="1" page="0x100" reg="0x01" groupname="Pmbus[Cmd Code|Cmd Name|Value|Unit|Raw Data]" cellType="stretch" margin="0" headfontColor="#F0D6D6D6">
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x20" format="direct" name="PRI_NTC_BR_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x21" format="direct" name="SEC_12V_NTC_SR1_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x22" format="direct" name="SEC_12V_NTC_SR2_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x23" format="direct" name="SEC_12V_NTC_ORing_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x24" format="direct" name="SEC_54V_NTC_SR_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x25" format="direct" name="SEC_54V_NTC_ORing_ADC" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x26" format="direct" name="COM_NTC_OLT_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x27" format="direct" name="SEC_NTC_INLET_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x28" format="direct" name="PRI_NTC_PFC_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x29" format="direct" name="PRI_NTC_BR_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2A" format="direct" name="SEC_12V_NTC_SR1_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2B" format="direct" name="SEC_12V_NTC_SR2_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2C" format="direct" name="SEC_12V_NTC_ORing_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2D" format="direct" name="SEC_54V_NTC_SR_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2E" format="direct" name="SEC_54V_NTC_ORing_TEMP" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x2F" format="direct" name="COM_12V_FAULT_Flag00" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x30" format="direct" name="SEC_54V_FAULT_Flag00" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x31" format="direct" name="COM_VSB_FAULT_Flag00" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x32" format="direct" name="SYS_STATE_Flag00" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x33" format="direct" name="12V_VSB_VOUT_Flag" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x34" format="direct" name="54V_VOUT_Flag" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x35" format="direct" name="TEMP_OTW_STATUS" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x36" format="direct" name="TEMP_OTP_STATUS" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x37" format="direct" name="DIO_OUTPUT_STATUS1" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x38" format="direct" name="DIO_OUTPUT_STATUS2" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x39" format="direct" name="COM_LATCH_FAULT" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3A" format="direct" name="TEMP_STATE" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3B" format="direct" name="SEC_DEBUG_01" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3C" format="direct" name="SEC_DEBUG_02" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3D" format="direct" name="COM_DEBUG_01" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3E" format="direct" name="COM_DEBUG_02" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+          <Item type="MonitorItem" pos="1" page="0x100" reg="0x3F" format="direct" name="COM_DEBUG_03" M="1" B="0" R="0" unit="" height="25" pagewidth="0" fontColor="#B0FFFFFF" valueColor="#BE00FFFF" Color0="#20D6D6D6" Color1="#20C9ECC1" Color2="#20CAEDF1" Color3="#20C9BCA1" Color4="#20C9ACE1" Color5="#2089ADA1" />
+        </GroupRead>
+      </SubTab>
+
+
+      <SubTab num="0" name="Status" cellType="normal" division="r2" parameter="1*:0.01*" splitColor="#22FFFFFF">
+        <faultstatus pos="0" page="0" reg="0x79" header="Status word" width = "466" Editable="false" headerColor="#E0D6D6D6" boldmask="0xFFFF" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="NONE OF THE ABOVE" bit1="CML" bit2="TEMPERATURE FAULT OR WARNING" bit3="VIN_UV FAULT" bit4="IOUT_OC FAULT" bit5="VOUT_OV FAULT" bit6="UNIT IS OFF" bit7="UNIT WAS BUSY" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+          <Item width="230" height="35" bit0="UNKNOWN" bit1="OTHER" bit2="FAN FAULT OR WARNING" bit3="POWER_GOOD Negated" bit4="MFR SPECIFIC" bit5="INPUT FAULT OR WARNING" bit6="IOUT/POUT FAULT OR WARNING" bit7="VOUT FAULTS OR WARNINGS" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7A" header="Vout 12V "  width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0x90" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="VOUT Tracking Error" bit1="TOFF_MAX Warning" bit2="TON_MAX FAULT" bit3="VOUT_MAX Warning" bit4="VOUT Undervoltage Fault" bit5="VOUT Undervoltage Warning" bit6="VOUT Overvoltage Warning" bit7="VOUT Overvoltage Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="1" reg="0x7A" header="Vout 54V " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0x90" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="VOUT Tracking Error" bit1="TOFF_MAX Warning" bit2="TON_MAX FAULT" bit3="VOUT_MAX Warning" bit4="VOUT Undervoltage Fault" bit5="VOUT Undervoltage Warning" bit6="VOUT Overvoltage Warning" bit7="VOUT Overvoltage Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7B" header="Iout 12V " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0x88" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="POUT Overpower Warning" bit1="POUT Overpower Fault" bit2="Power Limiting" bit3="Current Share Fault" bit4="IOUT Undercurrent Fault" bit5="IOUT Overcurrent Warning" bit6="IOUT Overcurrent And Low Voltage Fault" bit7="IOUT Overcurrent Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="1" reg="0x7B" header="Iout 54V " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0x88" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="POUT Overpower Warning" bit1="POUT Overpower Fault" bit2="Power Limiting" bit3="Current Share Fault" bit4="IOUT Undercurrent Fault" bit5="IOUT Overcurrent Warning" bit6="IOUT Overcurrent And Low Voltage Fault" bit7="IOUT Overcurrent Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7C" header="Input " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0x8C" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="PIN_OP_WARNING" bit1="IIN_OC_WARNING" bit2="IIN_OC_FAULT" bit3="Unit Off For Insufficient Input Voltage" bit4="VIN_UV_FAULT" bit5="VIN_UV_WARNING" bit6="VIN_OV_WARNING" bit7="VIN_OV_FAULT" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7D" header="TEMP " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0xC0" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="Reserved" bit1="Reserved" bit2="Reserved" bit3="Reserved" bit4="UT_FAULT" bit5="UT_WARNING" bit6="OT_WARNING" bit7="OT_FAULT" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7E" header="CML " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0xE2" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="Other Memory Or Logic Fault has occurred" bit1="A communication fault other than the ones listed in this table has occurred" bit2="Reserved" bit3="Processor Fault Detected" bit4="Memory Fault Detected" bit5="Packet Error Check Failed" bit6="Invalid Or Unsupported Data Received" bit7="Invalid Or Unsupported Command Received" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x7F" header="Other " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0xC0" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="Reserved" bit1="Reserved" bit2="Reserved" bit3="Reserved" bit4="Reserved" bit5="Reserved" bit6="PS_KILL_ACTIVE" bit7="PS_KILL_CABLE_ACTIVE" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x80" header="MFR SPECIFIC " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0xFF" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="Fan Fault" bit1="Thermal Fault" bit2="VOUT Over-Voltage Fault" bit3="VOUT Under-Voltage Fault" bit4="12VCS Current Share Warning" bit5="VOUT Over-Current Fault" bit6="12VCS Fault" bit7="VOUT Current Share Warning" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+        <faultstatus pos="0" page="0" reg="0x81" header="Fan12 " width = "233" Editable="false" headerColor="#E0D6D6D6" boldmask="0xF1" editmask="0xFFFFFFFF">
+          <Item width="230" height="35" bit0="FFS(Fans Full Speed)" bit1="Reserved" bit2="Fan 2 Speed Overridden" bit3="Fan 1 Speed Overridden" bit4="Fan 2 Warning" bit5="Fan 1 Warning" bit6="Fan 2 Fault" bit7="Fan 1 Fault" background="#30C9ECC1" forcecolor="#FF00FFFF" />
+        </faultstatus>
+      </SubTab>
+    </Tab>
+
+  </Controls>
+</Config>
