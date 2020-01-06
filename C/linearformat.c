@@ -67,20 +67,6 @@ static uint16 u16Ones(uint8 x)
   return u16Res;
 }
 
-// static uint16 mg_u16TxLinearDatFormatDiv128_PSMI(uint32 u32DataIn, uint8 u16FrcNum, uint16 u16FrcRes)
-// {
-//   uint16 u16Result = 0;
-//   uint16 u16Int = 0;
-//   uint16 u16Fra = 0;
-
-//   CLRBIT(u16Result, 15);
-//   u16Int = (u32DataIn >> 7);
-//   u16Fra = ((u32DataIn - u16Int * 128) * u16FrcRes >> 7);
-//   u16Result += (u16Int << u16FrcNum) + u16Fra;
-
-//   return u16Result;
-// }
-
 static uint16 mg_u16TxLinearDatFormatDiv128_PSMI(sint32 s32DataIn, uint8 u16FrcNum, uint16 u16FrcRes)
 {
   uint16 u16Result = 0;
@@ -159,10 +145,6 @@ static float PsmiData_to_float(uint16 u16data, uint8 u16FrcNum, uint16 u16FrcRes
   return FRes;
 }
 
-#define AC_IIN_FORMAT(x)        mg_u16TxLinearDatFormatDiv128_PSMI(x,IIN_FRC_NUM,IIN_FRC_RESULUTION)
-
-
-
 int main(void)
 {
   uint16 a, b, c;
@@ -195,14 +177,5 @@ int main(void)
   f2 = PsmiData_to_float(c,FAN_SPEED_FRC_NUM,FAN_SPEED_FRC_RESULUTION);
 
   printf("%x,%f",c,f2);
-  
-
-
-  // pout = mg_u16TxLinearDatFormatDiv128_PSMI(ff*128, POUT_FRC_NUM, POUT_FRC_RESULUTION);
-  // pin = mg_u16TxLinearDatFormatDiv128_PSMI(ff*128, PIN_FRC_NUM, PIN_FRC_RESULUTION);
-  // fanspeed = mg_u16TxLinearDatFormatDiv128_PSMI(6500*128, FAN_SPEED_FRC_NUM, FAN_SPEED_FRC_RESULUTION);
-  // vin = mg_u16TxLinearDatFormatDiv128_PSMI(279*128,VIN_FRC_NUM, VIN_FRC_RESULUTION);
-
-
   return 0;
 }
