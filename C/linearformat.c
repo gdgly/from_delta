@@ -177,5 +177,6 @@ int main(void)
   f2 = PsmiData_to_float(c,FAN_SPEED_FRC_NUM,FAN_SPEED_FRC_RESULUTION);
 
   printf("%x,%f",c,f2);
+  getchar();
   return 0;
 }
