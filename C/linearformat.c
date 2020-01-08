@@ -170,6 +170,8 @@ static float Psmi_to_float(uint16 u16data, uint16 u16FrcRes)
   return f_res;
 }
 
+#define PSMI_LINEFORMAT_IN(x,y,z)			(((uint16)x)<<y) + ((x - (uint16)x)*z)	
+
 int main(void)
 {
   uint16 a, b, c;
@@ -181,6 +183,10 @@ int main(void)
   f2 = Psmi_to_float(c,TEMPERATURE_FRC_RESULUTION);
 
   printf("%x,%f\n", c, f2);
+
+  a=PSMI_LINEFORMAT_IN(1.5,6,64);
+  b=1.5*64;
+  printf("%x,%x",a,b);
   // c = mg_u16TxLinearDatFormatDiv128_PSMI(3.4*128, VOUT_FRC_NUM, VOUT_FRC_RESULUTION);
   // f2 = PsmiData_to_float(c,VOUT_FRC_NUM,VOUT_FRC_RESULUTION);
 

@@ -63,8 +63,42 @@ typedef union PMBUS_U_SYS_BIT_FLAG_
 #define PSMI_lineformat(x,y,z)  (((uint16)x)<<y) + ((x - (uint16)x)*z)
 #define AA 2
 
+typedef union MG_U_UARTPRT_STATUS_
+{
+  struct
+  {
+    uint8 u8BootMode   : 1;   /* bit0 */
+    uint8 u8CrcErr     : 1;   /* bit1 */
+    uint8 u8McuAddrErr : 1;   /* bit2 */
+    uint8 u8LenErr     : 1;   /* bit3 */
+    uint8 u8ByteTmout  : 1;   /* bit4 */
+    uint8 u8FrameTmout : 1;   /* bit5 */
+    uint8 u8InvalidData: 1;   /* bit6 */
+    uint8 u8UartRegErr : 1;   /* bit7 */
+  } Bit;
+  uint8 ALL;
+} MG_U_UARTPRT_STATUS;
+
+typedef struct MG_S_UARTPRT_DATA_
+{
+  uint16 u16TxDataCnt;
+  uint16 u16RxDataCnt;
+  uint16 u16RxByteTmOutCnt;
+	uint16 u16RxFrameTmOutCnt;
+	uint16 u16TxTmOutCnt;
+  uint16 u16TxDataNbr;
+  uint16 u16RxDataNbr;
+  uint16 u16RxCrc;
+  uint8  u8SlaveAddr;
+  MG_U_UARTPRT_STATUS uStatus;
+} MG_S_UARTPRT_DATA;
+
+static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
+
 void main()
 {
+  mg_uUartPrtData[0].u16RxByteTmOutCnt = 0x01;
+
   // PSMI_SHUTDOWN_EVENT A;
   // A.ALL = 0;
   // A.Bits.FAN1_FAIL = 0x01,
@@ -76,23 +110,66 @@ void main()
 
   //printf("%d",FANCTRL_CFG_E_INDEX_COUNT);
 
-  PMBUS_U_SYS_BIT_FLAG data;
-  data.ALL = 0x12;
+  // PMBUS_U_SYS_BIT_FLAG data;
+  // data.ALL = 0x12;
 
-  printf("%x",data.Word);
+  // printf("%x",data.Word);
 
 
 
 }
 
 
+// #define RTE_B_DIO_HIGH_LINE_ENA					 RTE_uDioOutStatus.Bits.fa
+// #define RTE_B_PRI_VIN_LINE_LOW       RTE_Pri.u16PriStatus00.Bits.f3  /* 1 = low line */
+
+// #define RTE_Read_B_R_VIN_LINE_LOW       (RTE_B_PRI_VIN_LINE_LOW)
+// #define RTE_Read_B_R_VIN_LINE           (RTE_B_PRI_VIN_LINE_LOW)
+// #define RTE_Read_B_R_PRI_VIN_LINE       (RTE_B_PRI_VIN_LINE_LOW)
+
+// #define RTE_Write_B_P_VIN_LINE_LOW       (RTE_B_TO_SEC_STA_VIN_LINE_LOW)
 
 
-#define RTE_B_DIO_HIGH_LINE_ENA					 RTE_uDioOutStatus.Bits.fa
-#define RTE_B_PRI_VIN_LINE_LOW       RTE_Pri.u16PriStatus00.Bits.f3  /* 1 = low line */
 
-#define RTE_Read_B_R_VIN_LINE_LOW       (RTE_B_PRI_VIN_LINE_LOW)
-#define RTE_Read_B_R_VIN_LINE           (RTE_B_PRI_VIN_LINE_LOW)
-#define RTE_Read_B_R_PRI_VIN_LINE       (RTE_B_PRI_VIN_LINE_LOW)
 
-#define RTE_Write_B_P_VIN_LINE_LOW       (RTE_B_TO_SEC_STA_VIN_LINE_LOW)
+// CALI_RTE_W_sData.sVoutV1[u8CaliLine].s16Amp = MG_V_V1_AMP_DEFAULT;   
+// CALI_RTE_R_sData.sVoutV1[0]
+// RTE_CALI_sData
+// RTE_CALI_sData
+
+
+
+SINLINE void MONCTRL_Rte_Read_R_u16VsbLinearExt(uint16 *var)
+{
+	Rte_Read_R_u16VsbLinearExt(&var);
+}
+#define Rte_Read_R_u16VsbLinearExt(var)       ((**var) = RTE_u16VoutExtVsbFast)
+
+SINLINE uint16 MONCTRL_SCFG_u16GetVsbExtVolt10mVAvg(void)
+{
+	return BUFFER_u16GetMean1ms(BUFFER_CFG_E_ExtVsb);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
