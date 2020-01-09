@@ -95,10 +95,8 @@ typedef struct MG_S_UARTPRT_DATA_
 
 static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
 
-void main()
+int main(void)
 {
-  mg_uUartPrtData[0].u16RxByteTmOutCnt = 0x01;
-
   // PSMI_SHUTDOWN_EVENT A;
   // A.ALL = 0;
   // A.Bits.FAN1_FAIL = 0x01,
@@ -115,8 +113,33 @@ void main()
 
   // printf("%x",data.Word);
 
+	uint16 u16TrimVsbGain;
+	uint16 u16TrimV1Gain;
+	uint16 u16TrimVsbGainAct;
+	uint16 u16TrimV1GainAct;
+	static 	uint16 u16TrimVsbOvpGainAct;
+
+  while(1)
+  {
+    u16TrimVsbGain = 100;
+    if (u16TrimVsbGain > u16TrimVsbOvpGainAct)
+    {
+      if ((u16TrimVsbOvpGainAct + 10u) > u16TrimVsbGain)
+      {
+        u16TrimVsbOvpGainAct = u16TrimVsbGain;
+      }
+      else
+      {
+        u16TrimVsbOvpGainAct += 10u;
+      }
+
+      printf("%d\n",u16TrimVsbOvpGainAct);
+    }
+  }
 
 
+
+ return 0;
 }
 
 
@@ -139,21 +162,24 @@ void main()
 
 
 
-SINLINE void MONCTRL_Rte_Read_R_u16VsbLinearExt(uint16 *var)
-{
-	Rte_Read_R_u16VsbLinearExt(&var);
-}
-#define Rte_Read_R_u16VsbLinearExt(var)       ((**var) = RTE_u16VoutExtVsbFast)
+// SINLINE void MONCTRL_Rte_Read_R_u16VsbLinearExt(uint16 *var)
+// {
+// 	Rte_Read_R_u16VsbLinearExt(&var);
+// }
+// #define Rte_Read_R_u16VsbLinearExt(var)       ((**var) = RTE_u16VoutExtVsbFast)
 
-SINLINE uint16 MONCTRL_SCFG_u16GetVsbExtVolt10mVAvg(void)
-{
-	return BUFFER_u16GetMean1ms(BUFFER_CFG_E_ExtVsb);
-}
-
-
+// SINLINE uint16 MONCTRL_SCFG_u16GetVsbExtVolt10mVAvg(void)
+// {
+// 	return BUFFER_u16GetMean1ms(BUFFER_CFG_E_ExtVsb);
+// }
 
 
 
+PSUCTRL_SCFG_vVsbOvpDuty(u16TrimVsbOvpGainAct);
+PSUCTRL_SCFG_vSetVsbOvpPwmOut(TRUE);
+
+RTE_u16TrimVsbGainOvp.u16Val 
+RTE_u16TrimVsbGainOvp.u16Val
 
 
 

@@ -1,0 +1,6 @@
+--c99 -c --cpu Cortex-M0 -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\30_Bsw\adc -I ..\30_Bsw\clock -I ..\30_Bsw\common -I ..\30_Bsw\flash -I ..\30_Bsw\main -I ..\30_Bsw\port -I ..\30_Bsw\pwm -I ..\30_Bsw\rte -I ..\30_Bsw\schm -I ..\30_Bsw\timer -I ..\30_Bsw\wdg -I ..\30_Bsw\i2c -I ..\30_Bsw\eeprom -I ..\30_Bsw\crc -I ..\30_Bsw\common -I ..\30_Bsw\cali -I ..\30_Bsw\hwio -I ..\30_Bsw\rtc -I ..\30_Bsw\buffer -I ..\30_Bsw\uart -I ..\30_Bsw\i2cprt -I ..\30_Bsw\mem -I ..\30_Bsw\uartprt -I ..\30_Bsw\dam -I ..\40_Appl\tempctrl -I ..\40_Appl\monctrl -I ..\40_Appl\timectrl -I ..\40_Appl\psuctrl -I ..\40_Appl\intcom -I ..\40_Appl\pmbus -I ..\40_Appl\calctrl -I ..\40_Appl\fanctrl -I ..\40_Appl\tmctrl -I ..\40_Appl\blabox -I ..\40_Appl\ledctrl -I ..\50_Lib\driverlib -I ..\50_Lib\ARM_Lib -I ..\50_Lib\Core_Lib -I ..\50_Lib\Assembly
+-I.\RTE\_Skywalker_4000W_Com
+-IC:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
+-IC:\Keil_v5\ARM\CMSIS\Include
+-D__UVISION_VERSION="525" -DSTM32F071xB -DSTM32F051
+-o ..\20_make\output\uart.o --omf_browse ..\20_make\output\uart.crf --depend ..\20_make\output\uart.d --feedback "..\20_Make\output\Skywalker_4000W_Com_V.fed" "..\30_Bsw\uart\uart.c"
