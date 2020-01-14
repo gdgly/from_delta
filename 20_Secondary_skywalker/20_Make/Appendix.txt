@@ -1,0 +1,11 @@
+1. Low Line OCP point changed to be euql to high line for debugging
+
+2. u161degNtcOring = HWIO_scfg_u16NtcOringSample(); changed to u161degNtcOring = HWIO_scfg_u16NtcSrSample(); in hwio.c for debugging (next P stage needs pin reassignment)
+
+3. port.c has no assigned port for NTC_ORING due to new layout necessary
+
+4. adc.c and adc.conf uses dummy sample instead of NTC_ORING sample due to pin assignment change
+
+5. I share max 4% of full range.
+
+6. CPU loading about 89%.
