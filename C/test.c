@@ -106,6 +106,46 @@ typedef enum BUFFER_CFG_E_INDEX_
 
 
 
+    if (u8BroadcastFlg) 
+    {
+      /* Read data from buffer */
+      uCom2Pri00.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uCom2Pri00.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uDebugData0Addr.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uDebugData0Addr.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      u1mACurrInOffset.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      u1mACurrInOffset.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliAmp.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliAmp.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliOfs.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliOfs.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      /* Write data to RTE */
+      INTCOM_Rte_Write_P_uComStatus00(uCom2Pri00);
+      INTCOM_Rte_Write_P_u16DebugData0(*((uint16 *)(uDebugData0Addr.ALL + 0x08000000)));
+      INTCOM_Rte_Write_P_1mA_CurrInOffset(u1mACurrInOffset.ALL);
+      INTCOM_Rte_Write_P_s16VoltInAmpIntcom(uVoltInCaliAmp.s16Val);
+      INTCOM_Rte_Write_P_s16VoltInOfsIntcom(uVoltInCaliOfs.s16Val);
+    }
+    else
+    {
+      /* Read data from buffer */
+      uCom2Pri00.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uCom2Pri00.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uDebugData0Addr.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uDebugData0Addr.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      u1mACurrInOffset.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      u1mACurrInOffset.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliAmp.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliAmp.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliOfs.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
+      uVoltInCaliOfs.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
+      /* Write data to RTE */
+      INTCOM_Rte_Write_P_uComStatus00(uCom2Pri00);
+      INTCOM_Rte_Write_P_u16DebugData0(*((uint16 *)(uDebugData0Addr.ALL + 0x08000000)));
+      INTCOM_Rte_Write_P_1mA_CurrInOffset(u1mACurrInOffset.ALL);
+      INTCOM_Rte_Write_P_s16VoltInAmpIntcom(uVoltInCaliAmp.s16Val);
+      INTCOM_Rte_Write_P_s16VoltInOfsIntcom(uVoltInCaliOfs.s16Val);
+
 
 
 
