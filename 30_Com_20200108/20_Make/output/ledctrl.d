@@ -1,0 +1,13 @@
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl.c
+..\20_make\output\ledctrl.o: ..\30_Bsw\common\global.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_api.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_cfg.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_conf.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_scb.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_scfg.h
+..\20_make\output\ledctrl.o: ..\30_Bsw\port\port_cfg.h
+..\20_make\output\ledctrl.o: ..\30_Bsw\port\port_api.h
+..\20_make\output\ledctrl.o: ..\40_Appl\fanctrl\fanctrl_api.h
+..\20_make\output\ledctrl.o: ..\40_Appl\fanctrl\fanctrl_cfg.h
+..\20_make\output\ledctrl.o: ..\40_Appl\ledctrl\ledctrl_rte.h
+..\20_make\output\ledctrl.o: ..\30_Bsw\rte\rte.h

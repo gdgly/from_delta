@@ -1,0 +1,11 @@
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio.c
+..\20_make\output\hwio.o: ..\30_Bsw\common\global.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_api.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_scb.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_cfg.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_scfg.h
+..\20_make\output\hwio.o: ..\30_Bsw\port\port_cfg.h
+..\20_make\output\hwio.o: ..\30_Bsw\port\port_api.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_rte.h
+..\20_make\output\hwio.o: ..\30_Bsw\rte\rte.h
+..\20_make\output\hwio.o: ..\30_Bsw\hwio\hwio_conf.h

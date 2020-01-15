@@ -1,0 +1,10 @@
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer.c
+..\20_make\output\buffer.o: ..\30_Bsw\common\global.h
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer_api.h
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer_cfg.h
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer_conf.h
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer_scb.h
+..\20_make\output\buffer.o: ..\30_Bsw\buffer\buffer_scfg.h
+..\20_make\output\buffer.o: ..\30_Bsw\adc\adc_api.h
+..\20_make\output\buffer.o: ..\30_Bsw\adc\adc_cfg.h
+..\20_make\output\buffer.o: ..\30_Bsw\rte\rte.h

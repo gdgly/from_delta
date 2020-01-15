@@ -1,0 +1,17 @@
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl.c
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_api.h
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_cfg.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\common\global.h
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_conf.h
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_scfg.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\port\port_cfg.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\port\port_api.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\pwm\pwm_cfg.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\rte\rte.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\pwm\pwm_api.h
+..\20_make\output\fanctrl.o: ..\40_Appl\tempctrl\tempctrl_cfg.h
+..\20_make\output\fanctrl.o: ..\40_Appl\tempctrl\tempctrl_api.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\buffer\buffer_cfg.h
+..\20_make\output\fanctrl.o: ..\30_Bsw\buffer\buffer_api.h
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_scb.h
+..\20_make\output\fanctrl.o: ..\40_Appl\fanctrl\fanctrl_rte.h

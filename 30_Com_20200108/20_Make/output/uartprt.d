@@ -1,0 +1,12 @@
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt.c
+..\20_make\output\uartprt.o: ..\30_Bsw\common\global.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_api.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_scb.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_cfg.h
+..\20_make\output\uartprt.o: ..\40_Appl\intcom\intcom_scb.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_scfg.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uart\uart_api.h
+..\20_make\output\uartprt.o: ..\30_Bsw\crc\crc_api.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_rte.h
+..\20_make\output\uartprt.o: ..\30_Bsw\rte\rte.h
+..\20_make\output\uartprt.o: ..\30_Bsw\uartprt\uartprt_conf.h
