@@ -146,7 +146,8 @@ typedef enum BUFFER_CFG_E_INDEX_
       INTCOM_Rte_Write_P_s16VoltInAmpIntcom(uVoltInCaliAmp.s16Val);
       INTCOM_Rte_Write_P_s16VoltInOfsIntcom(uVoltInCaliOfs.s16Val);
 
-
+RTE_Write_B_P_PRI_RX_PKG = 0
+RTE_Write_B_P_PRI_NO_RX_PKG = 1
 
 
 
