@@ -59,21 +59,6 @@
 #define MG_S16_FAN_CTRL_STAG4_MAX_TEMP                 ((sint16)-21)
 #define MG_S16_FAN_CTRL_STAG4_MIN_TEMP                 ((sint16)(-34))
 
-#define MG_U16_FAN_CTRL_VIN_MAX_SPEED1                 ((sint16)3500)
-#define MG_U16_FAN_CTRL_VIN_MIN_SPEED1                 ((sint16)0)
-#define MG_U16_FAN_CTRL_MAX_VIN_HL                     ((uint16)(220.0F ))
-#define MG_U16_FAN_CTRL_MIN_VIN_HL                     ((uint16)(176.0F ))
-#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT1            (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED1 - MG_U16_FAN_CTRL_VIN_MIN_SPEED1) \
-                                                        / (MG_U16_FAN_CTRL_MAX_VIN_HL - MG_U16_FAN_CTRL_MIN_VIN_HL))
-#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT1          (sint16)(S32Q8(1.0F) / (MG_S16_FAN_CTRL_LOAD_MAX_HL))
-
-#define MG_U16_FAN_CTRL_VIN_MAX_SPEED2                 ((sint16)3500)
-#define MG_U16_FAN_CTRL_VIN_MIN_SPEED2                 ((sint16)0)
-#define MG_U16_FAN_CTRL_MAX_VIN_LL                     ((uint16)(110.0F ))
-#define MG_U16_FAN_CTRL_MIN_VIN_LL                     ((uint16)(90.0F ))
-#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2            (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - MG_U16_FAN_CTRL_VIN_MIN_SPEED2) \
-                                                        / (MG_U16_FAN_CTRL_MAX_VIN_LL - MG_U16_FAN_CTRL_MIN_VIN_LL))
-#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2         (sint16)(S32Q8(1.0F) / (MG_S16_FAN_CTRL_LOAD_MAX_LL))
 /*******************************************************************************
  * Local data types (private typedefs / structs / enums)
  ******************************************************************************/
@@ -530,11 +515,9 @@ static void mg_AdjSpeed(void)
 	uint16 u16MinFanDuty = MG_U16_FAN_DUTY_MIN;
 	
 	uint32 u32Vin;
-	sint32 s32VinDiff;
 	volatile sint32 s32Dummy;
 	volatile sint16 MG_S16_FAN_CTRL_TEMP;
 	uint8 u8VinLine = RTE_B_PRI_VIN_LINE_LOW;
-	/* base Temp */
 	sint16 s16FanStag1TempFact;
 	sint16 s16FanStag2TempFact;
 	sint16 s16FanStag3TempFact;
@@ -547,7 +530,6 @@ static void mg_AdjSpeed(void)
 	sint16 s16FanStag2SpeedMin;
 	sint16 s16FanStag3SpeedMin;
 	sint16 s16FanStag4SpeedMin;
-	
 	sint16 s16FanCtrlLoadMax;
 	sint16 s16FanCtrlVinNormal;
 	
@@ -564,7 +546,7 @@ static void mg_AdjSpeed(void)
 		s16FanStag4SpeedMin = MG_S16_FAN_CTRL_STAG2_TEMP_MIN_SPEED_LL;
 
     s16FanCtrlLoadMax = MG_S16_FAN_CTRL_LOAD_MAX_LL;	
-		s16FanCtrlVinNormal = 110 << 7;
+		s16FanCtrlVinNormal = 110;
 	}
 	else/* high line */
 	{
@@ -579,7 +561,7 @@ static void mg_AdjSpeed(void)
 		s16FanStag4SpeedMin = MG_S16_FAN_CTRL_STAG2_TEMP_MIN_SPEED_HL;	
 
     s16FanCtrlLoadMax = MG_S16_FAN_CTRL_LOAD_MAX_HL;	
-    s16FanCtrlVinNormal	= 220 << 7;	
+    s16FanCtrlVinNormal	= 220;	
 	}
 	s16FanStag1TempFact = (sint16)((s16FanStag1SpeedMax - s16FanStag1SpeedMin)/(MG_S16_FAN_CTRL_STAG1_MAX_TEMP - MG_S16_FAN_CTRL_STAG1_MIN_TEMP));
 	s16FanStag2TempFact = (sint16)((s16FanStag2SpeedMax - s16FanStag2SpeedMin)/(MG_S16_FAN_CTRL_STAG2_MAX_TEMP - MG_S16_FAN_CTRL_STAG2_MIN_TEMP));
@@ -589,52 +571,21 @@ static void mg_AdjSpeed(void)
 	/* Control the fan accoiding to the load */
 	u32PoutV1 = FANCTRL_SCFG_u16ReadPoutV1Avg();
 	s32LoadDiff = (sint32)(u32PoutV1) - (sint32)s16FanCtrlLoadMax;
-	if( TRUE == u8VinLine)
+	if (s32LoadDiff > 0)
 	{
-			RTE_u16ComDebug[1] = s32LoadDiff;
-			u32FanSpeedAdj += ((uint32)((sint32)((20000-1250)*128/1250) * ((sint32)s32LoadDiff))) >> 7u;
+		RTE_u16ComDebug[1] = s32LoadDiff;
+		u32FanSpeedAdj += ((uint32)((sint32)MG_U32_FAN_SCALING_FACT_2 * ((sint32)s32LoadDiff))) >> 7u;
 	}
-	else
-	{
-			RTE_u16ComDebug[1] = s32LoadDiff;
-			u32FanSpeedAdj += ((uint32)((sint32)((20000-2000)*128/2000)  * ((sint32)s32LoadDiff))) >> 7u;	
-	}
-
 
   /* Control the fan accoiding to Vin */	
 	u32Vin = FANCTRL_SCFG_u16ReadVinAvg();/* u16Vin_Mul_128 */
-	s32VinDiff = (sint32)(s16FanCtrlVinNormal) - (sint32)(u32Vin);
-	if (TRUE == u8VinLine)/* low line */
+	if(u32Vin < s16FanCtrlVinNormal)
 	{
-		if(0 < s32VinDiff)
-		{
-      s32Dummy = mg_u16LinearCalc(u32Vin, MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT1,\
-                                  8,0,MG_U16_FAN_CTRL_MIN_VIN_LL,MG_U16_FAN_CTRL_MAX_VIN_LL,\
-                                   MG_U16_FAN_CTRL_VIN_MIN_SPEED2,MG_U16_FAN_CTRL_VIN_MAX_SPEED2);
-			s32Dummy = MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - s32Dummy;
-      s32Dummy = (s32Dummy * u32PoutV1 * MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2) >> 16;
-      u32FanSpeedAdj += s32Dummy;
-		}
-		else
-		{
-			u32FanSpeedAdj += MG_U16_FAN_CTRL_VIN_MIN_SPEED1;
-		}	  
+	  
 	}
-	else /* high line */
+	else
 	{
-		if(0 < s32VinDiff)
-		{
-      s32Dummy = mg_u16LinearCalc(u32Vin, MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2,\
-                                  8,0,MG_U16_FAN_CTRL_MIN_VIN_HL,MG_U16_FAN_CTRL_MAX_VIN_HL,\
-                                   MG_U16_FAN_CTRL_VIN_MIN_SPEED1,MG_U16_FAN_CTRL_VIN_MAX_SPEED1);
-			s32Dummy = MG_U16_FAN_CTRL_VIN_MAX_SPEED1 - s32Dummy;
-      s32Dummy = (s32Dummy * u32PoutV1 * MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT1) >> 16;
-      u32FanSpeedAdj += s32Dummy;
-		}
-		else
-		{
-			u32FanSpeedAdj += MG_U16_FAN_CTRL_VIN_MIN_SPEED1;
-		}	  
+	  
 	}
 	
 	/* control the fan speed according to the tempareture */	

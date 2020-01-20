@@ -95,6 +95,24 @@ typedef struct MG_S_UARTPRT_DATA_
 
 static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
 
+#define MG_S16_FAN_CTRL_TEMP_THR_0                  ((sint16)-8)
+#define MG_S16_FAN_CTRL_TEMP_THR_1                  ((sint16)5)
+#define MG_S16_FAN_CTRL_TEMP_THR_2                  ((sint16)30)
+#define MG_S16_FAN_CTRL_TEMP_THR_3                  ((sint16)40)
+#define MG_S16_FAN_CTRL_SPEED_THR_1                 ((sint16)5900)
+#define MG_S16_FAN_CTRL_SPEED_THR_0                 ((sint16)(0.4 * MG_S16_FAN_CTRL_SPEED_THR_1))
+#define MG_S16_FAN_CTRL_SPEED_THR_2                 ((sint16)10000)
+#define MG_S16_FAN_CTRL_SPEED_MAX                   ((sint16)23600)
+#define MG_S16_FAN_CTRL_SPEED_MIN                   ((sint16)2100)
+
+#define MG_S16_FAN_CTRL_LOAD_MAX                    ((sint16)4000)
+#define MG_S16_FAN_CTRL_LOAD_THR_0                  ((sint16)MG_S16_FAN_CTRL_LOAD_MAX * 0.5 )
+
+#define MG_U32_FAN_SCALING_FACT_1                   ((uint32)(MG_S16_FAN_CTRL_SPEED_THR_2 - MG_S16_FAN_CTRL_SPEED_THR_1) \
+                                                              / (uint32)(MG_S16_FAN_CTRL_TEMP_THR_3 - MG_S16_FAN_CTRL_TEMP_THR_2))
+#define MG_U32_FAN_SCALING_FACT_2                   (((uint32)23600 - (uint32)0.4*5900) << 7 / (uint32)(2000))
+#define AAA               (sint16)(S32Q16(1.0F)  / (MG_U16_FAN_PSU_FULL_LOAD1))
+
 int main(void)
 {
   // PSMI_SHUTDOWN_EVENT A;
@@ -110,50 +128,31 @@ int main(void)
 
   // PMBUS_U_SYS_BIT_FLAG data;
   // data.ALL = 0x12;
-
   // printf("%x",data.Word);
 
-	uint16 u16TrimVsbGain;
-	uint16 u16TrimV1Gain;
-	uint16 u16TrimVsbGainAct;
-	uint16 u16TrimV1GainAct;
-	static uint16 u16TrimVsbOvpGainAct;
-  uint16 tmp = 800;
-
-  while(1)
-  {
-    u16TrimVsbGainAct = tmp;
-    u16TrimVsbGain = 0;
-		if (u16TrimVsbGain != u16TrimVsbGainAct)
-		{
-
-			if (u16TrimVsbGain > u16TrimVsbGainAct)
-			{
-				if (u16TrimVsbGain > (u16TrimVsbGainAct + 10u))
-				{
-					u16TrimVsbGainAct += 10u;
-				}
-				else
-				{
-					u16TrimVsbGainAct = u16TrimVsbGain;
-				}
-			}
-			else
-			{
-				if (u16TrimVsbGainAct > (u16TrimVsbGain + 10u))
-				{
-					u16TrimVsbGainAct -= 10u;
-				}
-				else
-				{
-					u16TrimVsbGainAct = u16TrimVsbGain;
-				}
-			}
-    tmp = u16TrimVsbGainAct;
-    printf("%d\n",u16TrimVsbGainAct);
-  }}
 
 
+  // uint16 s;
+  // uint8 t[]={25,40,50};
+  // uint8 v[]={90,110};
+  // uint8 i,j;
+
+  // for(i=0;i<3;i++)
+  // {
+  //   for(j=0;j<2;j++)
+  //   {
+  //     s=((170*((t[i]-30)*(t[i]-30)))>>7)+80*(t[i]-30)+65*(110-v[j])+5867;
+  //     printf("%d\n",s);
+  //   }
+  // }
+
+
+  sint32 s32LoadDiff;
+  uint32 u32FanSpeedAdj = 0;
+  s32LoadDiff = (sint32)(3000) - (sint32)MG_S16_FAN_CTRL_LOAD_THR_0;
+  u32FanSpeedAdj += ((uint32)((sint32)MG_U32_FAN_SCALING_FACT_2 * ((sint32)s32LoadDiff))) >> 7u;
+
+  printf("%d",MG_U32_FAN_SCALING_FACT_2);
 
   return 0;
 }

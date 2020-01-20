@@ -150,6 +150,76 @@ RTE_Write_B_P_PRI_RX_PKG = 0
 RTE_Write_B_P_PRI_NO_RX_PKG = 1
 
 
+u32FanSpeedAdj += ((uint32)((sint32)MG_U32_FAN_SCALING_FACT_2 * ((sint32)s32LoadDiff))) >> 7u;
+
+
+#define MG_FAN_CTRL_BASE_VIN_EN                       1
+#define MG_FAN_CTRL_BASE_LOAD1_EN                      1           /* fan ctrl base load enable */
+#define MG_FAN_CTRL_BASE_LOAD2_EN                      1           /* fan ctrl base load enable */
+
+  /* 12V Load radio */
+#define MG_U16_FAN_CTRL_VIN_MAX_SPEED1              ((sint16)3500)
+#define MG_U16_FAN_CTRL_VIN_MIN_SPEED1              ((sint16)0)
+#define MG_U16Q12_FAN_CTRL_MAX_VIN                  ((uint16)U32Q12(215.0F / RTE_VIN_MAX))
+#define MG_U16Q12_FAN_CTRL_MIN_VIN                  ((uint16)U32Q12(190.0F / RTE_VIN_MAX))
+/* Note: the below variable may overflow */
+#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT1         (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED1 - MG_U16_FAN_CTRL_VIN_MIN_SPEED1) \
+                                                      / (MG_U16Q12_FAN_CTRL_MAX_VIN - MG_U16Q12_FAN_CTRL_MIN_VIN))
+
+#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT1      (sint16)(S32Q16(1.0F) / (MG_U16_FAN_PSU_FULL_LOAD1))
+
+/* 54V Load radio */
+#define MG_U16_FAN_CTRL_VIN_MAX_SPEED2              ((sint16)1100)
+#define MG_U16_FAN_CTRL_VIN_MIN_SPEED2              ((sint16)0)
+#define MG_U16Q12_FAN_CTRL_MAX_VIN                  ((uint16)U32Q12(215.0F / RTE_VIN_MAX))
+#define MG_U16Q12_FAN_CTRL_MIN_VIN                  ((uint16)U32Q12(190.0F / RTE_VIN_MAX))
+/* Note: the below variable may overflow */
+#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2         (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - MG_U16_FAN_CTRL_VIN_MIN_SPEED2) \
+                                                      / (MG_U16Q12_FAN_CTRL_MAX_VIN - MG_U16Q12_FAN_CTRL_MIN_VIN))
+
+#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2      (sint16)(S32Q8(1.0F) / (MG_U16_FAN_PSU_FULL_LOAD2))
+
+
+
+#define MG_S16_FAN_CTRL_STAG1_TEMP_MAX_SPEED_LL        ((sint16)20000)//((sint16)24000)//((sint16)16000)
+#define MG_S16_FAN_CTRL_STAG1_TEMP_MIN_SPEED_LL        ((sint16)8000)
+#define MG_S16_FAN_CTRL_STAG1_TEMP_MAX_SPEED_HL        ((sint16)20000)
+#define MG_S16_FAN_CTRL_STAG1_TEMP_MIN_SPEED_HL        ((sint16)10000)
+#define MG_S16_FAN_CTRL_STAG1_MAX_TEMP                 ((sint16)60) //((sint16)40)
+#define MG_S16_FAN_CTRL_STAG1_MIN_TEMP                 ((sint16)(24))
+
+#define MG_S16_FAN_CTRL_STAG2_TEMP_MAX_SPEED_LL        ((sint16)8000)
+#define MG_S16_FAN_CTRL_STAG2_TEMP_MIN_SPEED_LL        ((sint16)6800)
+#define MG_S16_FAN_CTRL_STAG2_TEMP_MAX_SPEED_HL        ((sint16)10000)
+#define MG_S16_FAN_CTRL_STAG2_TEMP_MIN_SPEED_HL        ((sint16)8900)
+#define MG_S16_FAN_CTRL_STAG2_MAX_TEMP                 ((sint16)14)
+#define MG_S16_FAN_CTRL_STAG2_MIN_TEMP                 ((sint16)(-1))
+
+#define MG_S16_FAN_CTRL_STAG3_TEMP_MAX_SPEED_LL        ((sint16)6800)
+#define MG_S16_FAN_CTRL_STAG3_TEMP_MIN_SPEED_LL        ((sint16)5500)
+#define MG_S16_FAN_CTRL_STAG3_TEMP_MAX_SPEED_HL        ((sint16)8900)
+#define MG_S16_FAN_CTRL_STAG3_TEMP_MIN_SPEED_HL        ((sint16)6800)
+#define MG_S16_FAN_CTRL_STAG3_MAX_TEMP                 ((sint16)-1)
+#define MG_S16_FAN_CTRL_STAG3_MIN_TEMP                 ((sint16)(-21))
+
+#define MG_S16_FAN_CTRL_STAG4_TEMP_MAX_SPEED_LL        ((sint16)5500)
+#define MG_S16_FAN_CTRL_STAG4_TEMP_MIN_SPEED_LL        ((sint16)2200)
+#define MG_S16_FAN_CTRL_STAG4_TEMP_MAX_SPEED_HL        ((sint16)6800)
+#define MG_S16_FAN_CTRL_STAG4_TEMP_MIN_SPEED_HL        ((sint16)2720)
+#define MG_S16_FAN_CTRL_STAG4_MAX_TEMP                 ((sint16)-21)
+#define MG_S16_FAN_CTRL_STAG4_MIN_TEMP                 ((sint16)(-34))
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
