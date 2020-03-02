@@ -204,16 +204,133 @@ PMB_F6_UNLOCK_DEBUG
 
 
 
+typedef union PMBUS_U_BOOT_STATUS_
+{
+  uint8 ALL;
+  struct
+  {
+    uint8 CHECKSUM_SUCCESS : 1; /* bit0 */
+    uint8 MEM_BOUN_ERR : 1;     /* bit1 */
+    uint8 ALIGN_ERR : 1;        /* bit2 */
+    uint8 KEY_ERR : 1;          /* bit3 */
+    uint8 START_ERR : 1;        /* bit4 */
+    uint8 RESERVED : 1;         /* bit5 */
+    uint8 BOOT_MODE : 1;        /* bit6 */
+    uint8 PROGRAM_BUSY : 1;     /* bit7 */
+    
+  } Bits;
+  
+} PMBUS_U_BOOT_STATUS;
+
+
+typedef union PMBUS_U_BOOT_STATUS_
+{
+  uint8 ALL;
+  struct
+  { 
+    uint8 UC_SELECT_BIT_0     : 1;  /* bit0 */
+    uint8 UC_SELECT_BIT_1     : 1;  /* bit1 */
+    uint8 BOOT_FLAG           : 1;  /* bit2 */
+    uint8 UNLOCK_FW_UPGRADE   : 1;  /* bit3 */
+    uint8 BUSY                : 1;  /* bit4 */
+    uint8 TRANSMISSIION_ERR   : 1;  /* bit5 */
+    uint8 APP_CRC16_ERR       : 1;  /* bit6 */
+    uint8 FW_ID_ERR           : 1;  /* bit7 */
+  } Bits;
+} PMBUS_U_BOOT_STATUS;
+
+
+switch (u8Cmd)
+{
+  case PMB_F0_UNLOCK:
+  {
+    ...
+    u8Cmd = PMB_F2_RAM_DATA;
+    break;
+  }
+  case PMB_F1_PSMODE:
+  {
+    PMBUS_sSysCmd.Cmd = PMB_F1_PSMODE;
+    ...
+    break;
+  }  
+  case PMB_F2_RAM_DATA:
+  {
+    PMBUS_sSysCmd.Cmd = PMB_F2_RAM_DATA;
+    ...
+    EEP_u8ReadMemory(u32EepAddr, (uint8 *)&PMBUS_sCodeBlock.Buf[0], 16);
+    ...
+    if (32 == u8BlockNum) //last block
+    {
+      u8BlockNum = 0;
+      u8Cmd = PMB_F3_FLASH_WRITE;
+    }
+    break;
+  }    
+  case PMB_F3_FLASH_WRITE:
+  {
+    PMBUS_sSysCmd.Cmd = PMB_F3_FLASH_WRITE;
+    ...
+    if (60 == u8PageNum) //last page
+    {
+      u8Cmd = PMB_F4_CRC16;
+    } 
+    else
+    {
+      u8Cmd = PMB_F2_RAM_DATA;
+    }      
+    break;
+  }      
+  case PMB_F4_CRC16:
+  {
+    PMBUS_sSysCmd.Cmd = PMB_F4_CRC16;
+    ...        
+    u8Cmd = PMB_F1_PSMODE;
+    break;
+  }
+  default:
+  {
+    u8Cmd = PMB_F0_UNLOCK;
+    break;
+  }
 
 
 
 
-
-
-
-
-
-
-
-
+switch (PMBUS_sSysCmd.Cmd)
+{
+  case PMB_F0_UNLOCK:
+  {
+    ...
+    break;
+  }
+  case PMB_F1_PSMODE:
+  {
+    ...
+    break;
+  }
+  case PMB_F2_RAM_DATA:
+  {
+    ...
+    for (u8ByteCnt = 0; u8ByteCnt < 16; u8ByteCnt++)
+    {
+      RTE_au8Uart1TxBuf[RTE_u16Uart1TxDataNbr++] = PMBUS_sCodeBlock.Buf[u8ByteCnt];
+    }
+    break;
+  }
+  case PMB_F3_FLASH_WRITE:
+  {
+    ...
+    break;
+  }
+  case PMB_F4_CRC16:
+  {
+    ...
+    break;
+  }
+  default:
+  {
+    break;
+  }
+}
 
