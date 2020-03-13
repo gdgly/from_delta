@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "string.h"
 
 typedef signed char sint8;
 typedef unsigned char uint8;
@@ -149,7 +150,7 @@ static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
 #define MG_U32_FAN_SCALING_FACT_2                   (((uint32)23600 - (uint32)0.4*5900) << 7 / (uint32)(2000))
 #define AAA               (sint16)(S32Q16(1.0F)  / (MG_U16_FAN_PSU_FULL_LOAD1))
 
-
+#if 0
 #define BOOT_BL_PAGE_NUM_START      0    /* 256 per page */
 #define BOOT_BL_PAGE_NUM_SIZE       64u
 #define BOOT_BL_PAGE_NUM_END        (BOOT_BL_PAGE_NUM_START + BOOT_BL_PAGE_NUM_SIZE - 1)   /* 256 per page */
@@ -170,6 +171,25 @@ static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
 
 #define BOOT_PEC_STATUS_ADDR_START (BOOT_CRC_BF_ADDR_START + 4)
 #define BOOT_UPDATE_BF_ADDR_START  (BOOT_PEC_STATUS_ADDR_START + 2)
+#else
+  #define BOOT_BL_PAGE_NUM_START      ((uint16)0)    /* 256 per page */
+  #define BOOT_BL_PAGE_NUM_SIZE       ((uint16)48u)
+  #define BOOT_BL_PAGE_NUM_END        (BOOT_BL_PAGE_NUM_START + BOOT_BL_PAGE_NUM_SIZE - 1u)   /* 256 per page */
+
+  #define BOOT_APP_PAGE_NUM_START     (BOOT_BL_PAGE_NUM_END + 1u)   /* 256 per page */
+  #define BOOT_APP_PAGE_NUM_SIZE      ((uint16)128u)
+  #define BOOT_APP_PAGE_NUM_END       (BOOT_APP_PAGE_NUM_START + BOOT_APP_PAGE_NUM_SIZE - 1u)  /* 256 per page */
+  
+  #define BOOT_CRC_BF_PAGE_NUM_START  (BOOT_APP_PAGE_NUM_END + 1u)   /* 256 per page */
+  #define BOOT_CRC_BF_PAGE_NUM_SIZE   ((uint16)8u)
+  #define BOOT_CRC_BF_PAGE_NUM_END    (BOOT_CRC_BF_PAGE_NUM_START + BOOT_CRC_BF_PAGE_NUM_SIZE - 1u)   /* 256 per page */
+
+  #define BOOT_FLASH_BASE_ADDR        ((uint32)0x08000000u)
+  #define BOOT_ADDR_NUM_PER_PAGE      ((uint32)256u)
+  #define BOOT_CRC_BF_ADDR_START      (BOOT_FLASH_BASE_ADDR+BOOT_ADDR_NUM_PER_PAGE*BOOT_CRC_BF_PAGE_NUM_START)
+  #define BOOT_APP_START_ADDR         (BOOT_FLASH_BASE_ADDR+BOOT_ADDR_NUM_PER_PAGE*BOOT_APP_PAGE_NUM_START)
+  #define BOOT_APP_END_ADDR           ((BOOT_FLASH_BASE_ADDR+(uint32)BOOT_ADDR_NUM_PER_PAGE*(BOOT_APP_PAGE_NUM_END+1u))-1u)
+#endif
 
 uint16 CRC_u16GetCrc16(uint16 u16InCrc, uint8 u8InData)
 {
@@ -179,6 +199,43 @@ uint16 CRC_u16GetCrc16(uint16 u16InCrc, uint8 u8InData)
   u16Crc = CRC_mg_au16crc16tab[((u16Crc) ^ (u8InData)) & 0xffu] ^ ((u16Crc) >> 8u);
   return u16Crc;
 }
+
+
+#define S32Q19(X)                ((sint32)((X < 0.0F) ? (524288.0F * (X) - 0.5F) : (524288.0F  * (X) + 0.5F)))
+#define MG_S16_FAN_CTRL_LOAD_MAX_LL                 ((sint16)1250)
+
+#define MG_U16_FAN_CTRL_VIN_MAX_SPEED2                 ((sint16)3500)
+#define MG_U16_FAN_CTRL_VIN_MIN_SPEED2                 ((sint16)0)
+#define MG_U16_FAN_CTRL_MAX_VIN_LL                     ((uint16)(110.0F ))
+#define MG_U16_FAN_CTRL_MIN_VIN_LL                     ((uint16)(90.0F ))
+#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2            (sint16)((MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - MG_U16_FAN_CTRL_VIN_MIN_SPEED2) \
+                                                        / (MG_U16_FAN_CTRL_MAX_VIN_LL - MG_U16_FAN_CTRL_MIN_VIN_LL))
+
+#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2         (sint16)(S32Q19(1.0F) / (MG_S16_FAN_CTRL_LOAD_MAX_LL))
+#define LIMIT(A, B, C)           ((A < B) ? (B) : (A > C) ? (C) : (A))
+
+static uint16 mg_u16LinearCalc(sint16 s16X,  sint16 s16K, uint8 u8KQformat, \
+sint16 s16B, sint16 s16MinX, sint16 s16MaxX, uint16 u16MinY, uint16 u16MaxY)
+{
+  sint16 s16Temp = 0;
+  if(s16MinX > s16X)
+  {
+    return(u16MinY);
+  }
+  else if(s16MaxX < s16X)
+  {
+    return(u16MaxY);
+  }
+  else
+  {
+    s16Temp = ((((sint32)(s16X - s16MinX) * s16K) >> u8KQformat) + s16B);
+    s16Temp = LIMIT(s16Temp, u16MinY, u16MaxY);
+    return(s16Temp);
+  }
+} /* mg_u16LinearCalc() */
+
+#define TRUE     1
+
 
 int main(void)
 {
@@ -255,27 +312,79 @@ int main(void)
   // printf("\n0x%x",a);
   // return 0;
 /*****************************************/
-  printf("%.8x\n",BOOT_CRC_BF_ADDR_START);
-  printf("%.8x",BOOT_UPDATE_BF_ADDR_START);
+  // printf("%.8x\n",BOOT_APP_START_ADDR);
+  // printf("%.8x\n",BOOT_APP_END_ADDR);
+/****************************************/
+/***************计算Hex校验和********************/
+  // uint8 u8buf[]="1001C00002480169802211430161704700200240";
+  // uint8 u8len,i;
+  // uint8 u8sum=0;
+  // uint8 u8tmp;
+  
+  // u8len = strlen(u8buf);
+  // for(i=0;i<u8len;i++)
+  // {
+  //   if(u8buf[i]>0x39)
+  //   {      u8buf[i] = u8buf[i] - 0x30 -0x07;    }
+  //   else
+  //   {      u8buf[i] = u8buf[i] - 0x30;    }
+  // }
+  // for(i=0;i<u8len;i += 2)
+  // {
+  //   u8tmp = (u8buf[i] << 4) + u8buf[i+1];
+  //   u8sum += u8tmp;
+  // }
+  // printf("%.2X",0x0100 - u8sum);
+/**************************************/
+
+sint32 s32VinDiff;
+sint32 s32Dummy;
+sint32 u32Vin;
+sint32 u32PoutV1;
+uint32 u32FanSpeedAdj;
+uint8 u8VinLine;
+sint32 s32LoadDiff;
+sint32 s16FanCtrlLoadMax;
+
+u32FanSpeedAdj = 5500;
+u32Vin = 110;
+u32PoutV1 = 1250;
+
+  u32FanSpeedAdj = 5500;
+  u8VinLine = 1;
+  s16FanCtrlLoadMax = 1250;
+  /* Control the fan accoiding to the load */
+  s32LoadDiff = (sint32)(u32PoutV1) - (sint32)s16FanCtrlLoadMax;
+  if( TRUE == u8VinLine)
+  {/* max min value need confirm */
+      u32FanSpeedAdj += ((sint32)((sint32)((2200-0)*128/1250) * ((sint32)s32LoadDiff))) >> 7u;
+  }
+  else
+  {
+      u32FanSpeedAdj += ((sint32)((sint32)((2720-0)*128/2000)  * ((sint32)s32LoadDiff))) >> 7u;	
+  }
+
+  if(0 < s32VinDiff)
+  {
+    s32Dummy = mg_u16LinearCalc(u32Vin, MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2,\
+                                0,0,MG_U16_FAN_CTRL_MIN_VIN_LL,MG_U16_FAN_CTRL_MAX_VIN_LL,\
+                                  MG_U16_FAN_CTRL_VIN_MIN_SPEED2,MG_U16_FAN_CTRL_VIN_MAX_SPEED2);
+    s32Dummy = MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - s32Dummy;
+    s32Dummy = (s32Dummy * u32PoutV1 * MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2) >> 19;
+    u32FanSpeedAdj += s32Dummy;
+  }
+  else
+  {
+    u32FanSpeedAdj += MG_U16_FAN_CTRL_VIN_MIN_SPEED2;
+  }	
+  printf("%d\n",u32FanSpeedAdj);
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

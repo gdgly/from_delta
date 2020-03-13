@@ -334,3 +334,49 @@ switch (PMBUS_sSysCmd.Cmd)
   }
 }
 
+
+
+
+void USART1_IRQHandler(void)
+{
+	if(USART_GetITStatus(USART1,USART_IT_RXNE) != FALSE)
+  {
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+		(*mg_Uart1RxIsrCallback)(0);
+	}
+}
+
+void USART2_IRQHandler(void)
+{
+	if(USART_GetITStatus(USART2,USART_IT_RXNE) != FALSE)
+  {
+		USART_ClearITPendingBit(USART2,USART_IT_RXNE);
+		(*mg_Uart2RxIsrCallback)(1u);
+	}
+}
+
+
+void USART1_IRQHandler(void)
+{
+	if(USART_GetITStatus(USART1,USART_IT_RXNE) != FALSE)
+  {
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
+		(*mg_Uart1RxIsrCallback)(1u);
+	}
+}
+
+void USART2_IRQHandler(void)
+{
+	if(USART_GetITStatus(USART2,USART_IT_RXNE) != FALSE)
+  {
+		USART_ClearITPendingBit(USART2,USART_IT_RXNE);
+		(*mg_Uart2RxIsrCallback)(0);
+	}
+}
+
+
+
+
+
+
+
