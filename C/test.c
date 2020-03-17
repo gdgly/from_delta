@@ -376,6 +376,60 @@ void USART2_IRQHandler(void)
 
 
 
+		/* Vsb trim */
+		PSUCTRL_Rte_Read_R_u16TrimVsbGain(&u16TrimVsbGain);
+		PSUCTRL_Rte_Read_R_u16TrimVsbGainAct(&u16TrimVsbGainAct);
+
+		if (u16TrimVsbGain != u16TrimVsbGainAct)
+		{
+			if (u16TrimVsbGain > 1000u) /* Limitation */
+			{
+				u16TrimVsbGain = 1000u;
+				PSUCTRL_Rte_Write_P_u16TrimVsbGain(1000u);
+			}
+
+			if (u16TrimVsbGain > u16TrimVsbGainAct)
+			{
+				if (u16TrimVsbGain > (u16TrimVsbGainAct + 10u))
+				{
+					u16TrimVsbGainAct += 10u;
+				}
+				else
+				{
+					u16TrimVsbGainAct = u16TrimVsbGain;
+				}
+			}
+			else
+			{
+				if (u16TrimVsbGainAct > (u16TrimVsbGain + 10u))
+				{
+					u16TrimVsbGainAct -= 10u;
+				}
+				else
+				{
+					u16TrimVsbGainAct = u16TrimVsbGain;
+				}
+			}
+
+			PSUCTRL_Rte_Write_P_u16TrimVsbGainAct(u16TrimVsbGainAct);
+			PSUCTRL_SCFG_vVsbTrimDuty(u16TrimVsbGainAct);
+		}
+
+		if (u16TrimVsbOvpGainAct > 10u)
+		{
+			u16TrimVsbOvpGainAct -= 10u;
+			PSUCTRL_SCFG_vVsbOvpDuty(u16TrimVsbOvpGainAct);
+		}
+		/* Vsb PWM duty cover the OVP by severin */
+		#if 0
+		else
+		{
+			PSUCTRL_SCFG_vSetVsbOvpPwmOut(FALSE);
+		}
+		#endif
+
+
+
 
 
 
