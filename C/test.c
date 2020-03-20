@@ -1,436 +1,969 @@
-#define RTE_B_DIO_HIGH_LINE_ENA RTE_uDioOutStatus.Bits.fa
-#define RTE_B_PRI_VIN_LINE_LOW RTE_Pri.u16PriStatus00.Bits.f3 /* 1 = low line */
+/******************************************************************************
+ * \file    monctrl.c
+ * \brief   output monitor control
+ *
+ * \section AUTHOR
+ *    1. Fred.Ji
+ *
+ * \section SVN
+ *  $Date: 2019-11-22 11:01:57 +0800 (Fri, 22 Nov 2019) $
+ *  $Author: Jeff.Zhou $
+ *  $Revision: 239 $
+ *
+ * \section LICENSE
+ * Copyright (c) 2016 Delta Electronics (Hangzhou Design Center)
+ * All rights reserved.
+ *******************************************************************************/
 
-#define RTE_Read_B_R_VIN_LINE_LOW (RTE_B_PRI_VIN_LINE_LOW)
-#define RTE_Read_B_R_VIN_LINE (RTE_B_PRI_VIN_LINE_LOW)
-#define RTE_Read_B_R_PRI_VIN_LINE (RTE_B_PRI_VIN_LINE_LOW)
+/*******************************************************************************
+ * Included header
+ ******************************************************************************/
 
-#define RTE_Write_B_P_VIN_LINE_LOW (RTE_B_TO_SEC_STA_VIN_LINE_LOW)
+/* Module header */
+#define MONCTRL_EXPORT_H
+#include "monctrl_api.h"
+#include "monctrl_cfg.h"
+#include "monctrl_conf.h"
+#include "monctrl_scb.h"
+#include "monctrl_scfg.h"
+#include "monctrl_rte.h"
 
-CALI_RTE_W_sData.sVoutV1[u8CaliLine].s16Amp = MG_V_V1_AMP_DEFAULT;
-CALI_RTE_R_sData.sVoutV1[0] RTE_CALI_sData
-    RTE_CALI_sData
 
-        SINLINE void
-        MONCTRL_Rte_Read_R_u16VsbLinearExt(uint16 *var)
+/*******************************************************************************
+ * Local constants and macros (private to module)
+ ******************************************************************************/
+typedef struct MONCTRL_sVsbMonitor_
 {
-  Rte_Read_R_u16VsbLinearExt(&var);
-}
-#define Rte_Read_R_u16VsbLinearExt(var) ((**var) = RTE_u16VoutExtVsbFast)
+	uint16 u16MoniDly;
+	uint16 u16OcpDly;
+	uint16 u16OcwDly;
+	uint16 u16ScpDly;
+	uint16 u16UvpDly;
+	uint16 u16ExtUvpDly;
+	uint16 u16UvwDly;
+	uint16 u16OvpDly;
+	uint16 u16OvwDly;
+	uint16 u16OcpOffDly;
+	uint16 u16ScpOffDly;
+	uint16 u16UvpOffDly;
+	uint16 u16PwOkDly;
+} MONCTRL_sVsbMonitor;
 
-SINLINE uint16 MONCTRL_SCFG_u16GetVsbExtVolt10mVAvg(void)
+typedef struct MONCTRL_sV1Monitor_
 {
-  return BUFFER_u16GetMean1ms(BUFFER_CFG_E_ExtVsb);
-}
+	uint16 u16MoniDly;
+	uint16 u16OcpDly;
+	uint16 u16OcwDly;
+	uint16 u16ScpDly;
+	uint16 u16UvpDly;
+	uint16 u16UvwDly;
+	uint16 u16OvpDly;
+	uint16 u16OvwDly;
+	uint16 u16OcpOffDly;
+	uint16 u16ScpOffDly;
+	uint16 u16UvpOffDly;
+	uint16 u16PwOkDly;
+} MONCTRL_sV1Monitor;
 
-PSUCTRL_SCFG_vVsbOvpDuty(u16TrimVsbOvpGainAct);
-PSUCTRL_SCFG_vSetVsbOvpPwmOut(TRUE);
+MONCTRL_sVsbMonitor mg_sVsbMonitor;
+MONCTRL_sV1Monitor  mg_sV1Monitor;
 
-RTE_u16TrimVsbGainOvp.u16Val
-    RTE_u16TrimVsbGainOvp.u16Val
-
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_0, .Mode_Type = GPIO_Mode_AN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource0, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},    /* Inlet NTC */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_1, .Mode_Type = GPIO_Mode_AN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource1, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},    /* Outlet NTC */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_2, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource2, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},    /* TX of UART2 */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_3, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource3, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},    /* RX of UART2 */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_4, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource4, .u8GpioAF = GPIO_AF_4, .u8OutState = FALSE},    /* Adjust the VSB voltage */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_5, .Mode_Type = GPIO_Mode_AN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource5, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},    /* voltage of VSB */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_6, .Mode_Type = GPIO_Mode_AN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource6, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},    /* current of VSB */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_7, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource7, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},    /* Reserve */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_8, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource8, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},   /* PSON/L signal to PSU */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_9, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource9, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},   /* LED Green */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_10, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource10, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* LED Amber */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_11, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource11, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* Power OK signal to system */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_12, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource12, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* SMBAlert signal */
-    {.u32Perip = RCC_AHBPeriph_GPIOA, .GPIOx = GPIOA, .u16Pin = GPIO_Pin_15, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource15, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* EEPROM Write Protect */
-
-    /* Port B */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_0, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource0, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* Fault flag of 56V */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_1, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource1, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* Reserve */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_2, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_OD, .GPIO_PuPd = GPIO_PuPd_NOPULL, .u16PinSource = GPIO_PinSource2, .u8GpioAF = GPIO_AF_0, .u8OutState = TRUE},    /* Turn on or off VSB*/
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_3, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource3, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* Vin line */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_4, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource4, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* I2c Address pin1 */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_5, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource5, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* I2c Address pin0 */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_6, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource6, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* TX of UART1*/
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_7, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource7, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},       /* RX of UART1 */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_8, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_OD, .GPIO_PuPd = GPIO_PuPd_NOPULL, .u16PinSource = GPIO_PinSource8, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},   /* SCL */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_9, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_OD, .GPIO_PuPd = GPIO_PuPd_NOPULL, .u16PinSource = GPIO_PinSource9, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},   /* SDA */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_10, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_OD, .GPIO_PuPd = GPIO_PuPd_NOPULL, .u16PinSource = GPIO_PinSource10, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE}, /* SCL*/
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_11, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_OD, .GPIO_PuPd = GPIO_PuPd_NOPULL, .u16PinSource = GPIO_PinSource11, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE}, /* SDA */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_12, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource12, .u8GpioAF = GPIO_AF_0, .u8OutState = TRUE},     /* Internal synchronize with second side */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_13, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource13, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},     /* Output VIN OK signal to system */
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_14, .Mode_Type = GPIO_Mode_OUT, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource14, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE},    /* AC OK signal from PFC*/
-    {.u32Perip = RCC_AHBPeriph_GPIOB, .GPIOx = GPIOB, .u16Pin = GPIO_Pin_15, .Mode_Type = GPIO_Mode_AF, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource15, .u8GpioAF = GPIO_AF_1, .u8OutState = FALSE},     /* PWM debug */
-    /* Port C */
-    {.u32Perip = RCC_AHBPeriph_GPIOC, .GPIOx = GPIOC, .u16Pin = GPIO_Pin_13, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource13, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* RESERVE */
-    {.u32Perip = RCC_AHBPeriph_GPIOC, .GPIOx = GPIOC, .u16Pin = GPIO_Pin_14, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource14, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* RESERVE */
-    {.u32Perip = RCC_AHBPeriph_GPIOC, .GPIOx = GPIOC, .u16Pin = GPIO_Pin_15, .Mode_Type = GPIO_Mode_IN, .GPIO_Speed = GPIO_Speed_50MHz, .GPIO_OType = GPIO_OType_PP, .GPIO_PuPd = GPIO_PuPd_UP, .u16PinSource = GPIO_PinSource15, .u8GpioAF = GPIO_AF_0, .u8OutState = FALSE}, /* RESERVE */
-
-    TEMPCTRL_SCFG_u16ReadOutletNtc();
-
-typedef enum BUFFER_CFG_E_INDEX_
+typedef enum
 {
-  BUFFER_CFG_E_ExtVsb = 0,
-  BUFFER_CFG_E_IntVsb,
-  BUFFER_CFG_E_Isb,
-  BUFFER_CFG_E_Vin,
-  BUFFER_CFG_E_Iin,
-  BUFFER_CFG_E_Pin,
-  BUFFER_CFG_E_V1,
-  BUFFER_CFG_E_I1,
-  BUFFER_CFG_E_P1,
-  BUFFER_CFG_E_INDEX_COUNT /* Must be last row!*/
-} BUFFER_CFG_E_INDEX;
+	MG_PSON_INIT,
+	MG_PSON_MODE_OFF,
+	MG_PSON_MODE_ON,
+} MG_E_PSON;
 
+/*******************************************************************************
+ * Local functions (public to other modules)
+ ******************************************************************************/
 
+/*******************************************************************************
+ * Global data (public to other modules)
+ ******************************************************************************/
 
-  mg_vConfigGpioPin(PORT_A, PIN_0, GPIO_Mode_AN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /* ADC VOLT_OUT_EXT_BUF */
-  mg_vConfigGpioPin(PORT_A, PIN_1, GPIO_Mode_AN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /* ADC VOLT_OUT_INT_BUF */
-  mg_vConfigGpioPin(PORT_A, PIN_2, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /*  */
-  mg_vConfigGpioPin(PORT_A, PIN_3, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /*  */
-  mg_vConfigGpioPin(PORT_A, PIN_4, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /*  */
-  mg_vConfigGpioPin(PORT_A, PIN_5, GPIO_Mode_AN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /* DAC DAC1_OUT2 */
-  mg_vConfigGpioPin(PORT_A, PIN_6, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /*  */
-  mg_vConfigGpioPin(PORT_A, PIN_7, GPIO_Mode_AN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                 /* COMP2 CT current limitation */
-  mg_vConfigGpioPin(PORT_A, PIN_8, GPIO_Mode_AF, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_HRTIMER_PWM);    /* PWM AD */
-  mg_vConfigGpioPin(PORT_A, PIN_9, GPIO_Mode_AF, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_HRTIMER_PWM);    /* PWM BC */
-  mg_vConfigGpioPin(PORT_A, PIN_10, GPIO_Mode_AF, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_HRTIMER_PWM);   /* PWM SR A */
-  mg_vConfigGpioPin(PORT_A, PIN_11, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_HRTIMER_PWM);   /*  */
-  mg_vConfigGpioPin(PORT_A, PIN_12, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                /*  */
-  #if (FALSE == DEBUG_MODE)
-  mg_vConfigGpioPin(PORT_A, PIN_13, GPIO_Mode_AF, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_SWDIO_SWCLK);   /* SWDIO */
-  mg_vConfigGpioPin(PORT_A, PIN_14, GPIO_Mode_AF, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, MG_SWDIO_SWCLK);   /* SWCLK */
-  #endif
-  mg_vConfigGpioPin(PORT_A, PIN_15, GPIO_Mode_IN, GPIO_OType_PP, GPIO_Speed_50MHz, GPIO_PuPd_NOPULL, 0);                /*  */
+/*******************************************************************************
+ * Global functions (public to other modules)
+ ******************************************************************************/
 
-
-
-
-    if (u8BroadcastFlg) 
-    {
-      /* Read data from buffer */
-      uCom2Pri00.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uCom2Pri00.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uDebugData0Addr.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uDebugData0Addr.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      u1mACurrInOffset.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      u1mACurrInOffset.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliAmp.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliAmp.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliOfs.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliOfs.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      /* Write data to RTE */
-      INTCOM_Rte_Write_P_uComStatus00(uCom2Pri00);
-      INTCOM_Rte_Write_P_u16DebugData0(*((uint16 *)(uDebugData0Addr.ALL + 0x08000000)));
-      INTCOM_Rte_Write_P_1mA_CurrInOffset(u1mACurrInOffset.ALL);
-      INTCOM_Rte_Write_P_s16VoltInAmpIntcom(uVoltInCaliAmp.s16Val);
-      INTCOM_Rte_Write_P_s16VoltInOfsIntcom(uVoltInCaliOfs.s16Val);
-    }
-    else
-    {
-      /* Read data from buffer */
-      uCom2Pri00.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uCom2Pri00.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uDebugData0Addr.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uDebugData0Addr.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      u1mACurrInOffset.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      u1mACurrInOffset.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliAmp.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliAmp.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliOfs.Bytes.LB = pau8RxBuf[u16RxBufCnt++];
-      uVoltInCaliOfs.Bytes.HB = pau8RxBuf[u16RxBufCnt++];
-      /* Write data to RTE */
-      INTCOM_Rte_Write_P_uComStatus00(uCom2Pri00);
-      INTCOM_Rte_Write_P_u16DebugData0(*((uint16 *)(uDebugData0Addr.ALL + 0x08000000)));
-      INTCOM_Rte_Write_P_1mA_CurrInOffset(u1mACurrInOffset.ALL);
-      INTCOM_Rte_Write_P_s16VoltInAmpIntcom(uVoltInCaliAmp.s16Val);
-      INTCOM_Rte_Write_P_s16VoltInOfsIntcom(uVoltInCaliOfs.s16Val);
-
-RTE_Write_B_P_PRI_RX_PKG = 0
-RTE_Write_B_P_PRI_NO_RX_PKG = 1
-
-
-u32FanSpeedAdj += ((uint32)((sint32)MG_U32_FAN_SCALING_FACT_2 * ((sint32)s32LoadDiff))) >> 7u;
-
-
-#define MG_FAN_CTRL_BASE_VIN_EN                       1
-#define MG_FAN_CTRL_BASE_LOAD1_EN                      1           /* fan ctrl base load enable */
-#define MG_FAN_CTRL_BASE_LOAD2_EN                      1           /* fan ctrl base load enable */
-
-  /* 12V Load radio */
-#define MG_U16_FAN_CTRL_VIN_MAX_SPEED1              ((sint16)3500)
-#define MG_U16_FAN_CTRL_VIN_MIN_SPEED1              ((sint16)0)
-#define MG_U16Q12_FAN_CTRL_MAX_VIN                  ((uint16)U32Q12(215.0F / RTE_VIN_MAX))
-#define MG_U16Q12_FAN_CTRL_MIN_VIN                  ((uint16)U32Q12(190.0F / RTE_VIN_MAX))
-/* Note: the below variable may overflow */
-#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT1         (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED1 - MG_U16_FAN_CTRL_VIN_MIN_SPEED1) \
-                                                      / (MG_U16Q12_FAN_CTRL_MAX_VIN - MG_U16Q12_FAN_CTRL_MIN_VIN))
-
-#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT1      (sint16)(S32Q16(1.0F) / (MG_U16_FAN_PSU_FULL_LOAD1))
-
-/* 54V Load radio */
-#define MG_U16_FAN_CTRL_VIN_MAX_SPEED2              ((sint16)1100)
-#define MG_U16_FAN_CTRL_VIN_MIN_SPEED2              ((sint16)0)
-#define MG_U16Q12_FAN_CTRL_MAX_VIN                  ((uint16)U32Q12(215.0F / RTE_VIN_MAX))
-#define MG_U16Q12_FAN_CTRL_MIN_VIN                  ((uint16)U32Q12(190.0F / RTE_VIN_MAX))
-/* Note: the below variable may overflow */
-#define MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2         (sint16)(S32Q8(MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - MG_U16_FAN_CTRL_VIN_MIN_SPEED2) \
-                                                      / (MG_U16Q12_FAN_CTRL_MAX_VIN - MG_U16Q12_FAN_CTRL_MIN_VIN))
-
-#define MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2      (sint16)(S32Q8(1.0F) / (MG_U16_FAN_PSU_FULL_LOAD2))
-
-
-PMB_8B_READ_VOUT
-PMB_8C_READ_IOUT
-PMB_96_READ_POUT
-PMB_8D_READ_TEMPERATURE_1
-PMB_8E_READ_TEMPERATURE_2
-PMB_8F_READ_TEMPERATURE_3
-
-
-PMB_C3_TRIM_VOUT
-PMB_C4_OVP_TEST_VOUT
-PMB_C5_CURR_SHARE
-PMB_C9_CALIBRATION
-PMB_CA_ISHARE_CALIBRATION
-PMB_CB_READ_TEST_REVISION
-PMB_CF_ORING_TEST
-PMB_E2_READ_APP_FW_REVISION
-PMB_EB_READ_APP_FW_DUG_REV
-PMB_F0_UNLOCK_FW_UPGRADE_MODE
-PMB_F1_SET_BOOT_FLAG
-PMB_F5_DEBUG_REG
-PMB_F6_UNLOCK_DEBUG
-
-
-
-typedef union PMBUS_U_BOOT_STATUS_
+/*******************************************************************************
+ * Function:        MONCTRL_vUpdateStatus
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:     Update all secondary status informations. This function is
+ *                  called every 10ms.
+ *
+ ******************************************************************************/
+void MONCTRL_vUpdateStatus(void)
 {
-  uint8 ALL;
-  struct
-  {
-    uint8 CHECKSUM_SUCCESS : 1; /* bit0 */
-    uint8 MEM_BOUN_ERR : 1;     /* bit1 */
-    uint8 ALIGN_ERR : 1;        /* bit2 */
-    uint8 KEY_ERR : 1;          /* bit3 */
-    uint8 START_ERR : 1;        /* bit4 */
-    uint8 RESERVED : 1;         /* bit5 */
-    uint8 BOOT_MODE : 1;        /* bit6 */
-    uint8 PROGRAM_BUSY : 1;     /* bit7 */
-    
-  } Bits;
-  
-} PMBUS_U_BOOT_STATUS;
 
+	static uint16 u16NtcFault = 0;
+	static uint8 u8RemoteOnDlyCnt = 13u;
 
-typedef union PMBUS_U_BOOT_STATUS_
-{
-  uint8 ALL;
-  struct
-  { 
-    uint8 UC_SELECT_BIT_0     : 1;  /* bit0 */
-    uint8 UC_SELECT_BIT_1     : 1;  /* bit1 */
-    uint8 BOOT_FLAG           : 1;  /* bit2 */
-    uint8 UNLOCK_FW_UPGRADE   : 1;  /* bit3 */
-    uint8 BUSY                : 1;  /* bit4 */
-    uint8 TRANSMISSIION_ERR   : 1;  /* bit5 */
-    uint8 APP_CRC16_ERR       : 1;  /* bit6 */
-    uint8 FW_ID_ERR           : 1;  /* bit7 */
-  } Bits;
-} PMBUS_U_BOOT_STATUS;
+	uint8  u8PmbusOperation;
 
-
-switch (u8Cmd)
-{
-  case PMB_F0_UNLOCK:
-  {
-    ...
-    u8Cmd = PMB_F2_RAM_DATA;
-    break;
-  }
-  case PMB_F1_PSMODE:
-  {
-    PMBUS_sSysCmd.Cmd = PMB_F1_PSMODE;
-    ...
-    break;
-  }  
-  case PMB_F2_RAM_DATA:
-  {
-    PMBUS_sSysCmd.Cmd = PMB_F2_RAM_DATA;
-    ...
-    EEP_u8ReadMemory(u32EepAddr, (uint8 *)&PMBUS_sCodeBlock.Buf[0], 16);
-    ...
-    if (32 == u8BlockNum) //last block
-    {
-      u8BlockNum = 0;
-      u8Cmd = PMB_F3_FLASH_WRITE;
-    }
-    break;
-  }    
-  case PMB_F3_FLASH_WRITE:
-  {
-    PMBUS_sSysCmd.Cmd = PMB_F3_FLASH_WRITE;
-    ...
-    if (60 == u8PageNum) //last page
-    {
-      u8Cmd = PMB_F4_CRC16;
-    } 
-    else
-    {
-      u8Cmd = PMB_F2_RAM_DATA;
-    }      
-    break;
-  }      
-  case PMB_F4_CRC16:
-  {
-    PMBUS_sSysCmd.Cmd = PMB_F4_CRC16;
-    ...        
-    u8Cmd = PMB_F1_PSMODE;
-    break;
-  }
-  default:
-  {
-    u8Cmd = PMB_F0_UNLOCK;
-    break;
-  }
-
-
-
-
-switch (PMBUS_sSysCmd.Cmd)
-{
-  case PMB_F0_UNLOCK:
-  {
-    ...
-    break;
-  }
-  case PMB_F1_PSMODE:
-  {
-    ...
-    break;
-  }
-  case PMB_F2_RAM_DATA:
-  {
-    ...
-    for (u8ByteCnt = 0; u8ByteCnt < 16; u8ByteCnt++)
-    {
-      RTE_au8Uart1TxBuf[RTE_u16Uart1TxDataNbr++] = PMBUS_sCodeBlock.Buf[u8ByteCnt];
-    }
-    break;
-  }
-  case PMB_F3_FLASH_WRITE:
-  {
-    ...
-    break;
-  }
-  case PMB_F4_CRC16:
-  {
-    ...
-    break;
-  }
-  default:
-  {
-    break;
-  }
-}
-
-
-
-
-void USART1_IRQHandler(void)
-{
-	if(USART_GetITStatus(USART1,USART_IT_RXNE) != FALSE)
-  {
-		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
-		(*mg_Uart1RxIsrCallback)(0);
-	}
-}
-
-void USART2_IRQHandler(void)
-{
-	if(USART_GetITStatus(USART2,USART_IT_RXNE) != FALSE)
-  {
-		USART_ClearITPendingBit(USART2,USART_IT_RXNE);
-		(*mg_Uart2RxIsrCallback)(1u);
-	}
-}
-
-
-void USART1_IRQHandler(void)
-{
-	if(USART_GetITStatus(USART1,USART_IT_RXNE) != FALSE)
-  {
-		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
-		(*mg_Uart1RxIsrCallback)(1u);
-	}
-}
-
-void USART2_IRQHandler(void)
-{
-	if(USART_GetITStatus(USART2,USART_IT_RXNE) != FALSE)
-  {
-		USART_ClearITPendingBit(USART2,USART_IT_RXNE);
-		(*mg_Uart2RxIsrCallback)(0);
-	}
-}
-
-
-
-		/* Vsb trim */
-		PSUCTRL_Rte_Read_R_u16TrimVsbGain(&u16TrimVsbGain);
-		PSUCTRL_Rte_Read_R_u16TrimVsbGainAct(&u16TrimVsbGainAct);
-
-		if (u16TrimVsbGain != u16TrimVsbGainAct)
+	/* Ntc short or open fault */
+	if ((FALSE == PMBUS_uSysStatu0.Bits.AUX_MODE) &&
+	    (FALSE != MONCTRL_RTE_Read_B_R_RELAY_ON()))
+	{
+		if (FALSE != MONCTRL_RTE_Read_B_R_NTC_FAULT())
 		{
-			if (u16TrimVsbGain > 1000u) /* Limitation */
+			if (u16NtcFault < 50u)
 			{
-				u16TrimVsbGain = 1000u;
-				PSUCTRL_Rte_Write_P_u16TrimVsbGain(1000u);
+				u16NtcFault++;
 			}
-
-			if (u16TrimVsbGain > u16TrimVsbGainAct)
+			else
 			{
-				if (u16TrimVsbGain > (u16TrimVsbGainAct + 10u))
+				MONCTRL_RTE_Write_B_P_ANY_NTC_FAULT(TRUE);
+			}
+		}
+		else
+		{
+			u16NtcFault = 0;
+			MONCTRL_RTE_Write_B_P_ANY_NTC_FAULT(FALSE);
+		}
+	}
+	else
+	{
+		u16NtcFault = 0;
+		MONCTRL_RTE_Write_B_P_ANY_NTC_FAULT(FALSE);
+	}
+
+	/* Check remote on/off */
+	MONCTRL_RTE_Read_R_u8PmbusOperation(&u8PmbusOperation);
+	
+	if ((0 == u8PmbusOperation)
+	    || (FALSE == MONCTRL_RTE_Read_B_R_PSON_ACTIVE())
+	    /* ||(FALSE != MONCTRL_RTE_Read_B_R_PS_KILL_ACTIVE()) *///nokia has no kill
+	   )
+	{ 
+		MONCTRL_RTE_Write_B_P_REMOTE_ON(FALSE);
+
+		if ((FALSE != MONCTRL_RTE_Read_B_P_VSB_ON()) &&
+		    (FALSE == MONCTRL_RTE_Read_B_R_VIN_UV()) &&
+		    (FALSE == MONCTRL_RTE_Read_B_R_VIN_OV())
+		   )
+		{
+			MONCTRL_Rte_Write_B_P_STB_MODE(TRUE);
+		}
+		else
+		{
+			MONCTRL_Rte_Write_B_P_STB_MODE(FALSE);
+		}
+
+#if 0 /* nokia no pskill by severin */
+		if (FALSE != MONCTRL_RTE_Read_B_R_PS_KILL_ACTIVE())
+		{
+			u8RemoteOnDlyCnt = 0u; /* delay 0ms */
+		}
+		else
+		{
+			u8RemoteOnDlyCnt = 8u;    /* delay 80ms*/
+		}
+#endif
+	}
+	else
+	{
+		if (
+		  (FALSE != MONCTRL_RTE_Read_B_R_NO_VIN()) &&
+		  (FALSE == MONCTRL_RTE_Read_B_R_V1_ON())  &&
+		  (FALSE == MONCTRL_RTE_Read_B_R_V1_OVP()) &&
+		  (FALSE == MONCTRL_RTE_Read_B_R_V1_UVP()) &&
+		  (FALSE == MONCTRL_RTE_Read_B_R_V1_OCP())
+		)
+		{
+			MONCTRL_Rte_Write_B_P_STB_MODE(TRUE);
+		}
+		else
+		{
+			MONCTRL_Rte_Write_B_P_STB_MODE(FALSE);
+		}
+
+		if (0 == u8RemoteOnDlyCnt)
+		{
+			MONCTRL_RTE_Write_B_P_REMOTE_ON(TRUE);
+		}
+		else
+		{
+			u8RemoteOnDlyCnt--;
+		}
+	}
+
+} /* MONCTRL_vUpdateStatus() */
+
+
+
+/*******************************************************************************
+ * Function:        MONCTRL_vInit
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:     Initial protection points and delay time.
+ *
+ *
+ ******************************************************************************/
+void MONCTRL_vInit(void)
+{
+	mg_sVsbMonitor.u16MoniDly = 0;
+	mg_sVsbMonitor.u16OcpDly = 0;
+	mg_sVsbMonitor.u16OcpOffDly = 0;
+	mg_sVsbMonitor.u16ScpDly = 0;
+	mg_sVsbMonitor.u16ScpOffDly = 0;
+	mg_sVsbMonitor.u16OvpDly = 0;
+	mg_sVsbMonitor.u16OvwDly = 0;
+	mg_sVsbMonitor.u16UvpDly = 0;
+	mg_sVsbMonitor.u16UvwDly = 0;
+	mg_sVsbMonitor.u16UvpOffDly = 0;
+	mg_sVsbMonitor.u16PwOkDly = 0;
+}
+
+/*******************************************************************************
+ * Function:        MONCTRL_vDeInit
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:     Initial protection points and delay time.
+ *
+ *
+ ******************************************************************************/
+void MONCTRL_vDeInit(void)
+{
+}
+
+/*******************************************************************************
+ * Function:        MONCTRL_vClearFault
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:
+ *
+ ******************************************************************************/
+void MONCTRL_vClearFault(void)
+{
+	//  MONCTRL_RTE_Write_P_TrimVsbGain(0);
+	//  MONCTRL_RTE_Write_P_TrimV1GainOvpA(0);
+}
+
+/*******************************************************************************
+ * Function:        MONCTRL_vVin
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Exe Period:      1ms
+ * Description:     Mornitor the Input voltage
+ *
+ ******************************************************************************/
+void MONCTRL_vVin(void)
+{
+	uint16 u16VinVoltage;
+	uint16 u16VinCurrent;
+
+	static uint16 u16VinUvThrHigh  = AC_VIN_UV_HIGH;
+	static uint16 u16VinUvThrLow   = AC_VIN_UV_LOW;
+	static uint16 u16VinOvThrHigh  = AC_VIN_OV_HIGH;
+	static uint16 u16VinOvThrLow   = AC_VIN_OV_LOW;
+	static uint16 u16VinDropOutHigh = AC_DROPOUT_VIN_HIGH;
+	static uint16 u16VinDropOutLow  = AC_DROPOUT_VIN_LOW;
+	static uint16 u16VinUvwThr      = AC_VIN_UVW_VOLT;
+	static uint16 u16VinOcwThr			= AC_VIN_OCW_CURR;
+
+	static uint16 u16VinUvCnt     = 0;
+	static uint16 u16VinOvCnt     = 0;
+	static uint16 u16VinUvwCnt    = 0;
+	static uint16 u16VinTypeAOld  = 0;
+	static uint16 u16VinOcwCnt    = 0;
+
+	static uint8 u8IsAcOn2Off = FALSE;
+	static uint8 u8IsVinUvDataSave = FALSE;
+	static uint8 u8IsVinOvDataSave = FALSE;
+
+	if (FALSE != MONCTRL_RTE_Read_B_R_PRI1_RX_PKG())
+	{
+		MONCTRL_RTE_Read_R_vVinLinear(&u16VinVoltage);
+		MONCTRL_RTE_Read_R_vIinLinear(&u16VinCurrent);
+
+		/* swtich Vin threshold for AC input */
+		if (FALSE == MONCTRL_RTE_Read_B_R_VDC_IN()) /* AC input */
+		{
+			if (u16VinTypeAOld != MONCTRL_RTE_Read_B_R_VDC_IN())
+			{
+				u16VinTypeAOld   = MONCTRL_RTE_Read_B_R_VDC_IN();
+				u16VinUvThrHigh = AC_VIN_UV_HIGH;
+				u16VinUvThrLow  = AC_VIN_UV_LOW;
+				u16VinOvThrHigh = AC_VIN_OV_HIGH;
+				u16VinOvThrLow  = AC_VIN_OV_LOW;
+				u16VinDropOutHigh = AC_DROPOUT_VIN_HIGH;
+				u16VinDropOutLow  = AC_DROPOUT_VIN_LOW;
+				u16VinUvwThr      = AC_VIN_UVW_VOLT;
+				u16VinOcwThr			= AC_VIN_OCW_CURR;
+			}
+		}
+
+		/************************************************************
+		 * OVER CURRENT detection
+		 ************************************************************/
+		if (u16VinOcwThr < u16VinCurrent)
+		{
+			if (u16VinOcwCnt < MG_U16_VIN_UVW_DLY)
+			{
+				u16VinOcwCnt++;
+			}
+			else
+			{
+				u16VinOcwCnt = 0;
+				MONCTRL_RTE_Write_B_P_VIN_OCW(TRUE);
+			}
+		}
+		else
+		{
+			MONCTRL_RTE_Write_B_P_VIN_OCW(FALSE);
+		}
+
+
+		/************************************************************
+		 * UNDER VOLTAGE detection
+		 ************************************************************/
+		if ((u16VinVoltage < u16VinUvThrLow) && (FALSE == INTCOM_RTE_Read_B_R_VIN_OK_PRI()))
+		{
+			if (u16VinUvCnt < MG_U16_VIN_UVP_DLY)
+			{
+				u16VinUvCnt++;
+			}
+			else
+			{
+				u16VinUvCnt = 0;
+				MONCTRL_RTE_Write_B_P_VIN_UV(TRUE);
+				MONCTRL_RTE_Write_B_P_VIN_UVW(TRUE);
+
+				if (FALSE == u8IsVinUvDataSave)
 				{
-					u16TrimVsbGainAct += 10u;
+					MONCTRL_cfg_vBlackBoxVinSaveData2Buff();
+					u8IsVinUvDataSave = TRUE;
+				}
+			}
+		}
+		else if (u16VinVoltage < u16VinUvwThr)
+		{
+			if (u16VinUvwCnt < MG_U16_VIN_UVW_DLY)
+			{
+				u16VinUvwCnt++;
+			}
+			else
+			{
+				u16VinUvwCnt = 0;
+				MONCTRL_RTE_Write_B_P_VIN_UVW(TRUE);
+			}
+		}
+		else if (u16VinVoltage >= u16VinUvThrHigh)
+		{
+			u16VinUvCnt = 0;
+			MONCTRL_RTE_Write_B_P_VIN_UV(FALSE);
+			MONCTRL_RTE_Write_B_P_VIN_UVW(FALSE);
+			u8IsVinUvDataSave = FALSE;
+		}
+		else
+		{
+			/* do nothing */
+		}
+
+		/************************************************************
+		 * OVER VOLTAGE detection
+		 ************************************************************/
+		if (u16VinVoltage > u16VinOvThrHigh)
+		{
+			if (u16VinOvCnt < MG_U16_VIN_OVP_DLY)
+			{
+				u16VinOvCnt++;
+			}
+			else
+			{
+				u16VinOvCnt = 0;
+#ifndef HALT_TEST_MODE
+				MONCTRL_RTE_Write_B_P_VIN_OV(TRUE);
+#endif
+
+				if (FALSE == u8IsVinOvDataSave)
+				{
+#ifndef HALT_TEST_MODE
+					MONCTRL_cfg_vBlackBoxVinSaveData2Buff();
+#endif
+					u8IsVinOvDataSave = TRUE;
+				}
+
+			}
+		}
+		else if (u16VinVoltage <= u16VinOvThrLow)
+		{
+			u16VinOvCnt = 0;
+			MONCTRL_RTE_Write_B_P_VIN_OV(FALSE);
+			u8IsVinOvDataSave = FALSE;
+		}
+		else
+		{
+			/* do nothing */
+		}
+
+		if ((u16VinVoltage < u16VinDropOutLow) && (FALSE == INTCOM_RTE_Read_B_R_VIN_OK_PRI()))
+		{
+			MONCTRL_RTE_Write_B_P_NO_VIN(TRUE);
+
+			if (FALSE == u8IsAcOn2Off)
+			{
+				MONCTRL_RTE_Write_B_P_INPUT_OFF(TRUE);
+				u8IsAcOn2Off = TRUE;
+			}
+		}
+		else if (u16VinVoltage > u16VinDropOutHigh)
+		{
+			MONCTRL_RTE_Write_B_P_NO_VIN(FALSE);
+			u8IsAcOn2Off = FALSE;
+		}
+
+		/* Detect Vin is OK or not */
+		if (
+		  (FALSE != MONCTRL_RTE_Read_B_R_VIN_DROPOUT()) ||
+		  (FALSE != MONCTRL_RTE_Read_B_R_VIN_UV())      ||
+		  (FALSE != MONCTRL_RTE_Read_B_R_VIN_OV())      ||
+		  ((FALSE == INTCOM_RTE_Read_B_R_VIN_OK_PRI()) && (RTE_B_PRI_VIN_ALERT)))
+		{    
+			MONCTRL_RTE_Write_B_P_VIN_OK(FALSE);
+		}
+		else
+		{		
+			MONCTRL_RTE_Write_B_P_VIN_OK(TRUE);
+		}
+
+		/* Check input AC line status */
+		if (FALSE != MONCTRL_RTE_Read_B_R_NO_VIN())
+		{
+			MONCTRL_RTE_Write_P_u8AcLineStatus(MG_NO_AC_INPUT);
+		}
+		else
+		{
+			uint16 u16DataTmp;
+
+			MONCTRL_Rte_Read_R_u16100mHzVoltInFreq(&u16DataTmp);
+
+			//low line
+			if (FALSE != MONCTRL_Rte_Read_B_R_VIN_LINE_LOW())
+			{
+				if ((u16DataTmp >= 475u) && (u16DataTmp <= 525u)) /* 50Hz */
+				{
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_LOW_LINE_50HZ);
+				}
+				else if ((u16DataTmp >= 570u) && (u16DataTmp <= 630u)) /* 60Hz */
+				{
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_LOW_LINE_60HZ);
 				}
 				else
 				{
-					u16TrimVsbGainAct = u16TrimVsbGain;
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_RESERVED);
+				}
+
+
+			}
+			else//high line
+			{
+				if ((u16DataTmp >= 475u) && (u16DataTmp <= 525u)) /* 50Hz */
+				{
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_HIGH_LINE_50HZ);
+				}
+				else if ((u16DataTmp >= 570u) && (u16DataTmp <= 630u)) /* 60Hz */
+				{
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_HIGH_LINE_60HZ);
+				}
+				else
+				{
+					MONCTRL_RTE_Write_P_u8AcLineStatus(MG_RESERVED);
+				}
+
+
+			}
+		}
+	}
+}
+
+/*******************************************************************************
+ * Function:        MONCTRL_vVsbOutput
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Exe Period:      0.1ms
+ * Description:     Mornitor the output voltage and current
+ *
+ ******************************************************************************/
+void MONCTRL_vCheckVsbOvp(void)
+{
+	uint16 u16VsbInt;
+
+	MONCTRL_RTE_Read_R_vVsbLinear(&u16VsbInt);
+
+	if (FALSE != MONCTRL_RTE_Read_B_R_VSB_MONI_EN())
+	{
+		/* OVP detect */
+		if ((u16VsbInt > MG_VSB_OVP_HIGH))
+		{
+			if (mg_sVsbMonitor.u16OvpDly >= MG_VSB_OVP_DLY)
+			{
+#ifndef HALT_TEST_MODE
+				MONCTRL_RTE_Write_B_P_VSB_LATCH(TRUE);
+				MONCTRL_RTE_Write_B_P_VSB_OVP(TRUE);
+				MONCTRL_RTE_Write_B_P_VSB_OVW(TRUE);
+#endif
+			}
+			else
+			{
+				mg_sVsbMonitor.u16OvpDly++;
+			}
+		}
+		else
+		{
+			if (mg_sVsbMonitor.u16OvpDly > 0)
+			{
+				mg_sVsbMonitor.u16OvpDly--;
+			}
+		}
+	}
+	else
+	{
+		mg_sVsbMonitor.u16OvpDly = 0;
+	}
+
+}
+/*******************************************************************************
+ * Function:        MONCTRL_vVsbOutput
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Exe Period:      1ms
+ * Description:     Mornitor the output voltage and current
+ *
+ ******************************************************************************/
+void MONCTRL_vVsbOutput(void)
+{
+	uint16 u16VsbVoltInt;
+	uint16 u16VsbCurrent;
+	static uint8 u8VsbPreState = FALSE;
+	static uint16 u8VsbStartCnt = 0;
+	boolean bIsVsbOcpTest;
+
+	//just mul 512 or 128, not with PSMI data format
+	MONCTRL_RTE_Read_R_vVsbLinear(&u16VsbVoltInt);//from CALI_vCaliFast, Mul 512
+	MONCTRL_RTE_Read_R_vIoutVsbLinear(&u16VsbCurrent);//from CALI_vCaliFast, Mul 128
+
+	if ((FALSE != MONCTRL_RTE_Read_B_R_VSB_ON_DIO()) &&
+	    (FALSE == u8VsbPreState)
+	   )
+	{
+		u8VsbStartCnt = 65;
+	}
+	else
+	{
+	}
+
+	u8VsbPreState =  MONCTRL_RTE_Read_B_R_VSB_ON_DIO();
+
+	/* Check Vsb OCP/SCP/OVP after soft start */
+	if (FALSE != MONCTRL_RTE_Read_B_R_VSB_MONI_EN())
+	{
+		/* OVW detect */
+		if (u16VsbVoltInt > MG_VSB_OVW_HIGH)
+		{
+			if (mg_sVsbMonitor.u16OvwDly < MG_VSB_OVW_DLY)
+			{
+				mg_sVsbMonitor.u16OvwDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OVW(TRUE);
+			}
+		}
+		/* OVW recover */
+		else if (u16VsbVoltInt < MG_VSB_OVW_LOW)
+		{
+			if (mg_sVsbMonitor.u16OvwDly > 0)
+			{
+				mg_sVsbMonitor.u16OvwDly--;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OVW(FALSE);
+			}
+		}
+
+		/* Check UVP only when current is less than OCP point */
+		if (u16VsbCurrent < MG_VSB_OCP_HIGH)
+		{
+			/* UVP detect */
+			if (u16VsbVoltInt < MG_VSB_UVP_LOW)
+			{
+				if (mg_sVsbMonitor.u16UvpDly >= MG_VSB_UVP_DLY)
+				{
+#ifndef HALT_TEST_MODE
+					MONCTRL_RTE_Write_B_P_VSB_LATCH(TRUE);
+					MONCTRL_RTE_Write_B_P_VSB_UVP(TRUE);
+#endif
+					MONCTRL_RTE_Write_B_P_VSB_UVW(TRUE);
+				}
+				else
+				{
+					mg_sVsbMonitor.u16UvpDly++;
 				}
 			}
 			else
 			{
-				if (u16TrimVsbGainAct > (u16TrimVsbGain + 10u))
+				if (mg_sVsbMonitor.u16UvpDly > 0)
 				{
-					u16TrimVsbGainAct -= 10u;
-				}
-				else
-				{
-					u16TrimVsbGainAct = u16TrimVsbGain;
+					mg_sVsbMonitor.u16UvpDly--;
 				}
 			}
 
-			PSUCTRL_Rte_Write_P_u16TrimVsbGainAct(u16TrimVsbGainAct);
-			PSUCTRL_SCFG_vVsbTrimDuty(u16TrimVsbGainAct);
+#if 0 /* Nokia has no extVolt */
+      u16VsbExtVolt10mV = MONCTRL_SCFG_u16GetVsbExtVolt10mVAvg();
+
+      if (u16VsbExtVolt10mV < MG_VSB_EXT_UVP_LOW)
+      {
+        if (mg_sVsbMonitor.u16ExtUvpDly >= MG_VSB_UVP_DLY)
+        {
+#ifndef HALT_TEST_MODE
+          MONCTRL_RTE_Write_B_P_VSB_LATCH(TRUE);
+          MONCTRL_RTE_Write_B_P_VSB_UVP(TRUE);
+#endif
+          MONCTRL_RTE_Write_B_P_VSB_UVW(TRUE);
+        }
+        else
+        {
+          mg_sVsbMonitor.u16ExtUvpDly++;
+        }
+      }
+      else
+      {
+        if(mg_sVsbMonitor.u16ExtUvpDly > 0)
+        {
+          mg_sVsbMonitor.u16ExtUvpDly--;
+        }
+      }
+#endif
+
+			/* UVW  detect */
+			if (u16VsbVoltInt < MG_VSB_UVW_LOW)
+			{
+				if (mg_sVsbMonitor.u16UvwDly >= MG_VSB_UVW_DLY)
+				{
+					MONCTRL_RTE_Write_B_P_VSB_UVW(TRUE);
+				}
+				else
+				{
+					mg_sVsbMonitor.u16UvwDly++;
+				}
+			}
+			else if (u16VsbVoltInt > MG_VSB_UVW_HIGH)
+			{
+				/* UVW recover */
+				if (mg_sVsbMonitor.u16UvwDly > 0)
+				{
+					mg_sVsbMonitor.u16UvwDly--;
+				}
+				else
+				{
+					MONCTRL_RTE_Write_B_P_VSB_UVW(FALSE);
+				}
+			}
 		}
 
-		if (u16TrimVsbOvpGainAct > 10u)
+		MONCTRL_Rte_Read_R_bIsVsbOcpTest(&bIsVsbOcpTest);
+
+		if (FALSE != bIsVsbOcpTest)
 		{
-			u16TrimVsbOvpGainAct -= 10u;
-			PSUCTRL_SCFG_vVsbOvpDuty(u16TrimVsbOvpGainAct);
+			MONCTRL_RTE_Write_B_P_VSB_OCP(TRUE);
+			mg_sVsbMonitor.u16OcpOffDly = 0;
 		}
-		/* Vsb PWM duty cover the OVP by severin */
-		#if 0
+	}
+	/* VSB soft start */
+	else
+	{
+		mg_sVsbMonitor.u16UvpDly  = 0;
+		mg_sVsbMonitor.u16OvwDly  = 0;
+		mg_sVsbMonitor.u16UvwDly  = 0;
+	}
+
+	/* During soft start */
+	if (u8VsbStartCnt != 0)
+	{
+		u8VsbStartCnt--;
+
+		/* SCP detect */
+		if ((u16VsbCurrent > MG_VSB_SCP_HIGH) && (u16VsbVoltInt < MG_VSB_UVP_LOW) )
+		{
+			if (mg_sVsbMonitor.u16ScpDly < MG_VSB_SCP_ST_DLY)
+			{
+				mg_sVsbMonitor.u16ScpDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_SCP(TRUE);
+				mg_sVsbMonitor.u16ScpOffDly = 0;
+			}
+		}
 		else
 		{
-			PSUCTRL_SCFG_vSetVsbOvpPwmOut(FALSE);
+			mg_sVsbMonitor.u16ScpDly = 0;
 		}
-		#endif
+
+		/* OCP detect  */
+		if (u16VsbCurrent > MG_VSB_OCP_HIGH)
+		{
+			if (mg_sVsbMonitor.u16OcpDly < MG_VSB_OCP_ST_DLY)
+			{
+				mg_sVsbMonitor.u16OcpDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OCP(TRUE);
+				MONCTRL_RTE_Write_B_P_VSB_OCW(TRUE);
+				mg_sVsbMonitor.u16OcpOffDly = 0;
+			}
+		}
+		else
+		{
+			mg_sVsbMonitor.u16OcpDly = 0;
+		}
+	}
+	else /* After soft start */
+	{
+		/* SCP detect */
+		if ((u16VsbCurrent > MG_VSB_SCP_HIGH) && (u16VsbVoltInt < MG_VSB_UVP_LOW))
+		{
+			if (mg_sVsbMonitor.u16ScpDly < MG_VSB_SCP_DLY)
+			{
+				mg_sVsbMonitor.u16ScpDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_SCP(TRUE);
+				mg_sVsbMonitor.u16ScpOffDly = 0;
+			}
+		}
+		else
+		{
+			mg_sVsbMonitor.u16ScpDly = 0;
+		}
+
+		/* OCP detect  */
+		if (u16VsbCurrent > MG_VSB_OCP_HIGH)
+		{
+			if (mg_sVsbMonitor.u16OcpDly < MG_VSB_OCP_DLY)
+			{
+				mg_sVsbMonitor.u16OcpDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OCP(TRUE);
+				MONCTRL_RTE_Write_B_P_VSB_OCW(TRUE);
+				mg_sVsbMonitor.u16OcpOffDly = 0;
+			}
+		}
+		else
+		{
+			mg_sVsbMonitor.u16OcpDly = 0;
+		}
+
+		/* OCW detect */
+		if (u16VsbCurrent > MG_VSB_OCW_HIGH)
+		{
+			if (mg_sVsbMonitor.u16OcwDly < MG_VSB_OCW_DLY)
+			{
+				mg_sVsbMonitor.u16OcwDly++;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OCW(TRUE);
+			}
+		}
+		/* OCW recover */
+		else if (u16VsbCurrent < MG_VSB_OCW_LOW)
+		{
+			if (mg_sVsbMonitor.u16OcwDly > 0U)
+			{
+				mg_sVsbMonitor.u16OcwDly--;
+			}
+			else
+			{
+				MONCTRL_RTE_Write_B_P_VSB_OCW(FALSE);
+			}
+		}
+	}
+
+	/* Vsb OCP hiccup restart */
+	if (u16VsbCurrent < MG_VSB_OCP_LOW)
+	{
+		if (mg_sVsbMonitor.u16OcpOffDly < MG_VSB_OCP_OFF_DLY)
+		{
+			mg_sVsbMonitor.u16OcpOffDly++;
+		}
+		else
+		{
+			MONCTRL_RTE_Write_B_P_VSB_OCP(FALSE);
+			MONCTRL_RTE_Write_B_P_VSB_OCW(FALSE);
+		}
+
+		mg_sVsbMonitor.u16OcpDly = 0;
+		mg_sVsbMonitor.u16ScpDly = 0;
+		mg_sVsbMonitor.u16OcwDly = 0;
+	}
+	
+	/* Vsb SCP hiccup restart */
+	if((u16VsbCurrent < MG_VSB_SCP_LOW) && (u16VsbVoltInt > MG_VSB_UVP_HIGH))
+	{
+	  if(mg_sVsbMonitor.u16ScpOffDly < MG_VSB_SCP_OFF_DLY)
+		{
+		  mg_sVsbMonitor.u16ScpOffDly++;
+		}
+		else
+		{
+		  MONCTRL_RTE_Write_B_P_VSB_SCP(FALSE);
+		}
+		mg_sVsbMonitor.u16ScpDly = 0;
+	}
+
+} /* MONCTRL_vVsbOutput() */
+
+/*******************************************************************************
+ * Function:        MONI_AuxModeDetect 100ms cycle
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:
+ *
+ ******************************************************************************/
+void MONCTRL_vAxuModeDetect(void)
+{
+	static uint16 u16AuxModeCnt = 0;
+
+	if ((FALSE != MONCTRL_RTE_Read_B_R_PRI1_NO_RX_PKG()) &&
+	    (FALSE != MONCTRL_RTE_Read_B_R_SEC1_NO_RX_PKG())) /* add hardware pin status */
+	{
+		if (u16AuxModeCnt < VSB_AUX_MODE_DETECT_DLY)
+		{
+			u16AuxModeCnt++;
+		}
+		else
+		{
+			u16AuxModeCnt = 0;
+			
+      #if DEBUG_AUXMODE
+			RTE_PMB_Write_bit_Aux_Mode(TRUE);
+			MONCTRL_RTE_Write_P_u8AcLineStatus(MG_NO_AC_INPUT);
+			#else
+			RTE_PMB_Write_bit_Aux_Mode(FALSE);
+			#endif
+		}
+	}
+	else
+	{
+		u16AuxModeCnt = 0;
+		RTE_PMB_Write_bit_Aux_Mode(FALSE);
+	}
+}
+
+/*******************************************************************************
+ * Local functions (private to module)
+ ******************************************************************************/
+/*******************************************************************************
+ * Function:        MONCTRL_vCheckStatusReset
+ *
+ * Parameters:      -
+ * Returned value:  -
+ *
+ * Description:     This function to check status reset or not.
+ *
+ ******************************************************************************/
+void MONCTRL_vCheckStatusReset(void)
+{
+	static uint16 u16DelayCheckReCycle = 10;
+	static MG_E_PSON  ePsonState = MG_PSON_INIT;
+	static MG_E_PSON  ePsCycle   = MG_PSON_INIT;
+	boolean bIsClearFault = FALSE;
+
+	if (FALSE == MONCTRL_RTE_Read_B_R_REMOTE_ON())
+	{
+		ePsonState = MG_PSON_MODE_OFF;
+	}
+
+	if (MG_PSON_MODE_OFF == ePsonState)
+	{
+		if (FALSE != MONCTRL_RTE_Read_B_R_REMOTE_ON())
+		{
+			ePsonState = MG_PSON_INIT;
+			bIsClearFault = TRUE;
+		}
+	}
+
+	if (FALSE != MONCTRL_RTE_Read_B_R_NO_VIN())
+	{
+		ePsCycle = MG_PSON_MODE_OFF;
+
+		if (0 != u16DelayCheckReCycle)
+		{
+			u16DelayCheckReCycle--;
+		}
+	}
+	else if ((FALSE == MONCTRL_RTE_Read_B_R_NO_VIN()) &&
+	         (0 == u16DelayCheckReCycle)              &&
+	         (MG_PSON_MODE_OFF == ePsCycle))
+	{
+		ePsCycle = MG_PSON_INIT;
+		u16DelayCheckReCycle = 10u;
+		bIsClearFault = TRUE;
+	}
+  
+	if (FALSE != bIsClearFault)
+	{
+		MONCTRL_RTE_Write_P_uComStatus01(0);
+		MONCTRL_SCFG_vClearAllFault();
+		MONCTRL_RTE_Write_B_P_VSB_LATCH(FALSE);
+		MONCTRL_RTE_Write_B_P_VSB_OVP(FALSE);
+		MONCTRL_RTE_Write_B_P_VSB_UVP(FALSE);
+		MONCTRL_RTE_Write_B_P_VSB_OCP(FALSE);
+		MONCTRL_RTE_Write_B_P_VIN_UV(FALSE);
+		MONCTRL_RTE_Write_B_P_VIN_OV(FALSE);
+		MONCTRL_Rte_Write_B_P_V1_OVP(FALSE);
+		MONCTRL_Rte_Write_B_P_V1_UVP(FALSE);
+		MONCTRL_Rte_Write_B_P_V1_OCP(FALSE);
+		MONCTRL_Rte_Write_B_P_V1_OCW(FALSE);
+		MONCTRL_RTE_Write_B_P_CLEAR_LATCH_FAULT(TRUE);
+		MONCTRL_RTE_Write_P_TrimVsbGainOvp(100u);
+		MONCTRL_Rte_Write_B_P_V1_SCP(FALSE);		
+
+/*		
+		MONCTRL_SCFG_vSetVsbOvpPwmOut(FALSE);
+		MONCTRL_SCFG_vVsbOvpDuty(10u);
+*/		
+		MONCTRL_Rte_Write_B_P_V1_OVP_TEST(FALSE);
+		MONCTRL_Rte_Write_B_P_VSB_OVP_TEST(FALSE);
+		MONCTRL_Rte_Write_B_P_V1_LATCHED(FALSE);
+		bIsClearFault = FALSE;
+	}
+
+	/* When Sec side had clear fault, reset the clear latched fault flag */
+	if (FALSE != MONCTRL_RTE_Read_B_R_SEC_FAULT_CLR())
+	{
+		MONCTRL_RTE_Write_B_P_CLEAR_LATCH_FAULT(FALSE);
+	}
+
+}
 
 
-
-
-
-
-
+/*
+ * End of file
+ */

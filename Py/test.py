@@ -39,8 +39,13 @@ y = 4 + 3 * x + np.random.randn(100, 1)
 plt.plot(x,y,"ro")
 #plt.show()
 #print(x)
+################################################
+sum = 0
+for i in range(1,10):
+  sum += (1.045**i)-1
 
-
+sum = 10*(1.045**23)+0.22*23
+print("%f"%sum)
 
 
 

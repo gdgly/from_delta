@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "string.h"
+#include "math.h"
 
 typedef signed char sint8;
 typedef unsigned char uint8;
@@ -380,22 +381,49 @@ int main(void)
 //   }	
 //   printf("%d\n",u32FanSpeedAdj);
 /****************************************************/
-  uint16 a,b,c,d,e;
-  uint16 a2,b2,c2,d2,e2;
-  a = ~0x003F;
-  b = ~0x003C;
-  c = ~0x0003;
-  d = ~0x0009;
-  e = 0x01F0;
+  // uint16 a,b,c,d,e;
+  // uint16 a2,b2,c2,d2,e2;
+  // a = ~0x003F;
+  // b = ~0x003C;
+  // c = ~0x0003;
+  // d = ~0x0009;
+  // e = 0x01F0;
 
-  a2= 0x0009;
-  b2= 0;
-  c2= 0;
-  d2= 0x0008;
-  e2= 0x0020;
-  printf("%.4x\n",a2&(~a));
-  printf("%.4x\n",b2&(~b));
-  printf("%.4x\n",c2&(~c));
-  printf("%.4x\n",d2&(~d));
-  printf("%.4x\n",e2&(~e));
+  // a2= 0x0009;
+  // b2= 0;
+  // c2= 0;
+  // d2= 0x0008;
+  // e2= 0x0020;
+  // printf("%.4x\n",a2&(~a));
+  // printf("%.4x\n",b2&(~b));
+  // printf("%.4x\n",c2&(~c));
+  // printf("%.4x\n",d2&(~d));
+  // printf("%.4x\n",e2&(~e));
+/*********************************************************/
+  uint32 u32a,u32sum;
+  float fb = 1.05;
+  uint8 i,j;
+
+  u32sum = 0;
+  for(i=1;i<10;i++)
+  {
+    if(i<10)
+    {
+      for(j=1;j<=i;j++)
+      {
+        u32sum += (pow(1.05,j) - 1) * 10000; 
+      }
+    }
+    else if(i>=10)
+    {
+      for(j=i-10+1;j<=i;j++)
+      {
+        u32sum += (pow(1.05,j) - 1) * 10000; 
+      }
+    }
+
+    printf("%d\n",u32sum);
+  }
+  
+
 }
