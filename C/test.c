@@ -48,6 +48,51 @@ else
 }
 
 
+else
+{
+  if(/* from PSON on to PWOK */
+    (TRUE == RTE_Read_B_R_PSON_ACTIVE) &&
+    (LEDCTRL_RTE_Read_B_R_VIN_OK() != FALSE) &&
+    (LEDCTRL_RTE_Read_B_R_VSB_ON() != FALSE) &&
+    (LEDCTRL_SCFG_u8ReadFanBitFail() == FALSE) &&
+    (LEDCTRL_RTE_Read_B_R_TEMP_OTP() == FALSE)
+  )
+  { 
+//			LEDCTRL_SCFG_vSetInGREOn();
+    LEDCTRL_SCFG_vSetInREDOff();
+  }
+  else if (/* AC loss */
+    (TRUE == RTE_B_COM_NO_VIN)&&(FALSE == RTE_B_PRI_BULK_OK) && (FALSE == RTE_B_PRI_VIN_OK)
+  )
+  {
+    LEDCTRL_SCFG_vSetInGREOff();
+    LEDCTRL_SCFG_vSetInREDOff();
+  }
+  else if(/* when starting VinOK, but Vsb not OK */
+    ((LEDCTRL_RTE_Read_B_R_VIN_OK() != FALSE)  &&
+    ((LEDCTRL_RTE_Read_B_R_VSB_ON() == FALSE))  &&
+    (RTE_Read_B_R_VSB_OVP == FALSE)  &&
+    (RTE_Read_B_R_VSB_UVP == FALSE)  &&
+    (RTE_Read_B_R_VSB_OCP == FALSE)  &&
+    (RTE_Read_B_R_VSB_SCP == FALSE)) ||
+    /* when start, Vin OK and Vsb OK, V1 not OK */
+    ((LEDCTRL_RTE_Read_R_VMAIN_OK() == FALSE) &&
+    (FALSE == LEDCTRL_RTE_Read_B_R_V1_OVP()) &&
+    (FALSE == LEDCTRL_RTE_Read_B_R_V1_OCP()) &&
+    (FALSE == LEDCTRL_RTE_Read_B_R_V1_UVP()) &&
+    (FALSE == LEDCTRL_RTE_Read_B_R_V1_SCP()) &&
+    (FALSE == RTE_B_COM_V1_OCP_HICCUP_MODE))
+  )
+  {
+    LEDCTRL_SCFG_vSetInGREOff();
+    LEDCTRL_SCFG_vSetInREDOff();
+  }
+  else
+  {
+    LEDCTRL_SCFG_vSetInGREOff();
+    LEDCTRL_SCFG_vSetInREDOn();
+  }
+}
 
 
 
