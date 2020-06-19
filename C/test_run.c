@@ -63,8 +63,8 @@ typedef union PSMI_SHUTDOWN_EVENT
 
 typedef enum FANCTRL_CFG_E_CONF_INDEX_
 {
-  FANCTRL_CFG_E_INDEX_FAN1 = 0,
-  FANCTRL_CFG_E_INDEX_FAN2,
+//  FANCTRL_CFG_E_INDEX_FAN1 = 0,
+  FANCTRL_CFG_E_INDEX_FAN2 = 5,
   FANCTRL_CFG_E_INDEX_COUNT
 } FANCTRL_CFG_E_CONF_INDEX;
 
@@ -89,6 +89,7 @@ typedef union PMBUS_U_SYS_BIT_FLAG_
     uint16 fd:1;
     uint16 fe:1;
     uint16 ff:1;
+    uint16 temp:1;
   }Bits;
   struct
   {
@@ -173,23 +174,27 @@ static MG_S_UARTPRT_DATA mg_uUartPrtData[2];
 #define BOOT_PEC_STATUS_ADDR_START (BOOT_CRC_BF_ADDR_START + 4)
 #define BOOT_UPDATE_BF_ADDR_START  (BOOT_PEC_STATUS_ADDR_START + 2)
 #else
-  #define BOOT_BL_PAGE_NUM_START      ((uint16)0)    /* 256 per page */
-  #define BOOT_BL_PAGE_NUM_SIZE       ((uint16)48u)
-  #define BOOT_BL_PAGE_NUM_END        (BOOT_BL_PAGE_NUM_START + BOOT_BL_PAGE_NUM_SIZE - 1u)   /* 256 per page */
+	#define BOOT_BL_PAGE_NUM_START      ((uint16)0)    /* 64 per page */
+  #define BOOT_BL_PAGE_NUM_SIZE       ((uint16)192u)
+  #define BOOT_BL_PAGE_NUM_END        (BOOT_BL_PAGE_NUM_START + BOOT_BL_PAGE_NUM_SIZE - 1u)   /* 64per page */
 
-  #define BOOT_APP_PAGE_NUM_START     (BOOT_BL_PAGE_NUM_END + 1u)   /* 256 per page */
-  #define BOOT_APP_PAGE_NUM_SIZE      ((uint16)128u)
-  #define BOOT_APP_PAGE_NUM_END       (BOOT_APP_PAGE_NUM_START + BOOT_APP_PAGE_NUM_SIZE - 1u)  /* 256 per page */
+  #define BOOT_APP_PAGE_NUM_START     (BOOT_BL_PAGE_NUM_END + 1u)   /* 64 per page */
+  #define BOOT_APP_PAGE_NUM_SIZE      ((uint16)512u)
+  #define BOOT_APP_PAGE_NUM_END       (BOOT_APP_PAGE_NUM_START + BOOT_APP_PAGE_NUM_SIZE - 1u)  /* 64 per page */
   
-  #define BOOT_CRC_BF_PAGE_NUM_START  (BOOT_APP_PAGE_NUM_END + 1u)   /* 256 per page */
-  #define BOOT_CRC_BF_PAGE_NUM_SIZE   ((uint16)8u)
-  #define BOOT_CRC_BF_PAGE_NUM_END    (BOOT_CRC_BF_PAGE_NUM_START + BOOT_CRC_BF_PAGE_NUM_SIZE - 1u)   /* 256 per page */
+  #define BOOT_CRC_BF_PAGE_NUM_START  (BOOT_APP_PAGE_NUM_END + 1u)   /* 64 per page */
+  #define BOOT_CRC_BF_PAGE_NUM_SIZE   ((uint16)32u)
+  #define BOOT_CRC_BF_PAGE_NUM_END    (BOOT_CRC_BF_PAGE_NUM_START + BOOT_CRC_BF_PAGE_NUM_SIZE - 1u)   /* 64 per page */
 
   #define BOOT_FLASH_BASE_ADDR        ((uint32)0x08000000u)
-  #define BOOT_ADDR_NUM_PER_PAGE      ((uint32)256u)
+  #define BOOT_ADDR_NUM_PER_PAGE      ((uint32)64u)
   #define BOOT_CRC_BF_ADDR_START      (BOOT_FLASH_BASE_ADDR+BOOT_ADDR_NUM_PER_PAGE*BOOT_CRC_BF_PAGE_NUM_START)
   #define BOOT_APP_START_ADDR         (BOOT_FLASH_BASE_ADDR+BOOT_ADDR_NUM_PER_PAGE*BOOT_APP_PAGE_NUM_START)
   #define BOOT_APP_END_ADDR           ((BOOT_FLASH_BASE_ADDR+(uint32)BOOT_ADDR_NUM_PER_PAGE*(BOOT_APP_PAGE_NUM_END+1u))-1u)
+
+  #define BOOT_APP_END_SAVE_ADDR      (BOOT_CRC_BF_ADDR_START +4)
+	
+  #define BOOT_JUMP_APP_START_ADDR    (BOOT_APP_START_ADDR + (uint32)0x10u)
 #endif
 
 uint16 CRC_u16GetCrc16(uint16 u16InCrc, uint8 u8InData)
@@ -237,7 +242,27 @@ sint16 s16B, sint16 s16MinX, sint16 s16MaxX, uint16 u16MinY, uint16 u16MaxY)
 
 #define TRUE     1
 
+void Test_Return(uint8* pBuffer, uint32 ReadAddr, uint16 Num)
+{
+  uint8 i,j=0;
+  uint8 RTE[100];
+  for(i=0;i<100;i++)
+  {
+    RTE[i] = i;
+  }
+  for(i = ReadAddr;i<Num;i++)
+  {
+    pBuffer[j] = RTE[i];
+    j++;
+  }
+  
 
+}
+#define   MG_VSB_MUL_128(X)             ((uint16)(X * 128.0F))
+
+#define MG_F32_PWM_CTRL_KP               2.0000F  /* KP parameter */
+#define S32Q8(X)                 ((sint32)((X < 0.0F) ? (256.0F * (X) - 0.5F) : (256.0F * (X) + 0.5F)))
+#define MG_S32Q8_PWM_CTRL_KP                ((sint32)S32Q8(MG_F32_PWM_CTRL_KP))
 int main(void)
 {
   // PSMI_SHUTDOWN_EVENT A;
@@ -252,7 +277,7 @@ int main(void)
   //printf("%d",FANCTRL_CFG_E_INDEX_COUNT);
 
   // PMBUS_U_SYS_BIT_FLAG data;
-  // data.ALL = 0x12;
+  // data.Bits.ff = 1;
   // printf("%x",data.Word);
 
 
@@ -315,6 +340,14 @@ int main(void)
 /*****************************************/
   // printf("%.8x\n",BOOT_APP_START_ADDR);
   // printf("%.8x\n",BOOT_APP_END_ADDR);
+  // printf("%.8x\n",BOOT_CRC_BF_ADDR_START);
+
+//  uint32 u32ErasePageStartAddr;
+//  	for(u32ErasePageStartAddr = BOOT_APP_START_ADDR; u32ErasePageStartAddr < BOOT_APP_END_ADDR; u32ErasePageStartAddr += 2048)
+// 	{
+// 	  printf("%.8x\n",u32ErasePageStartAddr);
+// 	}
+
 /****************************************/
 /***************计算Hex校验和********************/
   // uint8 u8buf[]="1001C00002480169802211430161704700200240";
@@ -337,56 +370,6 @@ int main(void)
   // }
   // printf("%.2X",0x0100 - u8sum);
 /**************************************/
-/* cal fan speed nokia sHUB 2kw */
-// sint32 s32VinDiff;
-// sint32 s32Dummy;
-// sint32 u32Vin;
-// sint32 u32PoutV1;
-// uint32 u32FanSpeedAdj;
-// uint8 u8VinLine;
-// sint32 s32LoadDiff;
-// sint32 s16FanCtrlLoadMax;
-
-// u32FanSpeedAdj = 5400;
-// u32Vin = 109;
-// u32PoutV1 = 1250 * 0.4;
-
-//   u8VinLine = 1;
-//   s16FanCtrlLoadMax = 1250;
-//   /* Control the fan accoiding to the load */
-//   s32LoadDiff = (sint32)(u32PoutV1) - (sint32)s16FanCtrlLoadMax;
-//   if( TRUE == u8VinLine)
-//   {
-//     if(s32LoadDiff > (-s16FanCtrlLoadMax / 2))
-//     {
-//       /* max min value need confirm */
-//       u32FanSpeedAdj += ((sint32)((sint32)((2200-0)*128/s16FanCtrlLoadMax) * ((sint32)s32LoadDiff))) >> 7u;
-//     }
-//     else
-//     {
-//       u32FanSpeedAdj -= 2200/2;
-//     }
-//   }
-//   else
-//   {
-//       u32FanSpeedAdj += ((sint32)((sint32)((2720-0)*128/s16FanCtrlLoadMax)  * ((sint32)s32LoadDiff))) >> 7u;	
-//   }
-
-//   s32VinDiff = 110-u32Vin;
-//   if(0 < s32VinDiff)
-//   {
-//     s32Dummy = mg_u16LinearCalc(u32Vin, MG_U16Q8_FAN_CTRL_VIN_SCALING_FACT2,\
-//                                 0,0,MG_U16_FAN_CTRL_MIN_VIN_LL,MG_U16_FAN_CTRL_MAX_VIN_LL,\
-//                                   MG_U16_FAN_CTRL_VIN_MIN_SPEED2,MG_U16_FAN_CTRL_VIN_MAX_SPEED2);
-//     s32Dummy = MG_U16_FAN_CTRL_VIN_MAX_SPEED2 - s32Dummy;
-//     s32Dummy = (s32Dummy * u32PoutV1 * MG_U16Q8_FAN_CTRL_VIN_LOAD_RADIO_FACT2) >> 19;
-//     u32FanSpeedAdj += s32Dummy;
-//   }
-//   else
-//   {
-//     u32FanSpeedAdj += MG_U16_FAN_CTRL_VIN_MIN_SPEED2;
-//   }	
-//   printf("%d\n",u32FanSpeedAdj);
 /****************************************************/
   // uint16 a,b,c,d,e;
   // uint16 a2,b2,c2,d2,e2;
@@ -444,9 +427,92 @@ int main(void)
 
 //  }
 /*********************************************/
-  uint32 a;
-  uint16 b;
-  a = 0x12345;
-  b = a;
-  printf("%x",b);
+  // uint8 i;
+  // for(i=0;i<1;i++)
+  // {
+  //   printf("%d",i);
+  // }
+/********************************/
+//   uint16 i;
+//   uint32 j,p,q,s;
+//   for(i=0;i<100;i++)
+//   {
+//     p = i;
+//     p += BOOT_APP_PAGE_NUM_START;
+//     if(p%32 == 0)
+//     {
+//       j =  BOOT_FLASH_BASE_ADDR + (((uint32)p/32u)<<11);
+// //      printf("%d,0x%.8x\n",i,j);
+//     }
+//     q = BOOT_FLASH_BASE_ADDR+(p*BOOT_ADDR_NUM_PER_PAGE);
+//     printf("0x%.8x\n",q);
+//   }
+//   s = BOOT_FLASH_BASE_ADDR+(p*BOOT_ADDR_NUM_PER_PAGE) + 0x3F;
+//   printf("EndAddr = 0x%.8x\n",s);
+
+
+
+  // MG_U_UARTPRT_STATUS abc;
+  // abc.Bit.u8UartRegErr = 1;
+  // printf("%x",abc.ALL);
+/******************************/
+  // uint8 mg_u8Buff[100] = {0};
+  // uint8 i,j;
+  // uint8 addr;
+  
+  // addr=0;
+  // for(j=addr;j<addr+20;j+=5)
+  // {
+  //   Test_Return(&mg_u8Buff[j],0,5);
+  // }
+  
+  
+  // for(i=0;i<20;i++)
+  // {
+  //   printf("%d,",mg_u8Buff[i]);
+  // }
+  // Test_Return(&mg_u8Buff[5],0,5);
+  // printf("\n");
+  // for(i=0;i<100;i++)
+  // {
+  //   printf("%d,",mg_u8Buff[i]);
+  // }
+
+  /***********************************/\
+  // uint16 y;
+  // y = (550 - 500)*(MG_VSB_MUL_128(0.6)- MG_VSB_MUL_128(0.2))/(MG_VSB_MUL_128(0.9) - MG_VSB_MUL_128(0.2)) + 500;
+  // printf("%d",y);
+/******************************/
+  // uint8 a,i;
+
+  // for(i=0;i<30;i++)
+  // {
+  //   if(i>20)
+  //   {
+  //     printf("a = %d\n",i);
+  //   }
+  //   else if(i>11)
+  //   {
+  //     printf("b = %d\n",i);
+  //   }
+  //   else if(i<9)
+  //   {
+  //     printf("c = %d\n",i);
+  //   }
+  //   else
+  //   {
+  //     printf("d = %d\n",i);
+  //   }
+  // }
+
+  // uint16 a,b,i;
+  // for(i=0;i<900;i++)
+  // {
+  //   a =(513-517)*(i-200)/(900-200)+517;
+  //   printf("%d, ",a);
+  // }
+  
+  
+  printf("%d",MG_S32Q8_PWM_CTRL_KP);
+
 }
