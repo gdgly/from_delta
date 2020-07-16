@@ -263,6 +263,36 @@ void Test_Return(uint8* pBuffer, uint32 ReadAddr, uint16 Num)
 #define MG_F32_PWM_CTRL_KP               2.0000F  /* KP parameter */
 #define S32Q8(X)                 ((sint32)((X < 0.0F) ? (256.0F * (X) - 0.5F) : (256.0F * (X) + 0.5F)))
 #define MG_S32Q8_PWM_CTRL_KP                ((sint32)S32Q8(MG_F32_PWM_CTRL_KP))
+
+
+
+#define OB_WRP_Pages0to1               ((uint32)0x00000001) /* Write protection of page 0 to 1 */
+#define OB_WRP_Pages2to3               ((uint32)0x00000002) /* Write protection of page 2 to 3 */
+#define OB_WRP_Pages4to5               ((uint32)0x00000004) /* Write protection of page 4 to 5 */
+#define OB_WRP_Pages6to7               ((uint32)0x00000008) /* Write protection of page 6 to 7 */
+#define OB_WRP_Pages8to9               ((uint32)0x00000010) /* Write protection of page 8 to 9 */
+#define OB_WRP_Pages10to11             ((uint32)0x00000020) /* Write protection of page 10 to 11 */
+#define OB_WRP_Pages12to13             ((uint32)0x00000040) /* Write protection of page 12 to 13 */
+#define OB_WRP_Pages14to15             ((uint32)0x00000080) /* Write protection of page 14 to 15 */
+#define OB_WRP_Pages16to17             ((uint32)0x00000100) /* Write protection of page 16 to 17 */
+#define OB_WRP_Pages18to19             ((uint32)0x00000200) /* Write protection of page 18 to 19 */
+#define OB_WRP_Pages20to21             ((uint32)0x00000400) /* Write protection of page 20 to 21 */
+#define OB_WRP_Pages22to23             ((uint32)0x00000800) /* Write protection of page 22 to 23 */
+#define OB_WRP_Pages24to25             ((uint32)0x00001000) /* Write protection of page 24 to 25 */
+#define OB_WRP_Pages26to27             ((uint32)0x00002000) /* Write protection of page 26 to 27 */
+#define OB_WRP_Pages28to29             ((uint32)0x00004000) /* Write protection of page 28 to 29 */
+#define OB_WRP_Pages30to31             ((uint32)0x00008000) /* Write protection of page 30 to 31 */
+#define FLASH_PAGES_TO_BE_PROTECTED   (uint32)(OB_WRP_Pages0to1   | OB_WRP_Pages2to3   | OB_WRP_Pages4to5  |\
+																			OB_WRP_Pages6to7 | OB_WRP_Pages8to9 | OB_WRP_Pages10to11 |\
+																			OB_WRP_Pages12to13 | OB_WRP_Pages14to15 |OB_WRP_Pages16to17|\
+																			OB_WRP_Pages18to19|OB_WRP_Pages20to21|OB_WRP_Pages22to23\
+																			|OB_WRP_Pages24to25|OB_WRP_Pages26to27|OB_WRP_Pages28to29\
+																			|OB_WRP_Pages30to31) /*OB_WRP_AllPages*/
+#define WRP_0     (uint8)((~FLASH_PAGES_TO_BE_PROTECTED) & 0xFF)
+#define WRP_1     (uint8)((~FLASH_PAGES_TO_BE_PROTECTED >> 8) & 0xFF)
+#define WRP_2     (uint8)((~FLASH_PAGES_TO_BE_PROTECTED >> 16) & 0xFF)
+#define WRP_3     (uint8)((~FLASH_PAGES_TO_BE_PROTECTED >> 24) & 0xFF)
+
 int main(void)
 {
   // PSMI_SHUTDOWN_EVENT A;
@@ -512,7 +542,8 @@ int main(void)
   //   printf("%d, ",a);
   // }
   
+  printf("%x\n",FLASH_PAGES_TO_BE_PROTECTED);
+  printf("%x,%x,%x,%x",WRP_0,WRP_1,WRP_2,WRP_3);
   
-  printf("%d",MG_S32Q8_PWM_CTRL_KP);
 
 }
