@@ -63,9 +63,9 @@ typedef union PSMI_SHUTDOWN_EVENT
 
 typedef enum FANCTRL_CFG_E_CONF_INDEX_
 {
-//  FANCTRL_CFG_E_INDEX_FAN1 = 0,
-  FANCTRL_CFG_E_INDEX_FAN2 = 5,
-  FANCTRL_CFG_E_INDEX_COUNT
+  FANCTRL_CFG_E_INDEX_FAN1 = 0,
+  FANCTRL_CFG_E_INDEX_FAN2 ,
+  FANCTRL_CFG_E_INDEX_COUNT = 0xFF
 } FANCTRL_CFG_E_CONF_INDEX;
 
 typedef union PMBUS_U_SYS_BIT_FLAG_
@@ -542,8 +542,16 @@ int main(void)
   //   printf("%d, ",a);
   // }
   
-  printf("%x\n",FLASH_PAGES_TO_BE_PROTECTED);
-  printf("%x,%x,%x,%x",WRP_0,WRP_1,WRP_2,WRP_3);
+  // printf("%x\n",FLASH_PAGES_TO_BE_PROTECTED);
+  // printf("%x,%x,%x,%x",WRP_0,WRP_1,WRP_2,WRP_3);
   
+    // printf("%x,",FANCTRL_CFG_E_INDEX_FAN2);
+    // printf("%x",FANCTRL_CFG_E_INDEX_COUNT);
 
+    uint8 u8def[256] = {0xFF};
+    uint8 i;
+    for(i=0;i<20;i++)
+    {
+      printf("%x,",u8def[i]);
+    }
 }

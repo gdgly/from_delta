@@ -1,5 +1,4 @@
 {
-  "python.pythonPath": "D:\\anaconda3\\python.exe",
   "files.associations": {
     "pmbus_api.h": "c"
   }
